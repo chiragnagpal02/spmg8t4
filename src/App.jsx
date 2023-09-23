@@ -1,13 +1,20 @@
 import { useState } from 'react'
 import './App.css'
 import './index.css'
+import Navbar from './components/Navbar'
+import HomePageSearch from './components/HomePage/HomePageSearch'
+import Categories from './components/HomePage/Departments'
+import RecentlyAdded from './components/HomePage/RecentlyAdded'
 
 function App() {
   return (
     <>
-      <div>
-        <h1 className='text-center my-5'>This is start of SPM project</h1>
-      </div>
+      <Navbar />
+      <HomePageSearch />
+      <Categories />
+      <RecentlyAdded />
+      
+
     </>
   )
 }
