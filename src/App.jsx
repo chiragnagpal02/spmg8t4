@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import HomePageSearch from './components/HomePage/HomePageSearch'
 import Categories from './components/HomePage/Departments'
 import RecentlyAdded from './components/HomePage/RecentlyAdded'
+import Bottom from './components/HomePage/Bottom'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Categories />
       <RecentlyAdded />
       
+      <Bottom />
 
     </>
   )
