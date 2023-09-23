@@ -1,24 +1,21 @@
-import { useState } from 'react'
 import './App.css'
 import './index.css'
-import Navbar from './components/Navbar'
-import HomePageSearch from './components/HomePage/HomePageSearch'
-import Categories from './components/HomePage/Departments'
-import RecentlyAdded from './components/HomePage/RecentlyAdded'
-import Bottom from './components/HomePage/Bottom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import StaffPage from './components/Staff/StaffPage'
+import HRPage from './components/HR/HRPage'
+import ManagerPage from './components/Manager/ManagerPage'
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <HomePageSearch />
-      <Categories />
-      <RecentlyAdded />
-      
-      <Bottom />
-
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/staff" element={<StaffPage />} />
+        <Route path="/staff" element={<HRPage />} />
+        <Route path="/staff" element={<ManagerPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
