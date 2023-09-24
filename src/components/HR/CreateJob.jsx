@@ -16,7 +16,10 @@ const CreateJob = () => {
     }
 
     const removeSelectedSkill = (skillToRemove) => {
-        setSkills(skills.filter(skill => skill !== skillToRemove));
+        const updatedSkills = skills.filter(skill => skill !== skillToRemove);
+        console.log(updatedSkills);
+        console.log(skills);
+        setSkills(updatedSkills);
     }
 
     const showModal = () => {
@@ -113,7 +116,7 @@ const CreateJob = () => {
                             {skills.map((skill, index) => (
                                 <span key={index}>
                                     <button
-                                        className={` m-2 ml-2 text-red-500 bg-gray-200 hover:bg-gray-400 font-bold py-2 px-4 rounded ${skills.length === 0 && 'disabled'}`}
+                                        className={`m-2 ml-2 text-red-500 bg-gray-200 hover:bg-gray-400 font-bold py-2 px-4 rounded ${skills.length === 0 && 'disabled'}`}
                                         onClick={() => removeSelectedSkill(skill)
                                         }
                                     >

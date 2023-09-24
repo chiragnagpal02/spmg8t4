@@ -15,7 +15,7 @@ const Navbar = () => {
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="#" class="flex items-center">
         <img src={logo} class="h-8 mr-3" alt="Job Application Portal Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Employee</span>
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Staff</span>
     </a>
     
     <div class=" md:block md:w-auto" id="navbar-solid-bg">
