@@ -3,31 +3,38 @@ import { useState } from 'react'
 
 const CreateJob = () => {
     const [skills, setSkills] = useState([]);
+    
 
 
-    const handleSkills = () => {
-        setSkills([...skills, 'React']);
+    const handleSkills = (value) => {
+        if (!skills.includes(value)) {
+            setSkills([...skills, value]);
+        }
+        
+    }
+
+    const removeSelectedSkill = (skillToRemove) => {
+        setSkills(skills.filter(skill => skill !== skillToRemove));
     }
 
 
     return (
         <>
 
-        <div className='bg-[#338573] h-[70px] flex justify-center items-center'>
+        <div className='bg-[#338573] h-[40px] flex justify-center items-center'>
 
-            <span className='text-white text-2xl '>
+            <span className='text-white text-1xl '>
                 Create Job Posting
             </span>
 
         </div>
 
-        <span>
+        {/* <span className='flex flex-col items-center font-bold text-2xl mb-6'>
             Job Details
-        </span>
+        </span> */}
 
-        <div className='m-0 bg-gray-100 p-[1em]'>
+        <div className='m-0 bg-gray-100 p-[1em] h-screen'>
             
-
                 <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <div class="mb-4 grid grid-cols-2 gap-4">
                         <div>
@@ -78,7 +85,7 @@ const CreateJob = () => {
                                 Skills
                             </label>
                             <select id="skills" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                                onChange={handleSkills}
+                                onChange={(event) => handleSkills(event.target.value)}
                             multiple
                             >
                                 <option selected>Choose skills</option>
@@ -89,19 +96,29 @@ const CreateJob = () => {
                             </select>
                         </div>
 
-                        <div className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-2'>
-                            {skills}
+                        <div className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-2 '>
+                            {skills.map((skill, index) => (
+                                <span key={index}>
+                                    <button
+                                        className={` m-2 ml-2 text-red-500 bg-gray-200 hover:bg-gray-400 font-bold py-2 px-4 rounded ${skills.length === 0 && 'disabled'}`}
+                                        onClick={() => removeSelectedSkill(skill)
+                                        }
+                                    >
+                                        {skill}
+                                        &#x2716;
+                                    </button>
+                                </span>
+                            ))}
                         </div>
 
                         <div className='col-span-2' >
                             <button className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
                                 Add New Posting
                             </button>
+
+                            
                         </div>
-
-                        
-
-                
+              
                     </div>
                 </form>
                 

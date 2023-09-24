@@ -5,7 +5,7 @@ import '../../index.css';
 const Navbar = () => {
   return (
         
-<nav className="border-gray-200 bg-gray-500">
+<nav className="border-gray-200 bg-gray-100">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="#" class="flex items-center">
         <img src={logo} className="h-8 mr-3" alt="Job Application Portal Logo" />
