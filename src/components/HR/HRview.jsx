@@ -1,5 +1,4 @@
 import HRNavbar from './HRNavbar'
-import CreateJob from './CreateJob'
 import ViewJob from './ViewJob'
 
 function StaffPage() {
@@ -7,9 +6,8 @@ function StaffPage() {
     <>
      <HRNavbar />
 
-     <CreateJob />
 
-
+     <ViewJob />
 
 
       
