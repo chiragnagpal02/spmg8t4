@@ -1,9 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
+import Modal from './Modal';
 
 const CreateJob = () => {
     const [skills, setSkills] = useState([]);
-    
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
 
 
     const handleSkills = (value) => {
@@ -17,6 +19,17 @@ const CreateJob = () => {
         setSkills(skills.filter(skill => skill !== skillToRemove));
     }
 
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+    
+    const hideModal = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleDeleteConfirmation = (e) => {
+        setIsModalVisible(false);
+    }
 
     return (
         <>
@@ -112,13 +125,14 @@ const CreateJob = () => {
                         </div>
 
                         <div className='col-span-2' >
-                            <button className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
+                            <button className='bg-[#338573] hover:bg-[#338573] text-white font-bold py-2 px-4 rounded'
+                            onClick={() => showModal()}>
                                 Add New Posting
                             </button>
 
-                            
+                            <Modal show={isModalVisible} onClose={hideModal} onConfirm={handleDeleteConfirmation} />
+                       
                         </div>
-              
                     </div>
                 </form>
                 
