@@ -1,4 +1,4 @@
-import Navbar from '../Navbar'
+import Navbar from './StaffNavbar'
 import HomePageSearch from './HomePageSearch'
 import Categories from './Departments'
 import RecentlyAdded from './RecentlyAdded'

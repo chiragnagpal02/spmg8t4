@@ -11,8 +11,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/staff" element={<StaffPage />} />
-        <Route path="/staff" element={<HRPage />} />
-        <Route path="/staff" element={<ManagerPage />} />
+        <Route path="/hr" element={<HRPage />} />
+        <Route path="/manager" element={<ManagerPage />} />
       </Routes>
     </Router>
   );

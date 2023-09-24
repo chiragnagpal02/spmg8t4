@@ -1,9 +1,20 @@
-import React from 'react'
+import HRNavbar from './HRNavbar'
+import CreateJob from './CreateJob'
 
-const HRPage = () => {
+function StaffPage() {
   return (
-    <div>HRPage</div>
+    <>
+     <HRNavbar />
+
+     <CreateJob />
+     
+
+
+
+      
+
+    </>
   )
 }
 
-export default HRPage
+export default StaffPage

@@ -4,6 +4,9 @@ const DepartmentCard = ( {name, remaining_openings} ) => {
   return (
     <div className='"w-1/3 p-3 md:w-1/2 lg:w-1/3 xl:w-1/6"'>
         <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+
+        {/* <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700"> */}
+
             
             <div class="p-5">
                 <a href="#">
