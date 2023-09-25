@@ -8,14 +8,14 @@ const Navbar = () => {
 <nav className="border-gray-200 bg-gray-100">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="#" class="flex items-center">
-        <img src={logo} className="h-8 mr-3" alt="Job Application Portal Logo" />
+        <img src={logo} className="h-12 mr-5" alt="Job Application Portal Logo" />
         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">HR</span>
     </a>
 
     <div className="flex items-center md:order-2">
       <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
         <span className="sr-only">Open user menu</span>
-        <img className="w-8 h-8 rounded-full" src="src/assets/jb.png" alt="user photo" />
+        <img className="w-12 h-12 rounded-full" src="src/assets/user.png" alt="user photo" />
       </button>
 
       <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
