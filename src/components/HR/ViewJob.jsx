@@ -2,6 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import Modal from './Modal';
 import './App.css'
+import penlogo from '../../assets/1860115.png'
+import binlogo from '../../assets/delete.png'
+import eyelogo from '../../assets/245428.png'
 
 const ViewJob = () => {
 
@@ -43,7 +46,17 @@ const ViewJob = () => {
             <td>HR</td>
             <td>Open</td>
             <td>25/09/2023</td>
-            <td>icons here</td>
+            <td>
+                <button>
+                    <img width='15px' src={eyelogo} alt="" />
+                </button>
+                <button>
+                    <img className='mx-2' width='15px' src={penlogo} alt="" />
+                </button>
+                <button>
+                    <img width='15px' src={binlogo} alt="" />
+                </button>
+            </td>
         </tr>
 
         <tr>
@@ -51,7 +64,17 @@ const ViewJob = () => {
             <td>HR</td>
             <td>Open</td>
             <td>25/09/2023</td>
-            <td>icons here</td>
+            <td>
+                <button>
+                    <img width='15px' src={eyelogo} alt="" />
+                </button>
+                <button>
+                    <img className='mx-2' width='15px' src={penlogo} alt="" />
+                </button>
+                <button>
+                    <img width='15px' src={binlogo} alt="" />
+                </button>
+            </td>
         </tr>
 
         <tr>
@@ -59,7 +82,17 @@ const ViewJob = () => {
             <td>HR</td>
             <td>Open</td>
             <td>25/09/2023</td>
-            <td>icons here</td>
+            <td>
+                <button>
+                    <img width='15px' src={eyelogo} alt="" />
+                </button>
+                <button>
+                    <img className='mx-2' width='15px' src={penlogo} alt="" />
+                </button>
+                <button>
+                    <img width='15px' src={binlogo} alt="" />
+                </button>
+            </td>
         </tr>
 
         <tr>
@@ -67,7 +100,17 @@ const ViewJob = () => {
             <td>HR</td>
             <td>Open</td>
             <td>25/09/2023</td>
-            <td>icons here</td>
+            <td>
+                <button>
+                    <img width='15px' src={eyelogo} alt="" />
+                </button>
+                <button>
+                    <img className='mx-2' width='15px' src={penlogo} alt="" />
+                </button>
+                <button>
+                    <img width='15px' src={binlogo} alt="" />
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>
