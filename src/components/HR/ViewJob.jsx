@@ -2,9 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import Modal from './Modal';
 import './App.css'
-import penlogo from '../../assets/1860115.png'
+import penlogo from '../../assets/edit.png'
 import binlogo from '../../assets/delete.png'
-import eyelogo from '../../assets/245428.png'
+import eyelogo from '../../assets/eye.png'
 
 const ViewJob = () => {
 
