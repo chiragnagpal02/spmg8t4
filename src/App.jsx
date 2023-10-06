@@ -6,12 +6,14 @@ import StaffPage from './components/Staff/StaffPage'
 import HRPage from './components/HR/HRPage'
 import ManagerPage from './components/Manager/ManagerPage'
 import HRview from './components/HR/HRview'
+import Home from './components/Home';
 
 
 function App() {
   return (
     <Router>
       <Routes>
+      <Route path="/" element={<Home />} />
         <Route path="/staff" element={<StaffPage />} />
         <Route path="/hr" element={<HRPage />} />
         <Route path="/hrview" element={<HRview />} />
