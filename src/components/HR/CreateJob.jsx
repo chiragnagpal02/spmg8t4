@@ -2,6 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 import Modal from './Modal';
 
+
+
 const CreateJob = () => {
     const [skills, setSkills] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
