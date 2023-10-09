@@ -1,4 +1,5 @@
 import logging
+import datetime
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask, request, jsonify
@@ -6,8 +7,9 @@ from flask_sqlalchemy import SQLAlchemy
 from os import environ
 from flask_cors import CORS
 
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://sbrp_g2t8@localhost:3306/sbrp_g2t8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -19,6 +21,8 @@ app.logger.setLevel(logging.INFO)
 handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
 handler.setLevel(logging.INFO)
 app.logger.addHandler(handler)
+
+ct = datetime.datetime.now()
 
 class StaffDetails(db.Model):
     __tablename__ = 'STAFF_DETAILS'
@@ -145,7 +149,7 @@ class RoleListings(db.Model):
 
     __tablename__ = 'ROLE_LISTINGS'
 
-    role_listing_id = db.Column(db.Integer, primary_key=True)
+    role_listing_id = db.Column(db.Integer, primary_key=True, auto_increment=True)
     role_id = db.Column(db.Integer, db.ForeignKey('ROLE_DETAILS.role_id'), nullable=False)
     role_listing_desc = db.Column(db.String(50000))
     role_listing_source = db.Column(db.Integer, db.ForeignKey('STAFF_DETAILS.staff_id'), nullable=False)
@@ -242,8 +246,42 @@ def create_role_listing(role_listing_id):
             }
         ), 400
 
-    data = request.get_json()  # HTTP JSON
-    rolelisting = RoleListings(role_listing_id, **data)
+    # data = request.get_json()  # HTTP JSON
+    # rolelisting = RoleListings(role_listing_id, **data)
+    desc = request.json.get("desc")
+    appStartDate= request.json.get("appStartDate")
+    appEndDate = request.json.get("appEndDate")
+
+    appStartDate = datetime.strptime(appStartDate, '%Y-%m-%dT%H:%M')
+    today = datetime.now()
+    if appStartDate < today:
+        return jsonify({
+            "code": 400,
+            "data": {
+                "message": "DateTime cannot be in the past"
+            }
+        }), 400
+    
+    appEndDate = datetime.strptime(appEndDate, '%Y-%m-%dT%H:%M')
+    if appEndDate < appStartDate:
+        return jsonify({
+            "code": 400,
+            "data": {
+                "message": "Application end date cannot be before start date"
+            }
+        }), 400
+    
+    rolelisting = RoleListings(
+        role_listing_id = 1, 
+        role_listing_desc = desc,
+        role_listing_source = 1,
+        role_listing_open = appStartDate,
+        role_listing_close = appEndDate,
+        role_listing_creator = 1,
+        role_listing_ts_create = ct.timestamp(),
+        role_listing_updater = 1, 
+        role_listing_ts_update = ct.timestamp()
+    )
 
     try:
         db.session.add(rolelisting)
