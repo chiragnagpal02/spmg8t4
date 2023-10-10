@@ -94,7 +94,7 @@ constraint role_listing_fk4 foreign key (role_listing_updater) references STAFF_
 
 create table ROLE_APPLICATIONS
 (
-role_app_id int not null,
+role_app_id int not null auto_increment,
 role_listing_id int not null,
 staff_id int not null,
 role_app_status enum ('withdrawn', 'applied') not null,
