@@ -45,9 +45,6 @@ const CreateJob = () => {
         });
     }
 
-    return (
-        <>
-
   return (
     <>
       <div className="bg-[#338573] h-[40px] flex justify-center items-center">
@@ -258,9 +255,6 @@ const CreateJob = () => {
                 Add New Posting
               </button>
             </div>
-          </div>
-        </form>
-      </div>
     </>
   );
 };
