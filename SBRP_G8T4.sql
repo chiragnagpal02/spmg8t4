@@ -1,6 +1,6 @@
-drop database if exists SBRP_G2T8;
-create database SBRP_G2T8;
-use SBRP_G2T8;
+drop database if exists SBRP_G8T4;
+create database SBRP_G8T4;
+use SBRP_G8T4;
 
 create table STAFF_DETAILS
 (
@@ -81,6 +81,10 @@ role_listing_creator int not null,
 role_listing_ts_create timestamp not null,
 role_listing_updater int not null,
 role_listing_ts_update timestamp not null,
+role_listing_type enum ('open', 'closed') not null,
+role_listing_department varchar(50) not null,
+role_listing_salary int,
+role_listing_location varchar(500) not null,
 constraint role_listings_pk primary key (role_listing_id),
 constraint role_listing_fk1 foreign key (role_id) references ROLE_DETAILS(role_id),
 constraint role_listing_fk2 foreign key (role_listing_source) references STAFF_DETAILS(staff_id),
@@ -90,7 +94,7 @@ constraint role_listing_fk4 foreign key (role_listing_updater) references STAFF_
 
 create table ROLE_APPLICATIONS
 (
-role_app_id int not null,
+role_app_id int not null auto_increment,
 role_listing_id int not null,
 staff_id int not null,
 role_app_status enum ('withdrawn', 'applied') not null,
@@ -100,12 +104,25 @@ constraint role_applications_fk1 foreign key (role_listing_id) references ROLE_L
 constraint role_applications_fk2 foreign key (staff_id) references STAFF_DETAILS(staff_id)
 );
 
+CREATE INDEX idx_sys_role ON STAFF_DETAILS(sys_role);
+create table LOGIN_DETAILS
+(
+staff_id int not null,
+username varchar(20) not null,
+password varchar(200) not null,
+sys_role enum('staff', 'hr', 'manager', 'inactive') not null,
+constraint login_details_pk primary key (staff_id),
+constraint login_details_fk foreign key (sys_role) references STAFF_DETAILS(sys_role)
+);
+
 insert into STAFF_DETAILS values (123456789, 'AH GAO', 'TAN', 'FINANCE', 'tan_ah_gao@all-in-one.com.sg', '65-1234-5678', '60 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409051', 'staff'),
 ('123456788', 'VINCENT REX', 'COLINS', 'HUMAN RESOURCE AND ADMIN', 'colins_vincent_rex@all-in-one.com.sg', '65-1234-5679', '60 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409051', 'hr'),
 ('123456123', 'FAUD', 'NIZAM', 'SALES', 'faud_nizam@all-in-one.com.sg', '60-03-21345678', 'Unit 3A-07, Tower A, The Vertical Business Suite, 8, Jalan Kerinchi, Bangsar South, 59200 Kuala Lumpur, Malaysia', 'manager'),
-('1', 'JOHN', 'DOE', 'IT', 'John_doe@ all-in-one.com.sg', '65-5824-7888', '1 Scotts Rd, #24-10 Shaw Centre, Singapore 228208', 'inactive');
+('1', 'JOHN', 'DOE', 'IT', 'John_doe@ all-in-one.com.sg', '65-5824-7888', '1 Scotts Rd, #24-10 Shaw Centre, Singapore 228208', 'inactive'),
+(123456785, 'JACK', 'SMITH', 'IT', 'jack_smith@all-in-one.com.sg', '65-1234-5677', '60 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409051', 'manager'),
+(123456784, 'DAVID', 'JOHNSON', 'FINANCE', 'tan_ah_gao@all-in-one.com.sg', '60-03-21345677', 'Unit 3A-07, Tower A, The Vertical Business Suite, 8, Jalan Kerinchi, Bangsar South, 59200 Kuala Lumpur, Malaysia', 'staff');
 
-insert into STAFF_REPORTING_OFFICER values (123456789, 123456123), (123456123, 1);
+insert into STAFF_REPORTING_OFFICER values (123456789, 123456785), (123456784, 123456123);
 
 insert into ROLE_DETAILS values (234567891, 'Head, Talent Attraction', 'The Head, Talent Attraction is responsible for strategic workforce planning to support the organisation''s growth strategies through establishing talent sourcing strategies, determining the philosophy for the selection and securing of candidates and overseeing the onboarding and integration of new hires into the organisation. He/She develops various approaches to meet workforce requirements and designs employer branding strategies. He oversees the selection processes and collaborates with business stakeholders for the hiring of key leadership roles. As a department head, he is responsible for setting the direction and articulating goals and objectives for the team, and driving the integration of Skills Frameworks across the organisation''s talent attraction plans.
 
@@ -125,3 +142,5 @@ insert into SKILL_DETAILS values (345678913, 'Pascal Programming', 'inactive'), 
 insert into STAFF_SKILLS values (123456789, 345678913, 'active'), (123456789, 345678866, 'active'), (123456789, 345678790, 'active'), (123456789, 345678890, 'unverified'), (123456789, 345678935, 'in-progress'), (123456789, 345678927, 'in-progress');
 
 insert into ROLE_SKILLS values (234567891, 345678790), (234567892, 345678913), (234567892, 345678866);
+
+insert into LOGIN_DETAILS values (123456788, 'vincentrex', 'root', 'hr'), (123456784, 'davidjohnson', 'root', 'staff');
