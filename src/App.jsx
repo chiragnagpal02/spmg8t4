@@ -7,17 +7,16 @@ import HRPage from './components/HR/HRPage'
 import ManagerPage from './components/Manager/ManagerPage'
 import HRview from './components/HR/HRview'
 import Home from './components/Home';
-
+import AllJobs from './components/Staff/AllJobs';
 import ApplyJobPage from './components/Staff/ApplyJobPage';
-
 import HRmatch from './components/HR/Viewmatch';
-
 
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/viewalljobs" element={<AllJobs />} />
         <Route path="/" element={<Home />} />
         <Route path="/staff" element={<StaffPage />} />
         <Route path="/staff/apply" element={<ApplyJobPage />} />
