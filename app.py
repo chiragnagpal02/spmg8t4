@@ -210,6 +210,10 @@ class RoleListings(db.Model):
         db.Integer, db.ForeignKey("STAFF_DETAILS.staff_id"), nullable=False
     )
     role_listing_ts_update = db.Column(db.TIMESTAMP, nullable=False)
+    role_listing_type = db.Column(db.Enum("open", "closed"), nullable=False)
+    role_listing_department = db.Column(db.String(50), nullable=False)
+    role_listing_salary = db.Column(db.Integer, nullable=False)
+    role_listing_location = db.Column(db.String(500), nullable=False)
 
     def __init__(
         self,
@@ -223,6 +227,10 @@ class RoleListings(db.Model):
         role_listing_ts_create,
         role_listing_updater,
         role_listing_ts_update,
+        role_listing_type,
+        role_listing_department,
+        role_listing_salary,
+        role_listing_location,
     ):
         self.role_listing_id = role_listing_id
         self.role_id = role_id
@@ -234,6 +242,10 @@ class RoleListings(db.Model):
         self.role_listing_ts_create = role_listing_ts_create
         self.role_listing_updater = role_listing_updater
         self.role_listing_ts_update = role_listing_ts_update
+        self.role_listing_type = role_listing_type
+        self.role_listing_department = role_listing_department
+        self.role_listing_salary = role_listing_salary
+        self.role_listing_location = role_listing_location
 
     def json(self):
         return {
@@ -247,6 +259,10 @@ class RoleListings(db.Model):
             "role_listing_ts_create": self.role_listing_ts_create,
             "role_listing_updater": self.role_listing_updater,
             "role_listing_ts_update": self.role_listing_ts_update,
+            "role_listing_type": self.role_listing_type,
+            "role_listing_department": self.role_listing_department,
+            "role_listing_salary": self.role_listing_salary,
+            "role_listing_location": self.role_listing_location,
         }
 
 
@@ -265,13 +281,11 @@ class RoleApplications(db.Model):
 
     def __init__(
         self,
-        role_app_id,
         role_listing_id,
         staff_id,
         role_app_status,
         role_app_ts_create,
     ):
-        self.role_app_id = role_app_id
         self.role_listing_id = role_listing_id
         self.staff_id = staff_id
         self.role_app_status = role_app_status
@@ -286,6 +300,44 @@ class RoleApplications(db.Model):
             "role_app_ts_create": self.role_app_ts_create,
         }
 
+class LoginDetails(db.Model):
+    __tablename__ = "LOGIN_DETAILS"
+
+    staff_id = db.Column(db.Integer, db.ForeignKey("STAFF_DETAILS.staff_id"), primary_key=True)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    sys_role = db.Column(db.ForeignKey("STAFF_DETAILS.sys_role"), nullable=False)
+
+    def __init__(self, staff_id, username, password, sys_role):
+        self.staff_id = staff_id
+        self.username = username
+        self.password = password
+        self.sys_role = sys_role
+
+    def json(self):
+        return {
+            "staff_id": self.staff_id,
+            "username": self.username,
+            "password": self.password,
+            "sys_role": self.sys_role,
+        }
+
+@app.route("/login/<string:username>/<string:password>")
+def login(username, password):
+    login_details = LoginDetails.query.filter_by(username=username, password=password).first()
+    if login_details:
+        return jsonify(
+            {
+                "code": 200,
+                "data": login_details.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Invalid username or password"
+        }
+    ), 404
 
 @app.route(
     "/rolelistings"
@@ -468,9 +520,9 @@ def view_role_applicant_skills(staff_id):
 
 
 @app.route(
-    "/apply_for_role/<int:role_app_id>", methods=["POST"]
+    "/apply_for_role", methods=["POST"]
 )  # This is for staff to apply for a role
-def apply_for_role(role_app_id):
+def apply_for_role():
     data = request.get_json()
 
     # Extract role_listing_id and staff_id from the request data
@@ -494,7 +546,7 @@ def apply_for_role(role_app_id):
         )
 
     # Create a new role application
-    role_application = RoleApplications(role_app_id, **data)
+    role_application = RoleApplications(**data)
 
     try:
         db.session.add(role_application)
