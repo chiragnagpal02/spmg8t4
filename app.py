@@ -10,7 +10,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://spm@localhost:8889/SBRP_G2T8"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 
@@ -302,6 +302,20 @@ def get_all():
             }
         )
     return jsonify({"code": 404, "message": "There are no role listings."}), 404
+
+@app.route("/roledetails")  # This one is for HR, to get all role listings, including open, closed, expired, etc
+def get_all_role_details():
+    roleDetails = RoleDetails.query.all()
+    if len(roleDetails):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "roleDetails": [roleDetails.json() for rolelisting in roleDetails]
+                },
+            }
+        )
+    return jsonify({"code": 404, "message": "There are no role details."}), 404
 
 
 @app.route("/rolelistings_open")  # This is for staff, to see all open role listings
