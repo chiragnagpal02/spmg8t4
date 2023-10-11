@@ -44,7 +44,10 @@ const CreateJob = () => {
             console.log(response.data);
         });
     }
-    
+
+    return (
+        <>
+
   return (
     <>
       <div className="bg-[#338573] h-[40px] flex justify-center items-center">
@@ -58,7 +61,7 @@ const CreateJob = () => {
         <div className='m-0 bg-gray-100 p-[1em] h-screen'>
             
                 <form onSubmit={submitPosting} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                    <div class="mb-4 grid grid-cols-2 gap-4">
+                    <div classz="mb-4 grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="position">
                                 Position
@@ -139,7 +142,7 @@ const CreateJob = () => {
                                 Add New Posting
                             </button>
 
-                            <Modal show={isModalVisible} onClose={hideModal} onConfirm={handleDeleteConfirmation} />
+                            <Modal show={isModalVisible} onClose={hideModal} />
                        
                         </div>
                     </div>
@@ -255,9 +258,6 @@ const CreateJob = () => {
                 Add New Posting
               </button>
             </div>
-          </div>
-        </form>
-      </div>
     </>
   );
 };
