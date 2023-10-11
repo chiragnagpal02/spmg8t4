@@ -273,6 +273,7 @@ def create_role_listing(role_listing_id):
     
     rolelisting = RoleListings(
         role_listing_id = 1, 
+        role_id = 234511581,
         role_listing_desc = desc,
         role_listing_source = 1,
         role_listing_open = appStartDate,
