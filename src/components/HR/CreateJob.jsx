@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import { useState } from "react";
-import Modal from "./Modal";
-
-const CreateJob = () => {
-  const [skills, setSkills] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-=======
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Modal from './Modal';
@@ -17,7 +8,6 @@ const CreateJob = () => {
     const [skills, setSkills] = useState([]);
     const [inputs, setInputs] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
->>>>>>> f863917740e384aa12fa48879d8e928346238d17
 
   const handleSkills = (value) => {
     if (!skills.includes(value)) {
@@ -40,11 +30,6 @@ const CreateJob = () => {
     setIsModalVisible(false);
   };
 
-<<<<<<< HEAD
-  const handleDeleteConfirmation = (e) => {
-    setIsModalVisible(false);
-  };
-=======
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -62,7 +47,6 @@ const CreateJob = () => {
 
     return (
         <>
->>>>>>> f863917740e384aa12fa48879d8e928346238d17
 
   return (
     <>
@@ -74,24 +58,6 @@ const CreateJob = () => {
             Job Details
         </span> */}
 
-<<<<<<< HEAD
-      <div className="m-0 bg-gray-100 p-[1em] h-screen">
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <div class="mb-4 grid grid-cols-2 gap-4">
-            <div>
-              <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="position"
-              >
-                Position
-              </label>
-              <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="position"
-                type="text"
-                placeholder="Job Position..."
-              />
-=======
         <div className='m-0 bg-gray-100 p-[1em] h-screen'>
             
                 <form onSubmit={submitPosting} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -182,7 +148,6 @@ const CreateJob = () => {
                     </div>
                 </form>
                 
->>>>>>> f863917740e384aa12fa48879d8e928346238d17
             </div>
 
             <div>
