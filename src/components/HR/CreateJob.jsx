@@ -44,10 +44,7 @@ const CreateJob = () => {
             console.log(response.data);
         });
     }
-
-    return (
-        <>
-
+    
   return (
     <>
       <div className="bg-[#338573] h-[40px] flex justify-center items-center">
