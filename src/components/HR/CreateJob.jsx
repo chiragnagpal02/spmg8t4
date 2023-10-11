@@ -139,7 +139,7 @@ const CreateJob = () => {
                                 Add New Posting
                             </button>
 
-                            <Modal show={isModalVisible} onClose={hideModal} onConfirm={handleDeleteConfirmation} />
+                            <Modal show={isModalVisible} onClose={hideModal} />
                        
                         </div>
                     </div>
