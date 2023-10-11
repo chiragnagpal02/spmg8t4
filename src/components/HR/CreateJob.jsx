@@ -48,8 +48,8 @@ const CreateJob = () => {
     return (
         <>
 
-  return (
-    <>
+  
+   
       <div className="bg-[#338573] h-[40px] flex justify-center items-center">
         <span className="text-white text-1xl ">Create Job Posting</span>
       </div>
