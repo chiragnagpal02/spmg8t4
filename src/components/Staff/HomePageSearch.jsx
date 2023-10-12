@@ -1,20 +1,27 @@
 import React from "react";
 import "/src/index.css";
+import HomePageIcon from "../../assets/images/home_page_icon.svg"
 
 const HomePageSearch = () => {
     return(
-        <div className="m-0 bg-gradient-to-b from-red-400 p-[4em] h-[35em]">
+        <div className="font-montserrat m-0 bg-gradient-to-b from-blue-400 p-[4em] h-[35em]">
 
             <div className="">
                 <div className="font-bold text-6xl mb-[0.5em]">
-                    <span className="text-red-700">Find A </span>
+                    <span className="text-white">Find A </span>
                     <span>Job </span>
-                    <span className="text-red-700">That</span><br/>
-                    <span>Matches </span><span className="text-red-700">Your </span><br />
-                    <span className="text-red-700">Passion</span>
+                    <span className="text-white">That</span><br/>
+                    <span>Matches </span><span className="text-white">Your </span><br />
+                    <span className="text-white">Passion</span>
+                    
                 </div>
+                {/* <div>
+                <img className="" src={HomePageIcon} alt="" 
+                        width="175"/>
+                </div> */}
+                
 
-                <div className="subText mb-[4em]">
+                <div className="subText mb-[4em] font-medium">
                     <span>Hand-picked opportunities to work from home, remotely, freelance, full-time, part-time, contract and internships.</span>
                 </div>
 

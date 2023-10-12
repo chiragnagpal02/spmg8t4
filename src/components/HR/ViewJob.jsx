@@ -1,5 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
 import Modal from './Modal';
 import './App.css'
 import penlogo from '../../assets/edit.png'

@@ -1,123 +1,96 @@
 import React from "react";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+import JobCard from "./JobCard";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Navbar from "./StaffNavbar";
+import HomePageSearch from "./HomePageSearch";
+import { Multiselect } from 'multiselect-react-dropdown';
+
+
+
 
 const AllJobs = () => {
+
+  const [jobPostings, setJobPostings] = useState([]);
+  const [depts, setdepts] = useState([]);
+
+  useEffect(() => {
+    // Make the Axios GET request to http://127.0.0.1:5000/listingdetailsall
+    axios
+      .get("http://127.0.0.1:5000/listingdetailsall")
+      .then((response) => {
+        const unique_depts = [];
+        const unique_depts_obj = [];
+        const final_data = response.data.data.final_list;
+        setJobPostings(final_data);
+
+        final_data.forEach(element => {
+            let dept = element.department;
+            if (!unique_depts.includes(dept)){
+                unique_depts.push(dept);
+            }
+        });
+
+        unique_depts.forEach(element => {
+            let obj = {
+                dept: element
+            }
+            unique_depts_obj.push(obj);
+        });
+        
+        setdepts(unique_depts_obj);
+        console.log(unique_depts);
+        console.log(response.data.data.final_list); // You can process the response data as needed
+
+
+      })
+      .catch((error) => {
+        // Handle any errors here
+        console.error("Error:", error);
+      });
+  }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+
   return (
-    <div className="md:grid grid-cols-5 border-4 border-red p-2">
-      <div className="image flex justify-center items-center">
-        <img src="src/assets/user_2.png" alt="" width="50" height="50" />
-      </div>
+    <>
+      <Navbar />
+      <HomePageSearch />
 
-      <div className="information col-span-3">
-        <h1 className="font-light text-[10px] text-red-800">
-          Match Company Limited
-        </h1>
-        <h2 className="text-xl mb-2">
-          Fresher UI/UX Designer (3 years Experience)
-        </h2>
+      <div className="m-0 bg-gray-100 p-[3em] font-montserrat">
+        <span className="flex flex-col items-center font-bold text-2xl mb-6">
+          All Jobs
+        </span>
 
-        <div className="grid grid-cols-3">
-          <div>
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 21 23"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clip-path="url(#clip0_151_2550)">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M10.2501 2.74437C8.49638 2.74437 6.81606 3.4951 5.57837 4.82871C4.34094 6.16204 3.6472 7.96861 3.6472 9.85052C3.6472 12.5966 5.31044 15.29 7.17343 17.4088C8.08386 18.4443 8.99776 19.2927 9.68524 19.8826C9.89844 20.0655 10.0891 20.2229 10.2501 20.3526C10.4111 20.2229 10.6017 20.0655 10.8149 19.8826C11.5024 19.2927 12.4163 18.4443 13.3267 17.4088C15.1897 15.29 16.853 12.5966 16.853 9.85052C16.853 7.96861 16.1592 6.16204 14.9218 4.82871C13.6841 3.4951 12.0038 2.74437 10.2501 2.74437ZM10.2501 21.6941C9.69464 22.6059 9.69439 22.6057 9.69411 22.6055L9.69148 22.6036L9.68556 22.5994L9.6656 22.5848C9.64875 22.5725 9.62486 22.5549 9.59442 22.5322C9.53354 22.4867 9.44637 22.4208 9.33667 22.3354C9.11737 22.1647 8.8074 21.916 8.43692 21.5982C7.69759 20.9638 6.70908 20.047 5.71709 18.9188C3.77525 16.7102 1.63367 13.4818 1.63367 9.85052C1.63367 7.3832 2.54338 5.01867 4.16013 3.27662C5.77661 1.53486 7.96739 0.557861 10.2501 0.557861C12.5328 0.557861 14.7236 1.53486 16.34 3.27662C17.9568 5.01867 18.8665 7.3832 18.8665 9.85052C18.8665 13.4818 16.7249 16.7102 14.7831 18.9188C13.7911 20.047 12.8026 20.9638 12.0633 21.5982C11.6928 21.916 11.3828 22.1647 11.1635 22.3354C11.0538 22.4208 10.9666 22.4867 10.9058 22.5322C10.8753 22.5549 10.8514 22.5725 10.8346 22.5848L10.8146 22.5994L10.8087 22.6036L10.8068 22.605C10.8065 22.6052 10.8055 22.6059 10.2501 21.6941ZM10.2501 21.6941L10.8055 22.6059C10.4687 22.8478 10.0309 22.8475 9.69411 22.6055L10.2501 21.6941Z"
-                  fill="#B21313"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M10.2501 8.21068C9.39784 8.21068 8.72032 8.95287 8.72032 9.85056C8.72032 10.7482 9.39784 11.4904 10.2501 11.4904C11.1024 11.4904 11.7799 10.7482 11.7799 9.85056C11.7799 8.95287 11.1024 8.21068 10.2501 8.21068ZM6.70679 9.85056C6.70679 7.72931 8.30058 6.02417 10.2501 6.02417C12.1996 6.02417 13.7934 7.72931 13.7934 9.85056C13.7934 11.9718 12.1996 13.6769 10.2501 13.6769C8.30058 13.6769 6.70679 11.9718 6.70679 9.85056Z"
-                  fill="#B21313"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_151_2550">
-                  <rect
-                    width="20.2924"
-                    height="21.8651"
-                    fill="white"
-                    transform="translate(0.103882 0.73999)"
-                  />
-                </clipPath>
-              </defs>
-            </svg>
-            <h1>Nairobi, Kenya</h1>
-          </div>
-          <div>
-            <svg
-              width="22"
-              height="23"
-              viewBox="0 0 22 23"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M7.75728 1.88045C8.13252 2.05016 8.37697 2.44826 8.37697 2.88967V5.75946C8.37697 6.55958 8.08191 7.32519 7.55926 7.88834C7.03688 8.45121 6.33003 8.76591 5.59462 8.76591H2.93124C2.52332 8.76591 2.15573 8.49863 2.00036 8.08907C1.84499 7.6795 1.93256 7.20861 2.22212 6.89661L6.66108 2.11363C6.94963 1.80272 7.38204 1.71074 7.75728 1.88045ZM14.0855 1.88045C14.4607 1.71074 14.8931 1.80272 15.1817 2.11363L19.6206 6.89661C19.9102 7.20861 19.9978 7.6795 19.8424 8.08907C19.687 8.49863 19.3194 8.76591 18.9115 8.76591H16.2481C15.5127 8.76591 14.8059 8.45121 14.2835 7.88834C13.7608 7.32519 13.4658 6.55958 13.4658 5.75946V2.88967C13.4658 2.44826 13.7102 2.05016 14.0855 1.88045ZM5.3752 6.5794H5.59462C5.80103 6.5794 5.99743 6.49097 6.14102 6.33625C6.28435 6.18182 6.36344 5.97417 6.36344 5.75946V5.51459L5.3752 6.5794ZM15.4793 5.51459V5.75946C15.4793 5.97417 15.5584 6.18182 15.7017 6.33625C15.8453 6.49097 16.0417 6.5794 16.2481 6.5794H16.4675L15.4793 5.51459ZM1.92447 15.3254C1.92447 14.7216 2.37521 14.2322 2.93124 14.2322H5.59462C6.33003 14.2322 7.03688 14.5469 7.55926 15.1098C8.08191 15.6729 8.37697 16.4385 8.37697 17.2386V20.1084C8.37697 20.7122 7.92622 21.2017 7.3702 21.2017C6.81418 21.2017 6.36344 20.7122 6.36344 20.1084V17.2386C6.36344 17.0239 6.28435 16.8163 6.14102 16.6618C5.99743 16.5071 5.80103 16.4187 5.59462 16.4187H2.93124C2.37521 16.4187 1.92447 15.9292 1.92447 15.3254ZM16.2481 16.4187C16.0417 16.4187 15.8453 16.5071 15.7017 16.6618C15.5584 16.8163 15.4793 17.0239 15.4793 17.2386V17.4835L16.4675 16.4187H16.2481ZM14.2835 15.1098C14.8059 14.5469 15.5127 14.2322 16.2481 14.2322H18.9115C19.3194 14.2322 19.687 14.4995 19.8424 14.909C19.9978 15.3186 19.9102 15.7895 19.6206 16.1015L15.1817 20.8845C14.8931 21.1954 14.4607 21.2874 14.0855 21.1176C13.7102 20.9479 13.4658 20.5498 13.4658 20.1084V17.2386C13.4658 16.4385 13.7608 15.6729 14.2835 15.1098Z"
-                fill="#B21313"
-              />
-            </svg>
+        <div className="">
+          <div className="flex justify-between">
+            <div>
+              <span>Filters</span>
+            </div>
+            <Multiselect 
+                options={depts}
+                displayValue="dept" 
+                placeholder="Select Department"
+                
+            />
+          
 
-            <h1>Full Time</h1>
-          </div>
-          <div>
-            <svg
-              width="25"
-              height="26"
-              viewBox="0 0 33 33"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.1213 27.4729C22.1965 27.4729 27.1213 22.548 27.1213 16.4729C27.1213 10.3978 22.1965 5.4729 16.1213 5.4729C10.0462 5.4729 5.12134 10.3978 5.12134 16.4729C5.12134 22.548 10.0462 27.4729 16.1213 27.4729Z"
-                stroke="#0A65CC"
-                stroke-width="2"
-                stroke-miterlimit="10"
-              />
-              <path
-                d="M16.1213 16.4729L21.0711 11.5232"
-                stroke="#0A65CC"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M13.1213 1.4729H19.1213"
-                stroke="#0A65CC"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+        </div>
 
-            <h1>Nairobi, Kenya</h1>
-          </div>
+          <p className="text-sm text-gray-400">
+            Showing {jobPostings.length} Jobs
+          </p>
+          {jobPostings.map((jobPostings) => (
+            <JobCard
+              name={jobPostings.name}
+              dpt={jobPostings.department}
+              location={jobPostings.location}
+              close_date={jobPostings.close_date}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="viewdetailsbutton">
-        <Button
-          style={{
-            backgroundColor: "#000000",
-          }}
-          variant="contained"
-          color="success"
-        >
-          View Details
-        </Button>
-      </div>
-    </div>
+      
+    </>
   );
 };
 

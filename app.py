@@ -1,6 +1,7 @@
 import logging
 import datetime
 from logging.handlers import RotatingFileHandler
+import datetime
 
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -356,6 +357,79 @@ def get_all():
         )
     return jsonify({"code": 404, "message": "There are no role listings."}), 404
 
+@app.route("/roledetails")
+def get_all_roles():
+    roles = RoleDetails.query.all()
+    if len(roles):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "roles": [role.json() for role in roles]
+                },
+            }
+        )
+    return jsonify({"code": 404, "message": "There are no roles."}), 404
+
+@app.route("/listingdetailsall")
+def get_all_listing_details():
+    extra_details = []
+    less_details = []
+    final_list = []
+    input_format = "%a, %d %b %Y %H:%M:%S %Z"
+
+    listings_all_info = [role for role in RoleListings.query.all()]
+    listings_less_info = RoleDetails.query.all()
+
+    for i in range(len(listings_all_info)):
+        extra_details.append(listings_all_info[i].json())
+        less_details.append(listings_less_info[i].json())
+
+    for role_dict in less_details:
+        role_list = {}
+        role_id = role_dict["role_id"]
+
+        for role_dict_2 in extra_details:
+            if role_dict_2["role_id"] == role_id:
+                role_list["id"] = role_dict_2["role_id"]
+                role_list["listing_id"] = role_dict_2["role_listing_id"]
+                role_list["name"] = role_dict["role_name"]
+                role_list["description"] = role_dict["role_description"]
+                role_list["status"] = role_dict["role_status"]
+                role_list["department"] = role_dict_2["role_listing_department"]
+                role_list["source"] = role_dict_2["role_listing_source"]
+                role_list["open_date"] = role_dict_2["role_listing_open"]
+                role_list["close_date"] = role_dict_2["role_listing_close"]
+                role_list["creator_id"] = role_dict_2["role_listing_creator"]
+                role_list["updater_id"] = role_dict_2["role_listing_updater"]
+                role_list["location"] = role_dict_2["role_listing_location"]
+                role_list["salary"] = role_dict_2["role_listing_salary"]
+
+
+                final_list.append(role_list)
+
+
+    return jsonify(
+        {
+            "code": 200,
+            "data": {
+                "final_list": final_list
+            }
+        }
+    ),200
+        
+
+        
+
+
+
+
+
+
+    
+
+
+@app.route("/listingsdetails/<int:role_listing_id>")
 
 @app.route("/rolelistings_open")  # This is for staff, to see all open role listings
 def get_all_open():
