@@ -5,7 +5,7 @@ import departmentsDict from '../../constants/departments_dict'
 
 const Categories = () => {
   return (
-    <div className='m-0 bg-gray-100 p-[4em]'>
+    <div className='m-0 bg-gray-100 p-[4em] font-montserrat'>
         <span className='flex flex-col items-center font-bold text-2xl mb-6'>Openings by Department</span>
 
         <div className='flex flex-wrap -mx-4 justify-center'>
