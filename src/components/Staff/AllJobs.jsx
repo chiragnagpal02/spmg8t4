@@ -75,16 +75,7 @@ const AllJobs = () => {
     }
   };
 
-
-
-  const options = [
-    { value2: 'option1', label: 'Option 1' },
-    { value2: 'option2', label: 'Option 2' },
-    { value2: 'option3', label: 'Option 3' },
-    { value2: 'option4', label: 'Option 4' },
-    { value2: 'option5', label: 'Option 5' },
-    // Add more options as needed
-  ];
+  
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -127,7 +118,7 @@ const AllJobs = () => {
 
         </div>
 
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-gray-400 mt-4">
             Showing {jobPostings.length} Jobs
           </p>
           {jobPostings.map((jobPostings) => (
@@ -136,6 +127,7 @@ const AllJobs = () => {
               dpt={jobPostings.department}
               location={jobPostings.location}
               close_date={jobPostings.close_date}
+              listing_id={jobPostings.listing_id}
             />
           ))}
         </div>

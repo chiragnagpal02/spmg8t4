@@ -2,6 +2,7 @@ import logging
 import datetime
 from logging.handlers import RotatingFileHandler
 import datetime
+import requests
 
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -418,8 +419,24 @@ def get_all_listing_details():
         }
     ),200
         
+
+@app.route("/listing/<int:role_listing_id>")
+def get_listing_details(role_listing_id):
+    # I want to call an endpoint that returns the role listing details - /listingdetailsall - and then return the details of the role listing with the role_listing_id
     
-    
+    # Get all the role listing details
+    all_listings = requests.get("http://127.0.0.1:5000/listingdetailsall").json()  # This is a list of dictionaries
+
+    # Get the role listing details with the role_listing_id
+    for listing in all_listings["data"]["final_list"]:
+        if listing["listing_id"] == role_listing_id:
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": listing
+                }
+            )
+        
 
 
 @app.route("/listingsdetails/<int:role_listing_id>")
