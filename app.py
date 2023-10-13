@@ -439,7 +439,31 @@ def get_listing_details(role_listing_id):
         
 
 
-@app.route("/listingsdetails/<int:role_listing_id>")
+@app.route("/openingsbydept")
+def get_openings_by_dept():
+    # Get all the role listing details
+    all_listings = requests.get("http://127.0.0.1:5000/listingdetailsall").json()  # This is a list of dictionaries
+
+    #get all unique departments
+    departments = []
+    for listing in all_listings["data"]["final_list"]:
+        if listing["department"] not in departments:
+            departments.append(listing["department"])
+
+    #get the number of openings for each department
+    openings_by_dept = {}
+    for department in departments:
+        openings_by_dept[department] = 0
+        for listing in all_listings["data"]["final_list"]:
+            if listing["department"] == department:
+                openings_by_dept[department] += 1
+        
+    return jsonify(
+        {
+            "code": 200,
+            "data": openings_by_dept
+        }
+    ),200  
 
 @app.route("/rolelistings_open")  # This is for staff, to see all open role listings
 def get_all_open():
