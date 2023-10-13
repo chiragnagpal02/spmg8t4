@@ -418,14 +418,7 @@ def get_all_listing_details():
         }
     ),200
         
-
-        
-
-
-
-
-
-
+    
     
 
 
