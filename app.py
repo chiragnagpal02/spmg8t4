@@ -606,10 +606,10 @@ def update_role_listing(role_listing_id):
             500,
         )
 
-
+""""
 @app.route(
     "/view_role_applicant_skills/<int:staff_id>"
-)  # This is for HR to view the skills of a role applicant
+)  # This is for HR to view the skills of all role applicants for a role
 def view_role_applicant_skills(staff_id):
     # Check if the applicant exists in STAFF_DETAILS
     applicant = StaffDetails.query.get(staff_id)
@@ -627,7 +627,42 @@ def view_role_applicant_skills(staff_id):
         skill_names = [skill[0] for skill in applicant_skills]
         return jsonify({"code": 200, "data": {"applicant_skills": skill_names}})
     return jsonify({"code": 404, "message": "There are no skills."}), 404
+"""
+@app.route("/get_role_applicant_skills/<int:role_listing_id>") #This is for HR to view all role applicants' skills for a particular role
+def get_role_applicant_skills(role_listing_id):
+    # Join the necessary tables to retrieve role applications and applicant information
+    role_applications = db.session.query(
+        RoleApplications, StaffDetails.fname, StaffDetails.lname, StaffDetails.email,
+        RoleApplications.role_app_ts_create
+    ).join(StaffDetails, StaffDetails.staff_id == RoleApplications.staff_id)\
+    .filter(RoleApplications.role_listing_id == role_listing_id,
+            RoleApplications.role_app_status == "applied").all()
 
+    if not role_applications:
+        return jsonify({"code": 404, "message": "There are no role applications."}), 404
+    # For each role application, retrieve the skills of the staff
+    role_applications_data = []
+    for role_app, fname, lname, email, role_app_ts_create in role_applications:
+        staff_skills = db.session.query(SkillDetails.skill_name).join(
+            StaffSkills, StaffSkills.skill_id == SkillDetails.skill_id
+        ).filter(StaffSkills.staff_id == role_app.staff_id,
+                 StaffSkills.ss_status == "active",
+                 SkillDetails.skill_status == "active").all()
+
+        skills = [skill.skill_name for skill in staff_skills]
+
+        role_app_data = {
+            "fname": fname,
+            "lname": lname,
+            "email": email,
+            "role_app_ts_create": role_app_ts_create,
+            "skills": skills
+        }
+        role_applications_data.append(role_app_data)
+
+    return jsonify({"code": 200, 
+                   "data": role_applications_data
+                   }), 200
 
 @app.route(
     "/apply_for_role", methods=["POST"]
