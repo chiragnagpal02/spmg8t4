@@ -2,12 +2,10 @@ import React from 'react'
 
 const DepartmentCard = ( {name, remaining_openings} ) => {
   return (
-    <div className='"w-1/3 p-3 md:w-1/2 lg:w-1/3 xl:w-1/6 font-montserrat"'>
+    <div className="font-montserrat mb-1">
         <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
 
-        {/* <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700"> */}
-
-            
+        {/* <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700"> */}            
             <div class="p-5">
                 <a href="#">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{name}</h5>
