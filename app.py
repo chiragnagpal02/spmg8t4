@@ -451,12 +451,15 @@ def get_openings_by_dept():
             departments.append(listing["department"])
 
     #get the number of openings for each department
-    openings_by_dept = {}
+    openings_by_dept = []
     for department in departments:
-        openings_by_dept[department] = 0
+        openings = {}
+        openings["name"] = department
+        openings["openings"] = 0
         for listing in all_listings["data"]["final_list"]:
             if listing["department"] == department:
-                openings_by_dept[department] += 1
+                openings["openings"] += 1
+        openings_by_dept.append(openings)
         
     return jsonify(
         {
