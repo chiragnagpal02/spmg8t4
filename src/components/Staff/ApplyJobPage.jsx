@@ -4,10 +4,29 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const ApplyJobPage = () => {
-  const date1 = new Date("7/13/2010");
-  const date2 = new Date("12/15/2010");
+  const [posting, setPosting] = useState([]);
+  const listing_id = useParams().listing_id;
+
+  useEffect(() => {
+    // Make the Axios GET request to http://127.0.0.1:5000/listing/{listing_id}
+    axios
+      .get(`http://127.0.0.1:5000/listing/${listing_id}`)
+      .then((response) => {
+        setPosting(response.data.data);
+        console.log(posting);
+      })
+      .catch((error) => {
+        // Handle any errors here
+        console.error("Error:", error);
+      });
+  }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+
+  const date1 = new Date(posting.open_date);
+  const date2 = new Date(posting.close_date);
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -50,10 +69,8 @@ const ApplyJobPage = () => {
     <div>
       <Navbar />
 
-      <div className="bg-red-500 h-[80px] flex justify-center items-center">
-        <h1 className="text-center">
-          Junior UX Designer (Full Time) - Match Company Limited{" "}
-        </h1>
+      <div className="bg-blue-500 h-[80px] flex justify-center items-center">
+        <h1 className="text-center">Job Description</h1>
       </div>
 
       <div className="mt-4 flex flexbox justify-center">
@@ -68,52 +85,22 @@ const ApplyJobPage = () => {
           Apply for this job
         </Button>
       </div>
-      <div className="MainDiv p-4">
-        <div className="HeadingDiv p-3 mt-4">
-          <h1 className="mb-4 text-4xl">Senior UX Designer</h1>
-          <span className="bg-red-600 rounded p-2 text-sm text-white">
-            Full Time
-          </span>
-        </div>
-
+      <div className="MainDiv p-4 mt-5">
         <div className="descriptionDiv md:grid grid-cols-2">
           <div className="description">
-            <h2 className="p-4">
-              <span className="font-bold">Job Description</span>
-              <br /> <br />
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-              blandit eu leo mollis iaculis. Proin eu nulla neque. Vivamus
-              ornare dolor et eleifend molestie. Sed sit amet ultricies erat, ac
-              pretium eros. In fermentum ipsum quis magna fringilla malesuada.
-              Curabitur auctor nibh id scelerisque commodo. Nunc eros sem,
-              condimentum ac congue at, ultrices id tortor. Nulla cursus, justo
-              vitae finibus convallis, dui est tempor erat, eu convallis dolor
-              sem sed lacus.
+            <div className="HeadingDiv px-3">
+              <h1 className="mb-4 text-4xl">{posting.name}</h1>
+              <span className="bg-black rounded p-2 text-sm text-white">
+                {posting.department} Department
+              </span>
+            </div>
+            <h2 className="px-3 mt-6 underline font-bold">
+              Job Description </h2>
+              <br />
+            <h2 className="px-3 mb-4">
+            {posting.description}
             </h2>
-            <h2 className="p-4">
-              Integer posuere velit at massa eleifend, eget placerat sem
-              dignissim. Pellentesque habitant morbi tristique senectus et netus
-              et malesuada fames ac turpis egestas. In aliquam nisl ut suscipit
-              dictum. Nunc eu laoreet sapien, vel tincidunt urna. Nulla
-              facilisi. Donec ultrices in tellus ac porttitor. Duis non mi vitae
-              diam dictum ultricies. Cras nec odio suscipit magna porta luctus
-              faucibus ac mauris. Nam vel augue sed erat feugiat sodales quis ac
-              odio.{" "}
-            </h2>
-
-            <h2 className="p-4">
-              Maecenas vitae ex hendrerit, vulputate sapien a, ornare quam.
-              Maecenas eros augue, imperdiet id lacus non, vehicula fringilla
-              dui. Pellentesque quis tellus tempus, pulvinar nibh id,
-              ullamcorper magna. Donec orci elit, pretium ac risus euismod,
-              consequat blandit massa. Pellentesque finibus vitae nunc a
-              finibus. Nullam feugiat laoreet fringilla. Donec consequat, arcu
-              auctor facilisis scelerisque, velit nisi rutrum tortor, at rutrum
-              dolor augue sed tellus. Nunc bibendum augue leo, nec facilisis
-              dolor ultricies at. Aenean at mauris feugiat, dapibus turpis et,
-              ullamcorper nulla. Donec sit amet laoreet sapien. Sed ac finibus
-              eros.
-            </h2>
+            
           </div>
           <div className="details">
             <div className="border rounded grid grid-cols-2 p-3">
@@ -157,7 +144,7 @@ const ApplyJobPage = () => {
                 </svg>
 
                 <h2 className="font-thin text-grey mt-2">Job Posted on:</h2>
-                <h2 className="mt-2">10/06/2023</h2>
+                <h2 className="mt-2">{posting.open_date}</h2>
               </div>
               <div>
                 <svg
@@ -190,7 +177,7 @@ const ApplyJobPage = () => {
                 </svg>
 
                 <h2 className="font-thin text-grey mt-2">Job Expire Date</h2>
-                <h2 className="mt-2">14/11/2023</h2>
+                <h2 className="mt-2">{posting.close_date}</h2>
               </div>
               <div className="mt-3">
                 <svg
@@ -258,7 +245,7 @@ const ApplyJobPage = () => {
                 </svg>
 
                 <h2 className="font-thin text-grey mt-2 ">Job Location</h2>
-                <h2 className="mt-2">Singapore</h2>
+                <h2 className="mt-2">{posting.location}</h2>
               </div>
             </div>
             <div className="border rounded p-3 mt-5">
