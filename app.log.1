@@ -1,0 +1,162 @@
+Exception on /rolelistings [GET]
+Traceback (most recent call last):
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\__init__.py", line 179, in connect
+    return MySQLConnection(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 95, in __init__
+    self.connect(**kwargs)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\abstracts.py", line 716, in connect
+    self._open_connection()
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 208, in _open_connection
+    self._do_auth(self._user, self._password,
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 144, in _do_auth
+    self._auth_switch_request(username, password)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 177, in _auth_switch_request
+    raise errors.get_exception(packet)
+mysql.connector.errors.ProgrammingError: 1049 (42000): Unknown database 'sbrp_g8t4'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\flask_cors\extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\app.py", line 347, in get_all
+    rolelistings = RoleListings.query.all()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\orm\query.py", line 2688, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\orm\query.py", line 2842, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\orm\session.py", line 2262, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\orm\session.py", line 2134, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\orm\session.py", line 2001, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 139, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\orm\session.py", line 1126, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\base.py", line 3264, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\base.py", line 2426, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\base.py", line 3288, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 1267, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\impl.py", line 169, in _do_get
+    with util.safe_reraise():
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 902, in __connect
+    with util.safe_reraise():
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\sqlalchemy\engine\default.py", line 615, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\__init__.py", line 179, in connect
+    return MySQLConnection(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 95, in __init__
+    self.connect(**kwargs)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\abstracts.py", line 716, in connect
+    self._open_connection()
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 208, in _open_connection
+    self._do_auth(self._user, self._password,
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 144, in _do_auth
+    self._auth_switch_request(username, password)
+  File "C:\SPM\spmg8t4\env\Lib\site-packages\mysql\connector\connection.py", line 177, in _auth_switch_request
+    raise errors.get_exception(packet)
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1049 (42000): Unknown database 'sbrp_g8t4'
+(Background on this error at: https://sqlalche.me/e/20/f405)

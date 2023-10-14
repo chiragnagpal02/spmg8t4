@@ -28,6 +28,7 @@ export default function NavbarWithDropdown() {
             <span className="block text-sm">Bonnie Green</span>
             <span className="block truncate text-sm font-medium">name@flowbite.com</span>
           </Dropdown.Header>
+          <Dropdown.Item>Applications</Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item>Sign out</Dropdown.Item>
         </Dropdown>
