@@ -7,7 +7,7 @@ const RecentlyAdded = () => {
   const rolesUpdated = roles.slice(0, 2);
 
   return (
-    <div className='m-0 bg-gray-200 p-[4em]'>
+    <div className='m-0 bg-gray-200 p-[4em] font-montserrat'>
         <span className='flex flex-col items-center font-bold text-2xl mb-6'>Recently Added Jobs</span>
 
         <div className='flex flex-wrap -mx-4 justify-center '>

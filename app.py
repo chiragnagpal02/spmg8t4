@@ -1,6 +1,8 @@
 import logging
 import datetime
 from logging.handlers import RotatingFileHandler
+import datetime
+import requests
 
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -356,6 +358,115 @@ def get_all():
         )
     return jsonify({"code": 404, "message": "There are no role listings."}), 404
 
+@app.route("/roledetails")
+def get_all_roles():
+    roles = RoleDetails.query.all()
+    if len(roles):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "roles": [role.json() for role in roles]
+                },
+            }
+        )
+    return jsonify({"code": 404, "message": "There are no roles."}), 404
+
+@app.route("/listingdetailsall")
+def get_all_listing_details():
+    extra_details = []
+    less_details = []
+    final_list = []
+    input_format = "%a, %d %b %Y %H:%M:%S %Z"
+
+    listings_all_info = [role for role in RoleListings.query.all()]
+    listings_less_info = RoleDetails.query.all()
+
+    for i in range(len(listings_all_info)):
+        extra_details.append(listings_all_info[i].json())
+        less_details.append(listings_less_info[i].json())
+
+    for role_dict in less_details:
+        role_list = {}
+        role_id = role_dict["role_id"]
+
+        for role_dict_2 in extra_details:
+            if role_dict_2["role_id"] == role_id:
+                role_list["id"] = role_dict_2["role_id"]
+                role_list["listing_id"] = role_dict_2["role_listing_id"]
+                role_list["name"] = role_dict["role_name"]
+                role_list["description"] = role_dict["role_description"]
+                role_list["status"] = role_dict["role_status"]
+                role_list["department"] = role_dict_2["role_listing_department"]
+                role_list["source"] = role_dict_2["role_listing_source"]
+                role_list["open_date"] = role_dict_2["role_listing_open"]
+                role_list["close_date"] = role_dict_2["role_listing_close"]
+                role_list["creator_id"] = role_dict_2["role_listing_creator"]
+                role_list["updater_id"] = role_dict_2["role_listing_updater"]
+                role_list["location"] = role_dict_2["role_listing_location"]
+                role_list["salary"] = role_dict_2["role_listing_salary"]
+
+
+                final_list.append(role_list)
+
+
+    return jsonify(
+        {
+            "code": 200,
+            "data": {
+                "final_list": final_list
+            }
+        }
+    ),200
+        
+
+@app.route("/listing/<int:role_listing_id>")
+def get_listing_details(role_listing_id):
+    # I want to call an endpoint that returns the role listing details - /listingdetailsall - and then return the details of the role listing with the role_listing_id
+    
+    # Get all the role listing details
+    all_listings = requests.get("http://127.0.0.1:5000/listingdetailsall").json()  # This is a list of dictionaries
+
+    # Get the role listing details with the role_listing_id
+    for listing in all_listings["data"]["final_list"]:
+        if listing["listing_id"] == role_listing_id:
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": listing
+                }
+            )
+        
+
+
+@app.route("/openingsbydept")
+def get_openings_by_dept():
+    # Get all the role listing details
+    all_listings = requests.get("http://127.0.0.1:5000/listingdetailsall").json()  # This is a list of dictionaries
+
+    #get all unique departments
+    departments = []
+    for listing in all_listings["data"]["final_list"]:
+        if listing["department"] not in departments:
+            departments.append(listing["department"])
+
+    #get the number of openings for each department
+    openings_by_dept = []
+    for department in departments:
+        openings = {}
+        openings["name"] = department
+        openings["openings"] = 0
+        for listing in all_listings["data"]["final_list"]:
+            if listing["department"] == department:
+                openings["openings"] += 1
+        openings_by_dept.append(openings)
+        
+    return jsonify(
+        {
+            "code": 200,
+            "data": openings_by_dept
+        }
+    ),200  
 
 @app.route("/rolelistings_open")  # This is for staff, to see all open role listings
 def get_all_open():
@@ -498,10 +609,10 @@ def update_role_listing(role_listing_id):
             500,
         )
 
-
+""""
 @app.route(
     "/view_role_applicant_skills/<int:staff_id>"
-)  # This is for HR to view the skills of a role applicant
+)  # This is for HR to view the skills of all role applicants for a role
 def view_role_applicant_skills(staff_id):
     # Check if the applicant exists in STAFF_DETAILS
     applicant = StaffDetails.query.get(staff_id)
@@ -519,7 +630,42 @@ def view_role_applicant_skills(staff_id):
         skill_names = [skill[0] for skill in applicant_skills]
         return jsonify({"code": 200, "data": {"applicant_skills": skill_names}})
     return jsonify({"code": 404, "message": "There are no skills."}), 404
+"""
+@app.route("/get_role_applicant_skills/<int:role_listing_id>") #This is for HR to view all role applicants' skills for a particular role
+def get_role_applicant_skills(role_listing_id):
+    # Join the necessary tables to retrieve role applications and applicant information
+    role_applications = db.session.query(
+        RoleApplications, StaffDetails.fname, StaffDetails.lname, StaffDetails.email,
+        RoleApplications.role_app_ts_create
+    ).join(StaffDetails, StaffDetails.staff_id == RoleApplications.staff_id)\
+    .filter(RoleApplications.role_listing_id == role_listing_id,
+            RoleApplications.role_app_status == "applied").all()
 
+    if not role_applications:
+        return jsonify({"code": 404, "message": "There are no role applications."}), 404
+    # For each role application, retrieve the skills of the staff
+    role_applications_data = []
+    for role_app, fname, lname, email, role_app_ts_create in role_applications:
+        staff_skills = db.session.query(SkillDetails.skill_name).join(
+            StaffSkills, StaffSkills.skill_id == SkillDetails.skill_id
+        ).filter(StaffSkills.staff_id == role_app.staff_id,
+                 StaffSkills.ss_status == "active",
+                 SkillDetails.skill_status == "active").all()
+
+        skills = [skill.skill_name for skill in staff_skills]
+
+        role_app_data = {
+            "fname": fname,
+            "lname": lname,
+            "email": email,
+            "role_app_ts_create": role_app_ts_create,
+            "skills": skills
+        }
+        role_applications_data.append(role_app_data)
+
+    return jsonify({"code": 200, 
+                   "data": role_applications_data
+                   }), 200
 
 @app.route(
     "/apply_for_role", methods=["POST"]

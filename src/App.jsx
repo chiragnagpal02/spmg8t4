@@ -14,12 +14,15 @@ import HRmatch from './components/HR/Viewmatch';
 
 function App() {
   return (
+    <>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+
     <Router>
       <Routes>
-        <Route path="/viewalljobs" element={<AllJobs />} />
+        <Route path="/staff/viewalljobs" element={<AllJobs />} />
         <Route path="/" element={<Home />} />
         <Route path="/staff" element={<StaffPage />} />
-        <Route path="/staff/apply" element={<ApplyJobPage />} />
+        <Route path="/staff/apply/:listing_id" element={<ApplyJobPage />} />
         <Route path="/hr" element={<HRPage />} />
         <Route path="/hrview" element={<HRview />} />
         <Route path="/hrmatch" element={<HRmatch />} />
@@ -27,6 +30,7 @@ function App() {
         {/* <Route path="/staff/viewjobs" element={<ViewJobs />} /> */}
       </Routes>
     </Router>
+    </>
   );
 }
 
