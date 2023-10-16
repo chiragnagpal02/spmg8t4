@@ -34,6 +34,7 @@ const ApplyJobPage = () => {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   // get employee skills (employeeSkills)
 
+  
   const getRandomColorClass = () => {
     const colors = ["red", "blue", "green", "yellow", "purple"];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -60,6 +61,7 @@ const ApplyJobPage = () => {
       }
     });
   };
+  
   const skills = [ // required skills for the current job
     "Agile",
     "SQL",
@@ -71,18 +73,37 @@ const ApplyJobPage = () => {
 
   // function to calculate percentage match, missing
 
-  const chartData = { // 
-    labels:['Matched', 'Missing'],
-    datasets:[{
-      label:['Job Skills Match'],
-      data:[5,3], // number of matched skills, number of misMatched skills
-      backgroundColor:['green', 'lightgrey'],
-      borderColor:['green', 'lightgrey']
-    }],
-  }
+  const getChartData = ({ employeeSkills, requiredSkills }) => {
+    const matchedSkills = employeeSkills.filter(skill => requiredSkills.includes(skill));
+    const matchedSkillsNum = matchedSkills.length;
+    const matchPercentage = Math.round((matchedSkills.length / requiredSkills.length) * 100, 2);
+    const mismatchedSkillsNum = requiredSkills.length - matchedSkills.length;
+    //const mismatchPercentage = 100 - matchPercentage; // Calculate the mismatch percentage
+  
+    let backgroundColor; // change colour of graph based on match percentage
+    if (matchPercentage > 70) {
+      backgroundColor = ['#8FCE00', '#BCBCBC']; // green colour
+    } else if (matchPercentage > 40) {
+      backgroundColor = ['#FFA500', '#BCBCBC']; // orange colour
+    } else {
+      backgroundColor = ['#FF0000', '#BCBCBC']; // red colour
+    }
+  
+    const chartData = { // 
+      labels:['Matched', 'Missing'],
+      datasets:[{
+        label:['Job Skills Match'],
+        data:[matchedSkillsNum,mismatchedSkillsNum], // number of matched skills, number of misMatched skills
+        backgroundColor:[backgroundColor, 'lightgrey'],
+        borderColor:[backgroundColor, 'lightgrey']
+      }],
+    }
+  
+    return chartData;
+  };
+
 
   const options = {
-
   }
 
   return (
@@ -273,7 +294,7 @@ const ApplyJobPage = () => {
 
               <div style={ {width:'50%', height:'50%', alignSelf:'center'}}>
                 <Doughnut
-                data={chartData}
+                data={getChartData()}
                 options={options}
                 ></Doughnut>
               </div>
