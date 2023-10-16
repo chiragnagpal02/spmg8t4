@@ -12,6 +12,38 @@ import ApplyJobPage from './components/Staff/ApplyJobPage';
 import HRmatch from './components/HR/Viewmatch';
 
 
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import UserProfile from './UserProfile';
+
+class App extends React.Component {
+  
+  state = {
+    user: {
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      skills: ['React', 'JavaScript', 'CSS'],
+    },
+  };
+
+  render() {
+    return (
+      <Router>
+        <Switch>
+          {/* Other Routes */}
+          {/* Route for User Profile */}
+          <Route path="/profile" render={() => <UserProfile user={this.state.user} />} />
+        </Switch>
+      </Router>
+    );
+  }
+}
+
+export default App;
+
+
+
+
 function App() {
   return (
     <>
