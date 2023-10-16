@@ -61,6 +61,24 @@ const ApplyJobPage = () => {
       }
     });
   };
+  /* const getRequiredSkills = () => {
+    const [requiredSkills, setRequiredSkills] = useState([]);
+    const role_id = useParams().id;
+  
+    useEffect(() => {
+      // Make the Axios GET request to http://127.0.0.1:5000/listing/{listing_id}
+      axios
+        .get(`http://127.0.0.1:5000/listing/${role_id}/required-skills`)
+        .then((response) => {
+          setPosting(response.data.data);
+          console.log(requiredSkills);
+        })
+        .catch((error) => {
+          // Handle any errors here
+          console.error("Error:", error);
+        });
+    }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+    }; */
   
   const skills = [ // required skills for the current job
     "Agile",
@@ -73,7 +91,7 @@ const ApplyJobPage = () => {
 
   // function to calculate percentage match, missing
 
-  const getChartData = ({ employeeSkills, requiredSkills }) => {
+  /* const getChartData = ({ employeeSkills, requiredSkills }) => {
     const matchedSkills = employeeSkills.filter(skill => requiredSkills.includes(skill));
     const matchedSkillsNum = matchedSkills.length;
     const matchPercentage = Math.round((matchedSkills.length / requiredSkills.length) * 100, 2);
@@ -100,7 +118,7 @@ const ApplyJobPage = () => {
     }
   
     return chartData;
-  };
+  }; */
 
 
   const options = {
@@ -293,10 +311,10 @@ const ApplyJobPage = () => {
               <h2 className="mb-5 font-bold">Skills Required</h2>
 
               <div style={ {width:'50%', height:'50%', alignSelf:'center'}}>
-                <Doughnut
+                {/* <Doughnut
                 data={getChartData()}
                 options={options}
-                ></Doughnut>
+                ></Doughnut> */}
               </div>
 
               <div className="grid grid-cols-3 gap-5">

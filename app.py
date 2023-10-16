@@ -767,6 +767,68 @@ def withdraw_role_application(role_app_id, staff_id):
             ),
             500,
         )
+# Get role_id from the role_details table
+@app.route('/get_role_id/<int:role_id>', methods=['GET'])
+def get_role_id(role_id):
+    try:
+        # Query the database to retrieve the role_id
+        role = RoleDetails.query.get(role_id)
+
+        if role:
+            return jsonify({"code": 200, "data": {"role_id": role.role_id}})
+        else:
+            return jsonify({"code": 404, "message": "Role not found"}), 404
+
+    except Exception as e:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred while retrieving role ID",
+            "error": str(e)
+        }), 500
+    
+
+# Get required skills(skill_name) for a given role_id
+@app.route('/get_required_skills/<int:role_id>', methods=['GET'])
+def get_required_skills(role_id):
+    try:
+        # Query the database to retrieve skill_name for the given role_id
+        skill_name = db.session.query(SkillDetails.skill_name).join(
+            RoleSkills, SkillDetails.skill_id == RoleSkills.skill_id
+        ).filter(RoleSkills.role_id == role_id).first()
+
+        if skill_name:
+            return jsonify({"code": 200, "data": {"skill_name": skill_name[0]}})
+        else:
+            return jsonify({"code": 404, "message": "Role not found"}), 404
+
+    except Exception as e:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred while retrieving skills",
+            "error": str(e)
+        }), 500
+    
+# Get skills for staff based on staff_id
+@app.route('/get_staff_skills/<int:staff_id>', methods=['GET'])
+def get_staff_skills(staff_id):
+    try:
+        # Query the database to retrieve skills for the given staff_id
+        skills = db.session.query(SkillDetails.skill_name).join(
+            StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id
+        ).filter(StaffSkills.staff_id == staff_id).all()
+
+        if skills:
+            skill_names = [skill[0] for skill in skills]  # Extract skill names from the result
+            return jsonify({"code": 200, "data": {"staff_id": staff_id, "skills": skill_names}})
+        else:
+            return jsonify({"code": 404, "message": "Staff member not found or has no skills"}), 404
+
+    except Exception as e:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred while retrieving staff skills",
+            "error": str(e)
+        }), 500
 
 
 """
