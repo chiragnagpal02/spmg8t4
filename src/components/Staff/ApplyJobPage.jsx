@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ApplyJobPage = () => {
   const [posting, setPosting] = useState([]);
@@ -30,7 +32,6 @@ const ApplyJobPage = () => {
   const date2 = new Date(posting.close_date);
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  // get skills for particular job listing (requiredSkills)
   // get employee skills (employeeSkills)
 
   const getRandomColorClass = () => {
@@ -59,7 +60,7 @@ const ApplyJobPage = () => {
       }
     });
   };
-  const skills = [
+  const skills = [ // required skills for the current job
     "Agile",
     "SQL",
     "Python",
@@ -68,12 +69,20 @@ const ApplyJobPage = () => {
     "PingPongShow",
   ];
 
+  // function to calculate percentage match, missing
+
   const chartData = { // 
     labels:['Matched', 'Missing'],
     datasets:[{
-      data:[],
-      backgroundColor:[],
+      label:['Job Skills Match'],
+      data:[5,3], // number of matched skills, number of misMatched skills
+      backgroundColor:['green', 'lightgrey'],
+      borderColor:['green', 'lightgrey']
     }],
+  }
+
+  const options = {
+
   }
 
   return (
@@ -261,7 +270,14 @@ const ApplyJobPage = () => {
             </div>
             <div className="border rounded p-3 mt-5">
               <h2 className="mb-5 font-bold">Skills Required</h2>
-              <Doughnut data={chartData} />
+
+              <div style={ {width:'50%', height:'50%', alignSelf:'center'}}>
+                <Doughnut
+                data={chartData}
+                options={options}
+                ></Doughnut>
+              </div>
+
               <div className="grid grid-cols-3 gap-5">
                 {skills.map((skill) => {
                   console.log(getRandomColorClass());
