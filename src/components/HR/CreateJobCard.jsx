@@ -32,7 +32,7 @@ const JobCard = ({ name, desc, status, role_id }) => {
           <button class="group relative lg:h-12 lg:w-52 md:h-16 overflow-hidden rounded-lg bg-white text-lg shadow p-2">
             <div class="absolute inset-0 w-3 bg-black transition-all duration-[250ms] ease-out group-hover:w-full"></div>
             <span class="relative text-black group-hover:text-white">
-              View Details
+              Create Job
             </span>
           </button>
         </Link>
