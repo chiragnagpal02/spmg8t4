@@ -1,11 +1,11 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import Modal from './Modal';
-import './App.css'
-import penlogo from '../../assets/edit.png'
-import binlogo from '../../assets/delete.png'
-import eyelogo from './hrasset/eye.png'
-import axios from 'axios';
+import React from "react";
+import { useState, useEffect } from "react";
+import Modal from "./Modal";
+import "./App.css";
+import penlogo from "../../assets/edit.png";
+import binlogo from "../../assets/delete.png";
+import eyelogo from "./hrasset/eye.png";
+import axios from "axios";
 
 const ViewJob = () => {
     const [jobPostings, setJobPostings] = useState([]);
@@ -41,18 +41,12 @@ const ViewJob = () => {
         cell5.innerHTML = `<button><a href='./hrmatch'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
     }
 });
-    
 
-    return (
-        <>
-
-        <div class='bg-[#D3D3D3] h-[60px] font-bold text-lg flex justify-center items-center mb-[50px]'>
-
-            <span class='text-dark'>
-                Current Job Postings
-            </span>
-
-        </div>
+  return (
+    <>
+      <div class="bg-[#D3D3D3] h-[60px] font-bold text-lg flex justify-center items-center mb-[50px]">
+        <span class="text-dark">Current Job Postings</span>
+      </div>
         
         <div class="padding-[50px]">
             <label class='text-gray-700 text-sm font-bold mb-2 m-10' for="Sort">Sort By</label>

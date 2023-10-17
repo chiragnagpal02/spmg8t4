@@ -1,11 +1,12 @@
 import React from "react";
 import Navbar from "./StaffNavbar";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Doughnut } from "react-chartjs-2";
+
 
 const ApplyJobPage = () => {
   const [posting, setPosting] = useState([]);
@@ -23,12 +24,14 @@ const ApplyJobPage = () => {
         // Handle any errors here
         console.error("Error:", error);
       });
-  }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+  }, [listing_id, posting]); // The empty array [] ensures that this effect runs once when the component is mounted.
 
   const date1 = new Date(posting.open_date);
   const date2 = new Date(posting.close_date);
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  // get skills for particular job listing (requiredSkills)
+  // get employee skills (employeeSkills)
 
   const getRandomColorClass = () => {
     const colors = ["red", "blue", "green", "yellow", "purple"];
@@ -64,6 +67,14 @@ const ApplyJobPage = () => {
     "BeautyBlast",
     "PingPongShow",
   ];
+
+  const chartData = { // 
+    labels:['Matched', 'Missing'],
+    datasets:[{
+      data:[],
+      backgroundColor:[],
+    }],
+  }
 
   return (
     <div>
@@ -250,6 +261,7 @@ const ApplyJobPage = () => {
             </div>
             <div className="border rounded p-3 mt-5">
               <h2 className="mb-5 font-bold">Skills Required</h2>
+              <Doughnut data={chartData} />
               <div className="grid grid-cols-3 gap-5">
                 {skills.map((skill) => {
                   console.log(getRandomColorClass());
