@@ -11,24 +11,13 @@ import Home from './components/Home';
 import AllJobs from './components/Staff/AllJobs';
 import ApplyJobPage from './components/Staff/ApplyJobPage';
 import HRmatch from './components/HR/Viewmatch';
+import StaffSkillsComponent from './StaffSkillsComponent';
 
-import SkillsProfile from './components/Staff/SkillsProfile';
-
-class App extends React.Component {
-  
-  state = {
-    user: {
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      skills: ['React', 'JavaScript', 'CSS'],
-    },
-  };
-
-  render() {
+  render( {
     return (
       <Router>
         <Routes>
-          {/* Other Routes */}
+          
           <Route path="/staff/viewalljobs" element={<AllJobs />} />
           <Route path="/" element={<Home />} />
           <Route path="/staff" element={<StaffPage />} />
@@ -37,13 +26,14 @@ class App extends React.Component {
           <Route path="/hrview" element={<HRview />} />
           <Route path="/hrmatch" element={<HRmatch />} />
           <Route path="/manager" element={<ManagerPage />} />
-          {/* Route for User Profile */}
-          <Route path="/profile" element={<SkillsProfile user={this.state.user} />} />
+          <Route path="/staff/staffskills" element={<StaffSkillsComponent />} />
+          
         </Routes>
       </Router>
     );
-  }
-}
+    }
+  
+
 
 export default App;
 

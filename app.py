@@ -819,3 +819,30 @@ def view_role_skill_match(staff_id, role_listing_id):
 """
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+@app.route("/staff_skills_with_names")
+def get_staff_skills_with_names():
+    # Join the necessary tables to retrieve staff skills and their corresponding skill names
+    staff_skills = (
+        db.session.query(
+            StaffDetails.staff_id,
+            StaffDetails.fname,
+            StaffDetails.lname,
+            SkillDetails.skill_name
+        )
+        .join(StaffSkills, StaffSkills.staff_id == StaffDetails.staff_id)
+        .join(SkillDetails, SkillDetails.skill_id == StaffSkills.skill_id)
+        .all()
+    )
+
+    # Create a list of dictionaries with staff information and their skills
+    staff_skills_data = []
+    for staff_id, fname, lname, skill_name in staff_skills:
+        staff_skills_data.append({
+            "staff_id": staff_id,
+            "fname": fname,
+            "lname": lname,
+            "skill_name": skill_name
+        })
+
+    return jsonify({"code": 200, "data": staff_skills_data}), 200
