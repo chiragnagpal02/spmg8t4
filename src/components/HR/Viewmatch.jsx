@@ -1,8 +1,5 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-
-import axios from 'axios';
-
 import Modal from './Modal';
 import './App.css'
 import userlogo from '../../assets/user.png'
