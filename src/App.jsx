@@ -23,7 +23,7 @@ class App extends React.Component {
       skills: ['React', 'JavaScript', 'CSS'],
     },
   };
-
+  
   render() {
     return (
       <Router>
@@ -35,7 +35,7 @@ class App extends React.Component {
           <Route path="/staff/apply/:listing_id" element={<ApplyJobPage />} />
           <Route path="/hr" element={<HRPage />} />
           <Route path="/hrview" element={<HRview />} />
-          <Route path="/hrmatch" element={<HRmatch />} />
+          <Route path="/hrmatch/:role_listing_id" element={<HRmatch />} />
           <Route path="/manager" element={<ManagerPage />} />
           {/* Route for User Profile */}
           <Route path="/profile" element={<SkillsProfile user={this.state.user} />} />
@@ -43,6 +43,7 @@ class App extends React.Component {
       </Router>
     );
   }
+
 }
 
 export default App;
