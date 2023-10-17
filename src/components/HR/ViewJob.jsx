@@ -22,11 +22,11 @@ const ViewJob = () => {
           });
       }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
     
-    for(var i in jobPostings.rolelistings){
-        console.log(i)
-        var listing=(jobPostings.rolelistings);
+    const listing=(jobPostings.rolelistings);
+    useEffect(() => {
+    for(var i in listing){
+        console.log(i);
         /* console.log(Object.keys(listing)[i]) */
-        console.log(listing[i].role_listing_desc)
         var table = document.getElementById("Table");
         var row = table.insertRow();
         var cell1 = row.insertCell();
@@ -38,8 +38,10 @@ const ViewJob = () => {
         var cell4 = row.insertCell();
         cell4.innerHTML=listing[i].role_listing_close
         var cell5 = row.insertCell();
-        cell5.innerHTML = "<button><a href='./hrmatch'><img width='15px' src='./hrasset/eye.png' /></a></button><button><a><img className='mx-2' width='15px' src={penlogo} /></a></button><button><a><img width='15px' src={binlogo} /></a></button>"
+        cell5.innerHTML = `<button><a href='./hrmatch'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
     }
+});
+    
 
     return (
         <>
@@ -63,116 +65,24 @@ const ViewJob = () => {
         </div>
 
         <div>
-        <table id='Table' class="styled-table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Department</th>
-            <th>Status</th>
-            <th>Application Deadline</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Head, Talent Attraction</td>
-            <td>HR</td>
-            <td>Open</td>
-            <td>25/09/2023</td>
-            <td>
-                <button>
-                    <a href="./hrmatch">
-                        <img width='15px' src={eyelogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img className='mx-2' width='15px' src={penlogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img width='15px' src={binlogo} alt="" />
-                    </a>
-                </button>
-            </td>
-        </tr>
-
-        <tr>
-            <td>Head, Talent Attraction</td>
-            <td>HR</td>
-            <td>Open</td>
-            <td>25/09/2023</td>
-            <td>
-                <button>
-                    <a href="./hrmatch">
-                        <img width='15px' src={eyelogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img className='mx-2' width='15px' src={penlogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img width='15px' src={binlogo} alt="" />
-                    </a>
-                </button>
-            </td>
-        </tr>
-
-        <tr>
-            <td>Head, Talent Attraction</td>
-            <td>HR</td>
-            <td>Open</td>
-            <td>25/09/2023</td>
-            <td>
-                <button>
-                    <a href="./hrmatch">
-                        <img width='15px' src={eyelogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img className='mx-2' width='15px' src={penlogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img width='15px' src={binlogo} alt="" />
-                    </a>
-                </button>
-            </td>
-        </tr>
-
-        <tr>
-            <td>Head, Talent Attraction</td>
-            <td>HR</td>
-            <td>Open</td>
-            <td>25/09/2023</td>
-            <td>
-                <button>
-                    <a href="./hrmatch">
-                        <img width='15px' src={eyelogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img className='mx-2' width='15px' src={penlogo} alt="" />
-                    </a>
-                </button>
-                <button>
-                    <a>
-                        <img width='15px' src={binlogo} alt="" />
-                    </a>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+            <table id='Table' class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                        <th>Application Deadline</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                    {}
+                </tbody>
+            </table>
         </div>
-    </>   
+    </>
+    
   )
 }
 
