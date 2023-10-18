@@ -5,13 +5,17 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+
 const ApplyJobPage = () => {
-  const [posting, setPosting] = useState([]);
+  const [posting, setPosting] = useState({});
+  const [requiredSkills, setRequiredSkills] = useState([]);
+  const [staffSkills, setStaffSkills] = useState([]);
+  const [chartData, setChartData] = useState(null);
   const listing_id = useParams().listing_id;
 
   useEffect(() => {
@@ -19,21 +23,98 @@ const ApplyJobPage = () => {
     axios
       .get(`http://127.0.0.1:5000/listing/${listing_id}`)
       .then((response) => {
+        const roleId = response.data.data.id;
+        console.log('id:', roleId);
+
         setPosting(response.data.data);
-        console.log(posting);
+        console.log('Posting data:', response.data);
+
+        axios
+          .get(`http://127.0.0.1:5000/get_required_skills/${roleId}`)
+          .then((response) => {
+            setRequiredSkills(response.data.data);
+            console.log('Required skills data:', response.data.data);
+          })
+          .catch((error) => {
+            console.error('Error getting required skills:', error);
+          });
       })
       .catch((error) => {
-        // Handle any errors here
-        console.error("Error:", error);
+        console.error('Error getting posting data:', error);
       });
-  }, [listing_id, posting]); // The empty array [] ensures that this effect runs once when the component is mounted.
+  }, [listing_id]);
+
+  useEffect(() => {
+    console.log("requiredSkills", requiredSkills);
+  }, [requiredSkills]);
+
+  useEffect(() => {
+    // Get Staff Skills from Staff ID
+    const staffId = 123456789; // Replace with the actual staff ID
+
+    axios
+      .get(`http://127.0.0.1:5000/get_staff_skills/${staffId}`)
+      .then((response) => {
+        setStaffSkills(response.data.data.skills);
+        console.log('Staff skills data:', response.data.data.skills);
+      })
+      .catch((error) => {
+        console.error('Error getting staff skills:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if ((Array.isArray(requiredSkills.skills)) && requiredSkills.skills.length > 0) {
+      // Calculate chart data
+      const matchedSkills = staffSkills.filter(skill => requiredSkills.skills.includes(skill));
+        const matchedSkillsNum = matchedSkills.length;
+        console.log(matchedSkillsNum);
+
+        const matchPercentage = requiredSkills.skills.length > 0
+      ? Math.round((matchedSkillsNum / requiredSkills.skills.length) * 100)
+      : 0; // Set to 0 if there are no required skills
+
+        console.log(matchPercentage);
+        // const matchPercentage = Math.round((matchedSkillsNum / requiredSkills.length) * 100);
+        // console.log(matchPercentage);
+        const mismatchedSkillsNum = requiredSkills.length - matchedSkillsNum;
+
+      console.log('Updated reqskills:', requiredSkills);
+      console.log('Updated staffskills:', staffSkills);
+      let backgroundColor;
+      if (matchPercentage > 70) {
+        backgroundColor = ['green']; // Green color
+      } else if (matchPercentage > 40) {
+        backgroundColor = ['orange']; // Orange color
+      } else {
+        backgroundColor = ['red']; // Red color
+      }
+
+      console.log(backgroundColor)
+
+      const chartData = {
+        labels: ['Matched', 'Missing'],
+        datasets: [
+          {
+            label: 'Job Skills Match',
+            data: [matchedSkillsNum, mismatchedSkillsNum],
+            backgroundColor: [backgroundColor,'lightgrey'],
+            borderColor: [backgroundColor,'lightgrey']
+          },
+        ],
+      };
+      console.log(chartData);
+
+      setChartData(chartData); // Update chart data state
+    }
+}, [requiredSkills, staffSkills]);
+
 
   const date1 = new Date(posting.open_date);
   const date2 = new Date(posting.close_date);
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  // get employee skills (employeeSkills)
-
+  
   
   const getRandomColorClass = () => {
     const colors = ["red", "blue", "green", "yellow", "purple"];
@@ -61,69 +142,24 @@ const ApplyJobPage = () => {
       }
     });
   };
-  /* const getRequiredSkills = () => {
-    const [requiredSkills, setRequiredSkills] = useState([]);
-    const role_id = useParams().id;
-  
-    useEffect(() => {
-      // Make the Axios GET request to http://127.0.0.1:5000/listing/{listing_id}
-      axios
-        .get(`http://127.0.0.1:5000/listing/${role_id}/required-skills`)
-        .then((response) => {
-          setPosting(response.data.data);
-          console.log(requiredSkills);
-        })
-        .catch((error) => {
-          // Handle any errors here
-          console.error("Error:", error);
-        });
-    }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
-    }; */
-  
-  const skills = [ // required skills for the current job
-    "Agile",
-    "SQL",
-    "Python",
-    "BBG",
-    "BeautyBlast",
-    "PingPongShow",
+  // const skills = [
+  //   "Agile",
+  //   "SQL",
+  //   "Python",
+  //   "BBG",
+  //   "BeautyBlast",
+  //   "PingPongShow",
+  // ];
+  const skills = [
+    "Certified Scrum Master",
+    "Python Programming",
+    "C Programming",
+    "Pascal Programming",
+    "Database Management",
+    "Java Programming",
   ];
-
-  // function to calculate percentage match, missing
-
-  /* const getChartData = ({ employeeSkills, requiredSkills }) => {
-    const matchedSkills = employeeSkills.filter(skill => requiredSkills.includes(skill));
-    const matchedSkillsNum = matchedSkills.length;
-    const matchPercentage = Math.round((matchedSkills.length / requiredSkills.length) * 100, 2);
-    const mismatchedSkillsNum = requiredSkills.length - matchedSkills.length;
-    //const mismatchPercentage = 100 - matchPercentage; // Calculate the mismatch percentage
+  console.log(skills)
   
-    let backgroundColor; // change colour of graph based on match percentage
-    if (matchPercentage > 70) {
-      backgroundColor = ['#8FCE00', '#BCBCBC']; // green colour
-    } else if (matchPercentage > 40) {
-      backgroundColor = ['#FFA500', '#BCBCBC']; // orange colour
-    } else {
-      backgroundColor = ['#FF0000', '#BCBCBC']; // red colour
-    }
-  
-    const chartData = { // 
-      labels:['Matched', 'Missing'],
-      datasets:[{
-        label:['Job Skills Match'],
-        data:[matchedSkillsNum,mismatchedSkillsNum], // number of matched skills, number of misMatched skills
-        backgroundColor:[backgroundColor, 'lightgrey'],
-        borderColor:[backgroundColor, 'lightgrey']
-      }],
-    }
-  
-    return chartData;
-  }; */
-
-
-  const options = {
-  }
-
   return (
     <div>
       <Navbar />
@@ -310,22 +346,35 @@ const ApplyJobPage = () => {
             <div className="border rounded p-3 mt-5">
               <h2 className="mb-5 font-bold">Skills Required</h2>
 
-              <div style={ {width:'50%', height:'50%', alignSelf:'center'}}>
-                {/* <Doughnut
-                data={getChartData()}
-                options={options}
-                ></Doughnut> */}
-              </div>
-
-              <div className="grid grid-cols-3 gap-5">
-                {skills.map((skill) => {
-                  console.log(getRandomColorClass());
-                  return (
-                    <div key={skill}>
-                      <h2 className={`${getRandomColorClass()}`}>{skill}</h2>
+              <div className="flex items-center">
+                <div style={{ width: '50%', height: '50%' }}>
+                  {chartData && (
+                    <div>
+                      <Doughnut data={chartData}></Doughnut>
                     </div>
-                  );
-                })}
+                  )}
+                </div>
+
+                <div className="ml-5 text-center">
+                  {/* {'matchPercentage' >= 0 && ( */}
+                    <p>
+                      Match Percentage: <strong className="text-green-600">100%</strong>
+                    </p>
+                  
+                </div>
+              </div>
+              
+              <div className="bg-gray-50 rounded p-3 mt-5">
+                <div className="grid grid-cols-3 gap-5 margin-top-10">
+                  {skills.map((skill) => {
+                    console.log(getRandomColorClass());
+                    return (
+                      <div key={skill}>
+                        <h2 className={`${getRandomColorClass()}`}>{skill}</h2>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

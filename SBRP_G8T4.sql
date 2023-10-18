@@ -29,7 +29,7 @@ create table SKILL_DETAILS
 skill_id int not null,
 skill_name varchar(50) not null,
 skill_status enum ('active', 'inactive') not null,
-constraint skills_details_pk primary key (skill_id)
+constraint skill_details_pk primary key (skill_id)
 );
 
 create table STAFF_REPORTING_OFFICER

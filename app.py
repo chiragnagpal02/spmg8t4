@@ -767,39 +767,22 @@ def withdraw_role_application(role_app_id, staff_id):
             ),
             500,
         )
-# Get role_id from the role_details table
-@app.route('/get_role_id/<int:role_id>', methods=['GET'])
-def get_role_id(role_id):
-    try:
-        # Query the database to retrieve the role_id
-        role = RoleDetails.query.get(role_id)
-
-        if role:
-            return jsonify({"code": 200, "data": {"role_id": role.role_id}})
-        else:
-            return jsonify({"code": 404, "message": "Role not found"}), 404
-
-    except Exception as e:
-        return jsonify({
-            "code": 500,
-            "message": "An error occurred while retrieving role ID",
-            "error": str(e)
-        }), 500
-    
-
+   
 # Get required skills(skill_name) for a given role_id
 @app.route('/get_required_skills/<int:role_id>', methods=['GET'])
 def get_required_skills(role_id):
     try:
         # Query the database to retrieve skill_name for the given role_id
-        skill_name = db.session.query(SkillDetails.skill_name).join(
+        skills = db.session.query(SkillDetails.skill_name).join(
             RoleSkills, SkillDetails.skill_id == RoleSkills.skill_id
-        ).filter(RoleSkills.role_id == role_id).first()
+        ).filter(RoleSkills.role_id == role_id).all()
 
-        if skill_name:
-            return jsonify({"code": 200, "data": {"skill_name": skill_name[0]}})
+        skill_names = [skill[0] for skill in skills]
+
+        if skill_names:
+            return jsonify({"code": 200, "data": {"skills": skill_names}})
         else:
-            return jsonify({"code": 404, "message": "Role not found"}), 404
+            return jsonify({"code": 404, "message": "Skills not found"}), 404
 
     except Exception as e:
         return jsonify({
