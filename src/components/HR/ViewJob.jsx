@@ -8,6 +8,7 @@ import eyelogo from "./hrasset/eye.png";
 import axios from "axios";
 
 const ViewJob = () => {
+
     const [jobPostings, setJobPostings] = useState([]);
     useEffect(() => {
         // Make the Axios GET request to http://127.0.0.1:5000/roledetails
@@ -38,7 +39,7 @@ const ViewJob = () => {
         var cell4 = row.insertCell();
         cell4.innerHTML=listing[i].role_listing_close
         var cell5 = row.insertCell();
-        cell5.innerHTML = `<button><a href='./hrmatch'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+        cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
     }
 });
 

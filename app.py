@@ -12,7 +12,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
+# app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://spm@localhost:8889/SBRP_G8T4"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -698,6 +699,26 @@ def get_role_applicant_skills(role_listing_id):
 
     return jsonify({"code": 200, 
                    "data": role_applications_data
+                   }), 200
+
+@app.route("/get_role_details/<int:role_listing_id>") #This is for HR to view the details of a role
+def get_role_details(role_listing_id):
+    # Join the necessary tables to retrieve role details
+    role_details = db.session.query(RoleListings, RoleDetails.role_name, RoleDetails.role_description, RoleDetails.role_status)\
+    .join(RoleDetails, RoleDetails.role_id == RoleListings.role_id)\
+    .filter(RoleListings.role_listing_id == role_listing_id).first()
+
+    if not role_details:
+        return jsonify({"code": 404, "message": "Role not found."}), 404
+
+    role_details_data = {
+        "role_name": role_details.role_name,
+        "role_description": role_details.role_description,
+        "role_status": role_details.role_status
+    }
+
+    return jsonify({"code": 200, 
+                   "data": role_details_data
                    }), 200
 
 @app.route(
