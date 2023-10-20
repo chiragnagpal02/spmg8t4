@@ -15,7 +15,9 @@ const ApplyJobPage = () => {
   const [posting, setPosting] = useState({});
   const [requiredSkills, setRequiredSkills] = useState([]);
   const [staffSkills, setStaffSkills] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [chartData, setChartData] = useState(null);
+  const [matchPercentage, setMatchPercentage] = useState(0);
   const listing_id = useParams().listing_id;
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const ApplyJobPage = () => {
           .then((response) => {
             setRequiredSkills(response.data.data);
             console.log('Required skills data:', response.data.data);
+            setSkills(response.data.data.skills);
           })
           .catch((error) => {
             console.error('Error getting required skills:', error);
@@ -74,6 +77,8 @@ const ApplyJobPage = () => {
       ? Math.round((matchedSkillsNum / requiredSkills.skills.length) * 100)
       : 0; // Set to 0 if there are no required skills
 
+      
+
         console.log(matchPercentage);
         // const matchPercentage = Math.round((matchedSkillsNum / requiredSkills.length) * 100);
         // console.log(matchPercentage);
@@ -106,6 +111,7 @@ const ApplyJobPage = () => {
       console.log(chartData);
 
       setChartData(chartData); // Update chart data state
+      setMatchPercentage(matchPercentage);
     }
 }, [requiredSkills, staffSkills]);
 
@@ -142,23 +148,7 @@ const ApplyJobPage = () => {
       }
     });
   };
-  // const skills = [
-  //   "Agile",
-  //   "SQL",
-  //   "Python",
-  //   "BBG",
-  //   "BeautyBlast",
-  //   "PingPongShow",
-  // ];
-  const skills = [
-    "Certified Scrum Master",
-    "Python Programming",
-    "C Programming",
-    "Pascal Programming",
-    "Database Management",
-    "Java Programming",
-  ];
-  console.log(skills)
+
   
   return (
     <div>
@@ -358,7 +348,7 @@ const ApplyJobPage = () => {
                 <div className="ml-5 text-center">
                   {/* {'matchPercentage' >= 0 && ( */}
                     <p>
-                      Match Percentage: <strong className="text-green-600">100%</strong>
+                      Match Percentage: <strong className="text-green-600">{matchPercentage}%</strong>
                     </p>
                   
                 </div>
