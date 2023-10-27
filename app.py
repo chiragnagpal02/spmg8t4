@@ -1,5 +1,5 @@
 import logging
-import datetime
+from datetime import datetime
 from logging.handlers import RotatingFileHandler
 import datetime
 import requests
@@ -13,6 +13,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
+
+# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root@localhost:3306/SBRP_G8T4"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -418,6 +420,35 @@ def get_all_listing_details():
             }
         }
     ),200
+
+@app.route("/roledetailsall")
+def get_all_role_details():
+    final_list = []
+    role_list = []
+    role_details = RoleDetails.query.all()
+
+    for i in range(len(role_details)):
+        role_list.append(role_details[i].json())
+
+    for role_details in role_list:
+        role_list = {}
+
+        role_list["id"] = role_details["role_id"]
+        role_list["name"] = role_details["role_name"]
+        role_list["description"] = role_details["role_description"]
+        role_list["status"] = role_details["role_status"]
+
+        final_list.append(role_list)
+
+
+    return jsonify(
+        {
+            "code": 200,
+            "data": {
+                "final_list": final_list
+            }
+        }
+    ),200
         
 
 @app.route("/listing/<int:role_listing_id>")
@@ -499,14 +530,15 @@ def create_role_listing(role_listing_id):
             400,
         )
 
-    # data = request.get_json()  # HTTP JSON
-    # rolelisting = RoleListings(role_listing_id, **data)
+        # data = request.get_json()  # HTTP JSON
+        # rolelisting = RoleListings(role_listing_id, **data)
     desc = request.json.get("desc")
     appStartDate= request.json.get("appStartDate")
     appEndDate = request.json.get("appEndDate")
+    appStartDate = datetime.datetime.strptime(appStartDate, "%Y-%m-%d")
+    appEndDate = datetime.datetime.strptime(appEndDate, "%Y-%m-%d")
 
-    appStartDate = datetime.strptime(appStartDate, '%Y-%m-%dT%H:%M')
-    today = datetime.now()
+    today = datetime.datetime.now()
     if appStartDate < today:
         return jsonify({
             "code": 400,
@@ -515,7 +547,6 @@ def create_role_listing(role_listing_id):
             }
         }), 400
     
-    appEndDate = datetime.strptime(appEndDate, '%Y-%m-%dT%H:%M')
     if appEndDate < appStartDate:
         return jsonify({
             "code": 400,
@@ -525,7 +556,7 @@ def create_role_listing(role_listing_id):
         }), 400
     
     rolelisting = RoleListings(
-        role_listing_id = 1, 
+        role_listing_id = 2, 
         role_id = 234511581,
         role_listing_desc = desc,
         role_listing_source = 1,
@@ -534,7 +565,11 @@ def create_role_listing(role_listing_id):
         role_listing_creator = 1,
         role_listing_ts_create = ct.timestamp(),
         role_listing_updater = 1, 
-        role_listing_ts_update = ct.timestamp()
+        role_listing_ts_update = ct.timestamp(),
+        role_listing_type = "Manager",
+        role_listing_department = "Analytics",
+        role_listing_salary = 5000,
+        role_listing_location = "JB",
     )
 
     try:
@@ -665,6 +700,26 @@ def get_role_applicant_skills(role_listing_id):
 
     return jsonify({"code": 200, 
                    "data": role_applications_data
+                   }), 200
+
+@app.route("/get_role_details/<int:role_listing_id>") #This is for HR to view the details of a role
+def get_role_details(role_listing_id):
+    # Join the necessary tables to retrieve role details
+    role_details = db.session.query(RoleListings, RoleDetails.role_name, RoleDetails.role_description, RoleDetails.role_status)\
+    .join(RoleDetails, RoleDetails.role_id == RoleListings.role_id)\
+    .filter(RoleListings.role_listing_id == role_listing_id).first()
+
+    if not role_details:
+        return jsonify({"code": 404, "message": "Role not found."}), 404
+
+    role_details_data = {
+        "role_name": role_details.role_name,
+        "role_description": role_details.role_description,
+        "role_status": role_details.role_status
+    }
+
+    return jsonify({"code": 200, 
+                   "data": role_details_data
                    }), 200
 
 @app.route(

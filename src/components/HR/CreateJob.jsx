@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Modal from './Modal';
+import axios from 'axios';
 
 
 
@@ -40,7 +41,7 @@ const CreateJob = () => {
         console.log("test")
         event.preventDefault();
 
-        axios.post('http://127.0.0.1:5000/create_role_listing/1', inputs).then(function(response){
+        axios.post('http://127.0.0.1:5000/create_role_listing/2', inputs).then(function(response){
             console.log(response.data);
         });
     }
