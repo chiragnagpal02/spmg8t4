@@ -5,6 +5,7 @@ import Timer from "../../assets/images/timer.svg";
 import { Link } from "react-router-dom";
 
 const JobCard = ({ name, desc, status, role_id }) => {
+  console.log(role_id)
   return (
     <div className="font-montserrat grid grid-cols-5 border-2 shadow-md hover:bg-gray-100 hover:shadow-2xl rounded-md mt-5">
       <div className="flex justify-center mt-5">

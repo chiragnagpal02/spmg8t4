@@ -468,6 +468,24 @@ def get_listing_details(role_listing_id):
                 }
             )
         
+@app.route("/details/<int:role_id>")
+def get_role_details_by_id(role_id):
+    # I want to call an endpoint that returns the role listing details - /listingdetailsall - and then return the details of the role listing with the role_listing_id
+    
+    # Get all the role listing details
+    all_role_details = requests.get("http://127.0.0.1:5000/roledetailsall").json()  # This is a list of dictionaries
+
+    # Get the role listing details with the role_listing_id
+    for role_detail in all_role_details["data"]["final_list"]:
+        if role_detail["listing_id"] == role_id:
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": role_detail
+                }
+            )
+        
+        
 
 
 @app.route("/openingsbydept")

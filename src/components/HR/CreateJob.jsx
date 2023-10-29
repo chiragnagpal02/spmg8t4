@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
+import { useParams } from "react-router-dom";
 import { useState } from 'react'
 import Modal from './Modal';
 import axios from 'axios';
-
 
 
 const CreateJob = () => {
     const [skills, setSkills] = useState([]);
     const [inputs, setInputs] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const role_id = useParams().role_id;
 
   const handleSkills = (value) => {
     if (!skills.includes(value)) {
@@ -45,6 +46,33 @@ const CreateJob = () => {
             console.log(response.data);
         });
     }
+    
+    useEffect(() => {
+        // Make the Axios GET request to http://127.0.0.1:5000/listing/{listing_id}
+        axios
+          .get(`http://127.0.0.1:5000/details/${role_id}`)
+          .then((response) => {
+            const roleId = response.data.data.id;
+            console.log('id:', roleId);
+    
+            // setPosting(response.data.data);
+            // console.log('Posting data:', response.data);
+    
+            // axios
+            //   .get(`http://127.0.0.1:5000/get_required_skills/${roleId}`)
+            //   .then((response) => {
+            //     setRequiredSkills(response.data.data);
+            //     console.log('Required skills data:', response.data.data);
+            //     setSkills(response.data.data.skills);
+            //   })
+            //   .catch((error) => {
+            //     console.error('Error getting required skills:', error);
+            //   });
+          })
+          .catch((error) => {
+            console.error('Error getting posting data:', error);
+          });
+      }, [role_id]);    
 
     return (
         <>
@@ -64,13 +92,35 @@ const CreateJob = () => {
                 <form onSubmit={submitPosting} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <div classz="mb-4 grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="position">
-                                Position
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                                Role ID
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Job Position..." />
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" value= {role_id} />
                         </div>
-
-
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                                Role Name
+                            </label>
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text"  />
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                                Role Description
+                            </label>
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text"  />
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                                Role Status
+                            </label>
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text"  />
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                                Skill requirements
+                            </label>
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" />
+                        </div>
                         <div>
                             <label for="dpt" class="block text-gray-700 text-sm font-bold mb-2">
                                 Department
@@ -86,27 +136,41 @@ const CreateJob = () => {
                         </div>
 
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="startDate">
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                                Salary
+                            </label>
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Salary..." />
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="position">
+                                Location
+                            </label>
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Job Location..." />
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="startDate">
                                 Application Start Date
                             </label>
                             <input onChange={handleChange} name="appStartDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="startDate" type="date" placeholder="dd/mm/yyyy" />
                         </div>
 
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="endDate">
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="endDate">
                                 Application End Date
                             </label>
                             <input onChange={handleChange} name="appEndDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="endDate" type="date" placeholder="dd/mm/yyyy" />
                         </div>
 
                         <div className='col-span-2'>
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="desc">
-                                Description
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="desc">
+                                Listing Description
                             </label>
-                            <textarea onChange={handleChange} name="desc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="desc" placeholder="dd/mm/yyyy" />
+                            <textarea onChange={handleChange} name="desc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="desc" placeholder="Roles and Responsibilities..." />
                         </div>
 
-                        <div className='col-span-2'>
+                        {/* <div className='col-span-2'>
                             <label for="skills" class="block text-gray-700 text-sm font-bold mb-2">
                                 Skills
                             </label>
@@ -120,9 +184,9 @@ const CreateJob = () => {
                                 <option value="Finance">Finance</option>
                                 <option value="Accountancy">Accountancy</option>
                             </select>
-                        </div>
+                        </div> */}
 
-                        <div className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-2 '>
+                        {/* <div className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-2 '>
                             {skills.map((skill, index) => (
                                 <span key={index}>
                                     <button
@@ -135,10 +199,10 @@ const CreateJob = () => {
                                     </button>
                                 </span>
                             ))}
-                        </div>
+                        </div> */}
 
                         <div className='col-span-2' >
-                            <button type="submit" className='bg-[#338573] hover:bg-[#338573] text-white font-bold py-2 px-4 rounded'
+                            <button type="submit" className='bg-[#338573] hover:bg-[#338573] text-white font-bold mt-2 py-2 px-4 rounded'
                             onClick={() => showModal()}>
                                 Add New Posting
                             </button>

@@ -13,6 +13,7 @@ import ApplyJobPage from './components/Staff/ApplyJobPage';
 import HRmatch from './components/HR/Viewmatch';
 
 import SkillsProfile from './components/Staff/SkillsProfile';
+import CreateJob from './components/HR/CreateJob';
 
 class App extends React.Component {
   
@@ -34,6 +35,7 @@ class App extends React.Component {
           <Route path="/staff" element={<StaffPage />} />
           <Route path="/staff/apply/:listing_id" element={<ApplyJobPage />} />
           <Route path="/hr" element={<HRPage />} />
+          <Route path="/hr/createjob/:role_id" element={<CreateJob />} />
           <Route path="/hrview" element={<HRview />} />
           <Route path="/hrmatch/:role_listing_id" element={<HRmatch />} />
           <Route path="/manager" element={<ManagerPage />} />
