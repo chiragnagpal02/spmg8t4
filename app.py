@@ -12,9 +12,11 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
+
 app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
 
 # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root@localhost:3306/SBRP_G8T4"
+
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -627,24 +629,24 @@ def update_role_listing(role_listing_id):
         )
 
     data = request.get_json()
-    if data["role_id"]:
-        rolelisting.role_id = data["role_id"]
+    print(data)
     if data["role_listing_desc"]:
         rolelisting.role_listing_desc = data["role_listing_desc"]
-    if data["role_listing_source"]:
-        rolelisting.role_listing_source = data["role_listing_source"]
     if data["role_listing_open"]:
         rolelisting.role_listing_open = data["role_listing_open"]
     if data["role_listing_close"]:
         rolelisting.role_listing_close = data["role_listing_close"]
-    if data["role_listing_creator"]:
-        rolelisting.role_listing_creator = data["role_listing_creator"]
-    if data["role_listing_ts_create"]:
-        rolelisting.role_listing_ts_create = data["role_listing_ts_create"]
     if data["role_listing_updater"]:
         rolelisting.role_listing_updater = data["role_listing_updater"]
-    if data["role_listing_ts_update"]:
-        rolelisting.role_listing_ts_update = data["role_listing_ts_update"]
+    rolelisting.role_listing_ts_update = datetime.datetime.now()
+    if data["role_listing_type"]:
+        rolelisting.role_listing_type = data["role_listing_type"]
+    if data["role_listing_department"]:
+        rolelisting.role_listing_department = data["role_listing_department"]
+    if data["role_listing_salary"]:
+        rolelisting.role_listing_salary = data["role_listing_salary"]
+    if data["role_listing_location"]:
+        rolelisting.role_listing_location = data["role_listing_location"]
 
     try:
         db.session.commit()
@@ -723,7 +725,7 @@ def get_role_applicant_skills(role_listing_id):
 @app.route("/get_role_details/<int:role_listing_id>") #This is for HR to view the details of a role
 def get_role_details(role_listing_id):
     # Join the necessary tables to retrieve role details
-    role_details = db.session.query(RoleListings, RoleDetails.role_name, RoleDetails.role_description, RoleDetails.role_status)\
+    role_details = db.session.query(RoleListings, RoleListings.role_listing_desc, RoleListings.role_listing_open,RoleListings.role_listing_close, RoleListings.role_listing_type, RoleListings.role_listing_department, RoleListings.role_listing_salary, RoleListings.role_listing_location, RoleDetails.role_name, RoleDetails.role_description, RoleDetails.role_status)\
     .join(RoleDetails, RoleDetails.role_id == RoleListings.role_id)\
     .filter(RoleListings.role_listing_id == role_listing_id).first()
 
@@ -731,6 +733,14 @@ def get_role_details(role_listing_id):
         return jsonify({"code": 404, "message": "Role not found."}), 404
 
     role_details_data = {
+        "role_listing_desc": role_details.role_listing_desc,
+        "role_listing_open": role_details.role_listing_open,
+        "role_listing_close": role_details.role_listing_close,
+        "role_listing_type": role_details.role_listing_type,
+        "role_listing_department": role_details.role_listing_department,
+        "role_listing_salary": role_details.role_listing_salary,
+        "role_listing_location": role_details.role_listing_location,
+
         "role_name": role_details.role_name,
         "role_description": role_details.role_description,
         "role_status": role_details.role_status
