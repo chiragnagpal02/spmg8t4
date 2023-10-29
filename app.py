@@ -12,8 +12,11 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-# app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root@localhost:3306/SBRP_G8T4"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
+
+# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root@localhost:3306/SBRP_G8T4"
+
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -821,6 +824,51 @@ def withdraw_role_application(role_app_id, staff_id):
             ),
             500,
         )
+   
+# Get required skills(skill_name) for a given role_id
+@app.route('/get_required_skills/<int:role_id>', methods=['GET'])
+def get_required_skills(role_id):
+    try:
+        # Query the database to retrieve skill_name for the given role_id
+        skills = db.session.query(SkillDetails.skill_name).join(
+            RoleSkills, SkillDetails.skill_id == RoleSkills.skill_id
+        ).filter(RoleSkills.role_id == role_id).all()
+
+        skill_names = [skill[0] for skill in skills]
+
+        if skill_names:
+            return jsonify({"code": 200, "data": {"skills": skill_names}})
+        else:
+            return jsonify({"code": 404, "message": "Skills not found"}), 404
+
+    except Exception as e:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred while retrieving skills",
+            "error": str(e)
+        }), 500
+    
+# Get skills for staff based on staff_id
+@app.route('/get_staff_skills/<int:staff_id>', methods=['GET'])
+def get_staff_skills(staff_id):
+    try:
+        # Query the database to retrieve skills for the given staff_id
+        skills = db.session.query(SkillDetails.skill_name).join(
+            StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id
+        ).filter(StaffSkills.staff_id == staff_id).all()
+
+        if skills:
+            skill_names = [skill[0] for skill in skills]  # Extract skill names from the result
+            return jsonify({"code": 200, "data": {"staff_id": staff_id, "skills": skill_names}})
+        else:
+            return jsonify({"code": 404, "message": "Staff member not found or has no skills"}), 404
+
+    except Exception as e:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred while retrieving staff skills",
+            "error": str(e)
+        }), 500
 
 
 """
