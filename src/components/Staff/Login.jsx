@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {Routes, Route, useNavigate} from 'react-router-dom';
 export default function Login() {
+  const navigate=useNavigate();
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -57,6 +59,7 @@ export default function Login() {
 
   const [jobPostings, setJobPostings] = useState([]);
     useEffect(() => {
+      
         // Make the Axios GET request to http://127.0.0.1:5000/roledetails
         document.getElementById("sub_btn").addEventListener("click", function(event){
             event.preventDefault()
@@ -67,7 +70,9 @@ export default function Login() {
             axios.get(`http://127.0.0.1:5000/login/${username}/${password}`)
                 .then((response) => {
                     setJobPostings(response.data) // You can process the response data as needed
-                    console.log(response.data)
+                    var role = response.data.data.sys_role;
+                    sessionStorage.setItem("role", role)
+                    navigate(`/${role}`)
                 })
                 .catch((error) => {
                     // Handle any errors here
