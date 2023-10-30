@@ -6,10 +6,12 @@ import axios from "axios";
 import NewJob from "../../assets/images/NewJob.svg";
 import Department from "../../assets/images/department.svg";
 import Timer from "../../assets/images/timer.svg";
+import Open from "../../assets/images/open.svg";
+import Close from "../../assets/images/closed.svg";
 import Location from "../../assets/images/location.svg";
 import { Link } from "react-router-dom";
 
-const JobCard = ({ name, location, dpt, close_date, listing_id }) => {
+const JobCard = ({ name, location, dpt, close_date, listing_id, status }) => {
   return (
     <div className="font-montserrat grid grid-cols-5 border-2 shadow-md hover:bg-gray-100 hover:shadow-2xl rounded-md mt-5">
       <div className="flex justify-center mt-5">
@@ -19,7 +21,7 @@ const JobCard = ({ name, location, dpt, close_date, listing_id }) => {
       <div className="information col-span-3 mt-2">
         <h2 className="text-2xl mb-2 p-2 font-bold">{name}</h2>
 
-        <div className="grid grid-cols-3 p-2">
+        <div className="grid grid-cols-4 p-2">
           <div className="">
             <img src={Department} alt="dpt" />
             <h1 className="text-gray-400 text-sm">{dpt}</h1>
@@ -32,6 +34,13 @@ const JobCard = ({ name, location, dpt, close_date, listing_id }) => {
           <div>
             <img src={Location} alt="dpt" />
             <h1 className="text-gray-400 text-sm">{location}</h1>
+          </div>
+          <div>
+            {status === "inactive" ? (
+              <img src={Close} alt="dpt" />
+            ) : (
+              <img src={Open} alt="dpt" />
+            )}
           </div>
         </div>
       </div>
