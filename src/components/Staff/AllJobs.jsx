@@ -125,6 +125,17 @@ const AllJobs = () => {
             status={job.status}
           />
         ))}
+
+        {
+          filteredJobPostings.length === 0 && (
+            <div className="flex flex-col items-center justify-center mt-10">
+              <span className="text-2xl font-bold">No Jobs Found</span>
+              <span className="text-gray-400">
+                Try changing the filters or searching for a different job.
+              </span>
+            </div>
+          )
+        }
       </div>
     </>
   );
