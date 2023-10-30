@@ -3,13 +3,17 @@ import { useParams } from "react-router-dom";
 import { useState } from 'react'
 import Modal from './Modal';
 import axios from 'axios';
+import Swal from "sweetalert2";
+import Button from "@mui/material/Button";
 
 
 const CreateJob = () => {
     const [skills, setSkills] = useState([]);
     const [inputs, setInputs] = useState([]);
+    const [details, setDetails] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const role_id = useParams().role_id;
+    const [requiredSkills, setRequiredSkills] = useState([]);
 
   const handleSkills = (value) => {
     if (!skills.includes(value)) {
@@ -39,35 +43,56 @@ const CreateJob = () => {
     }
 
     const submitPosting = (event) => {
-        console.log("test")
         event.preventDefault();
+        console.log(inputs)
 
-        axios.post('http://127.0.0.1:5000/create_role_listing/2', inputs).then(function(response){
+        axios.post(`http://127.0.0.1:5000/create_role_listing/${role_id}/1`, inputs).then(function(response){
             console.log(response.data);
         });
     }
+
+    const AlertSweet = () => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You will not be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#000000",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, created the job listing!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Created!",
+              text: "You have successfully created this job!",
+              icon: "success",
+              confirmButtonColor: "#000000",
+            });
+          }
+        });
+      };
     
     useEffect(() => {
         // Make the Axios GET request to http://127.0.0.1:5000/listing/{listing_id}
         axios
           .get(`http://127.0.0.1:5000/details/${role_id}`)
           .then((response) => {
-            const roleId = response.data.data.id;
+            const roleId = response.data.data.role_id;
             console.log('id:', roleId);
     
-            // setPosting(response.data.data);
-            // console.log('Posting data:', response.data);
+            setDetails(response.data.data);
+            console.log('Details data:', response.data);
     
-            // axios
-            //   .get(`http://127.0.0.1:5000/get_required_skills/${roleId}`)
-            //   .then((response) => {
-            //     setRequiredSkills(response.data.data);
-            //     console.log('Required skills data:', response.data.data);
-            //     setSkills(response.data.data.skills);
-            //   })
-            //   .catch((error) => {
-            //     console.error('Error getting required skills:', error);
-            //   });
+            axios
+              .get(`http://127.0.0.1:5000/get_required_skills/${roleId}`)
+              .then((response) => {
+                // setRequiredSkills(response.data.data);
+                // console.log('Required skills data:', response.data.data);
+                setRequiredSkills(response.data.data.skills);
+              })
+              .catch((error) => {
+                console.error('Error getting required skills:', error);
+              });
           })
           .catch((error) => {
             console.error('Error getting posting data:', error);
@@ -92,34 +117,45 @@ const CreateJob = () => {
                 <form onSubmit={submitPosting} class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <div classz="mb-4 grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="role_id">
                                 Role ID
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" value= {role_id} />
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" value= {role_id} readOnly />
                         </div>
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="role_name">
                                 Role Name
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text"  />
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" value= {details.name} readOnly />
                         </div>
-                        <div>
-                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                        <div className='col-span-2'>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="role_desc">
                                 Role Description
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text"  />
+                            <textarea onChange={handleChange} name="role_desc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="role_desc" value= {details.description} readOnly />
                         </div>
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="role_status">
                                 Role Status
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text"  />
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" value= {details.status} readOnly/>
                         </div>
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
                                 Skill requirements
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" />
+                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text"  value={requiredSkills.join(', ')} readOnly/>
+                        </div>
+                        <div>
+                            <label for="list_type" class="block text-gray-700 text-sm font-bold mb-2">
+                                Listing type
+                            </label>
+                            <select onChange={handleChange} name="listing_type" id="list_type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+                                <option selected>Choose a Listing type</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Open">Open</option>
+                            </select>
                         </div>
                         <div>
                             <label for="dpt" class="block text-gray-700 text-sm font-bold mb-2">
@@ -139,14 +175,14 @@ const CreateJob = () => {
                             <label class="block text-gray-700 text-sm font-bold mt-2" for="salary">
                                 Salary
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Salary..." />
+                            <input onChange={handleChange} name="salary" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Salary..." />
                         </div>
 
                         <div>
-                            <label class="block text-gray-700 text-sm font-bold mt-2" for="position">
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="location">
                                 Location
                             </label>
-                            <input onChange={handleChange} name="position" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Job Location..." />
+                            <input onChange={handleChange} name="location" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Job Location..." />
                         </div>
 
                         <div>
@@ -167,7 +203,7 @@ const CreateJob = () => {
                             <label class="block text-gray-700 text-sm font-bold mt-2" for="desc">
                                 Listing Description
                             </label>
-                            <textarea onChange={handleChange} name="desc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="desc" placeholder="Roles and Responsibilities..." />
+                            <textarea onChange={handleChange} name="listing_desc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="desc" placeholder="Roles and Responsibilities..." />
                         </div>
 
                         {/* <div className='col-span-2'>
@@ -201,7 +237,7 @@ const CreateJob = () => {
                             ))}
                         </div> */}
 
-                        <div className='col-span-2' >
+                        {/* <div className='col-span-2' >
                             <button type="submit" className='bg-[#338573] hover:bg-[#338573] text-white font-bold mt-2 py-2 px-4 rounded'
                             onClick={() => showModal()}>
                                 Add New Posting
@@ -209,6 +245,20 @@ const CreateJob = () => {
 
                             <Modal show={isModalVisible} onClose={hideModal} />
                        
+                        </div> */}
+
+                        <div className="mt-4 flex flexbox justify-center">
+                            <Button
+                                type="submit"
+                                onClick={AlertSweet}
+                                style={{
+                                    backgroundColor: "#000000",
+                                }}
+                                variant="contained"
+                                color="success"
+                            >
+                            Add New posting
+                            </Button>
                         </div>
                     </div>
                 </form>

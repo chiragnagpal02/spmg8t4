@@ -18,7 +18,9 @@ const JobCard = ({ name, desc, status, role_id }) => {
         <div className="grid grid-cols-3 p-2">
           <div className="">
             <img src={Department} alt="dpt" />
-            <h1 className="text-gray-400 text-sm">{desc}</h1>
+            <h1 className="text-gray-400 text-sm">
+                {desc.length > 200 ? desc.substring(0, 200) + '...' : desc}
+            </h1>
           </div>
 
           <div>
@@ -30,7 +32,8 @@ const JobCard = ({ name, desc, status, role_id }) => {
 
       <div className="viewdetailsbutton flex justify-center p-10">
         <Link to={`/HR/CreateJob/${role_id}`}>
-          <button class="group relative lg:h-12 lg:w-52 md:h-16 overflow-hidden rounded-lg bg-white text-lg shadow p-2">
+          <button class="group relative lg:h-12 lg:w-52 md:h-16 overflow-hidden rounded-lg bg-white text-lg shadow p-2"
+          disabled={status === 'inactive'}>
             <div class="absolute inset-0 w-3 bg-black transition-all duration-[250ms] ease-out group-hover:w-full"></div>
             <span class="relative text-black group-hover:text-white">
               Create Job

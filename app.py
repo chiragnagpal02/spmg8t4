@@ -3,6 +3,8 @@ from datetime import datetime
 from logging.handlers import RotatingFileHandler
 import datetime
 import requests
+import random
+import string
 
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -437,7 +439,7 @@ def get_all_role_details():
     for role_details in role_list:
         role_list = {}
 
-        role_list["id"] = role_details["role_id"]
+        role_list["role_id"] = role_details["role_id"]
         role_list["name"] = role_details["role_name"]
         role_list["description"] = role_details["role_description"]
         role_list["status"] = role_details["role_status"]
@@ -481,7 +483,7 @@ def get_role_details_by_id(role_id):
 
     # Get the role listing details with the role_listing_id
     for role_detail in all_role_details["data"]["final_list"]:
-        if role_detail["listing_id"] == role_id:
+        if role_detail["role_id"] == role_id:
             return jsonify(
                 {
                     "code": 200,
@@ -535,33 +537,51 @@ def get_all_open():
         )
     return jsonify({"code": 404, "message": "There are no open role listings."}), 404
 
+def generate_random_role_listing_id():
+    while True:
+        # Generate a random ID, for example, a 10-character string
+        random_id = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+
+        # Check if the generated ID already exists in the database
+        if not RoleListings.query.filter_by(role_listing_id=random_id).first():
+            return random_id
+
 
 @app.route(
-    "/create_role_listing/<int:role_listing_id>", methods=["POST"]
+    "/create_role_listing/<int:role_id>/<int:staff_id>", methods=["POST"]
 )  # This is for HR to create a new role listing
-def create_role_listing(role_listing_id):
-    if RoleListings.query.filter_by(role_listing_id=role_listing_id).first():
+def create_role_listing(role_id, staff_id):
+
+    new_role_listing_id = generate_random_role_listing_id()
+
+    if RoleListings.query.filter_by(role_listing_id=new_role_listing_id).first():
         return (
             jsonify(
                 {
                     "code": 400,
-                    "data": {"role_listing_id": role_listing_id},
+                    "data": {"role_listing_id": new_role_listing_id},
                     "message": "Role already exists.",
                 }
             ),
             400,
         )
-
-        # data = request.get_json()  # HTTP JSON
-        # rolelisting = RoleListings(role_listing_id, **data)
-    desc = request.json.get("desc")
+    
+    
+    listing_desc = request.json.get("listing_desc")
     appStartDate= request.json.get("appStartDate")
     appEndDate = request.json.get("appEndDate")
     appStartDate = datetime.datetime.strptime(appStartDate, "%Y-%m-%d")
     appEndDate = datetime.datetime.strptime(appEndDate, "%Y-%m-%d")
+    role_listing_type = request.json.get("listing_type")
+    role_listing_type = role_listing_type.lower()
 
-    today = datetime.datetime.now()
-    if appStartDate < today:
+    role_listing_department = request.json.get("department")
+    role_listing_salary = request.json.get("salary")
+    role_listing_salary = int(role_listing_salary)
+    role_listing_location = request.json.get("location")
+
+    today = datetime.datetime.now().date()
+    if appStartDate.date() < today:
         return jsonify({
             "code": 400,
             "data": {
@@ -578,20 +598,20 @@ def create_role_listing(role_listing_id):
         }), 400
     
     rolelisting = RoleListings(
-        role_listing_id = 2, 
-        role_id = 234511581,
-        role_listing_desc = desc,
-        role_listing_source = 1,
+        role_listing_id = new_role_listing_id, 
+        role_id = role_id,
+        role_listing_desc = listing_desc,
+        role_listing_source = staff_id,
         role_listing_open = appStartDate,
         role_listing_close = appEndDate,
-        role_listing_creator = 1,
-        role_listing_ts_create = ct.timestamp(),
-        role_listing_updater = 1, 
-        role_listing_ts_update = ct.timestamp(),
-        role_listing_type = "Manager",
-        role_listing_department = "Analytics",
-        role_listing_salary = 5000,
-        role_listing_location = "JB",
+        role_listing_creator = staff_id,
+        role_listing_ts_create = datetime.datetime.now(),
+        role_listing_updater = staff_id, 
+        role_listing_ts_update = datetime.datetime.now(),
+        role_listing_type = role_listing_type,
+        role_listing_department = role_listing_department,
+        role_listing_salary = role_listing_salary,
+        role_listing_location = role_listing_location,
     )
 
     try:
@@ -603,7 +623,7 @@ def create_role_listing(role_listing_id):
             jsonify(
                 {
                     "code": 500,
-                    "data": {"role_listing_id": role_listing_id},
+                    "data": {"role_listing_id": new_role_listing_id},
                     "message": "An error occurred creating the role.",
                 }
             ),
