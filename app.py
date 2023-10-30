@@ -271,7 +271,9 @@ class RoleListings(db.Model):
             "role_listing_salary": self.role_listing_salary,
             "role_listing_location": self.role_listing_location,
         }
-
+    
+    
+        
 
 class RoleApplications(db.Model):
     __tablename__ = "ROLE_APPLICATIONS"
