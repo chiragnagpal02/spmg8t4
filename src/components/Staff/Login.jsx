@@ -71,7 +71,10 @@ export default function Login() {
                 .then((response) => {
                     setJobPostings(response.data) // You can process the response data as needed
                     var role = response.data.data.sys_role;
+                    var id = response.data.data.staff_id;
                     sessionStorage.setItem("role", role)
+                    sessionStorage.setItem("id", id)
+                    console.log(id)
                     navigate(`/${role}`)
                 })
                 .catch((error) => {
