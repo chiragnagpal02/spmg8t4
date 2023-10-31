@@ -7,6 +7,7 @@ import Bottom from './Bottom'
 function StaffPage() {
   return (
     <>
+
       <Navbar />
       <HomePageSearch />
       <Categories />
