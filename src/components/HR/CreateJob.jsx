@@ -46,7 +46,7 @@ const CreateJob = () => {
         event.preventDefault();
         console.log(inputs)
 
-        axios.post(`http://127.0.0.1:5000/create_role_listing/${role_id}/1`, inputs).then(function(response){
+        axios.post(`http://127.0.0.1:5000/create_role_listing/${role_id}/7`, inputs).then(function(response){
             console.log(response.data);
         });
     }

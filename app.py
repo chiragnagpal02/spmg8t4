@@ -527,9 +527,7 @@ def generate_random_role_listing_id():
             return random_id
 
 
-@app.route(
-    "/create_role_listing/<int:role_id>/<int:staff_id>", methods=["POST"]
-)  # This is for HR to create a new role listing
+@app.route("/create_role_listing/<int:role_id>/<int:staff_id>", methods=["POST"])  # This is for HR to create a new role listing
 def create_role_listing(role_id, staff_id):
 
     new_role_listing_id = generate_random_role_listing_id()
@@ -546,6 +544,7 @@ def create_role_listing(role_id, staff_id):
             400,
         )
     
+    print(request.json)
     
     listing_desc = request.json.get("listing_desc")
     appStartDate= request.json.get("appStartDate")
@@ -553,6 +552,7 @@ def create_role_listing(role_id, staff_id):
     appStartDate = datetime.datetime.strptime(appStartDate, "%Y-%m-%d")
     appEndDate = datetime.datetime.strptime(appEndDate, "%Y-%m-%d")
     role_listing_type = request.json.get("listing_type")
+    print(role_listing_type)
     role_listing_type = role_listing_type.lower()
 
     role_listing_department = request.json.get("department")
@@ -619,9 +619,7 @@ def create_role_listing(role_id, staff_id):
     return jsonify({"code": 201, "data": rolelisting.json()}), 201
 
 
-@app.route(
-    "/update_role_listing/<int:role_listing_id>", methods=["PUT"]
-)  # This is for HR to update an existing role listing
+@app.route("/update_role_listing/<int:role_listing_id>", methods=["PUT"])  # This is for HR to update an existing role listing
 def update_role_listing(role_listing_id):
     rolelisting = RoleListings.query.filter_by(role_listing_id=role_listing_id).first()
     if not rolelisting:
