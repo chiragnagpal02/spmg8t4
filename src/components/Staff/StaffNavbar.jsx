@@ -38,7 +38,7 @@ export default function NavbarWithDropdown() {
         <Navbar.Link href="/staff">
           Home
         </Navbar.Link>
-        <Navbar.Link href="/skills">Skills</Navbar.Link>
+        <Navbar.Link href="/staffskills/123456789">Skills</Navbar.Link>
         <Navbar.Link href="/staff/viewalljobs">All Jobs</Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
