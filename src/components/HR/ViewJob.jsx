@@ -6,8 +6,15 @@ import penlogo from "../../assets/edit.png";
 import binlogo from "../../assets/delete.png";
 import eyelogo from "./hrasset/eye.png";
 import axios from "axios";
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 const ViewJob = () => {
+  if(sessionStorage.getItem('role')!='hr'){
+    console.log('not hr!')
+    const navigate=useNavigate();
+    navigate('/login')
+    alert('You are not authorized to view this page! You have been redirected to login')
+  }
   
     const [jobPostings, setJobPostings] = useState([]);
     useEffect(() => {

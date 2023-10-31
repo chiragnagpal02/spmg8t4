@@ -5,8 +5,15 @@ import { Link } from "react-router-dom";
 import Logo from "../../assets/images/rocket.svg";
 import User from "../../assets/images/user.svg";
 import { Dropdown, Navbar, Avatar } from 'flowbite-react';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 export default function NavbarWithDropdown() {
+  if(sessionStorage.getItem('role')!='staff'){
+    console.log('not staff!')
+    const navigate=useNavigate();
+    navigate('/login')
+    alert('You are not authorized to view this page! You have been redirected to login')
+  }
   return (
     <Navbar fluid rounded>
       <Navbar.Brand href="/staff">
