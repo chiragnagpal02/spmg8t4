@@ -24,6 +24,7 @@ const AllJobs = () => {
 
   useEffect(() => {
     // Make the Axios GET request to http://127.0.0.1:5000/listingdetailsall
+
     axios
       .get("http://127.0.0.1:5000/roledetailsall")
       .then((response) => {
@@ -31,6 +32,19 @@ const AllJobs = () => {
         const unique_depts_obj = [];
         const final_data = response.data.data.final_list;
         setJobPostings(final_data);
+
+        axios
+          .get("http://127.0.0.1:5000/listingdetailsall")
+          .then((response) => {
+
+            console.log(response)
+
+            const listing_final_data = response.data.data.final_list;
+            console.log(listing_final_data)
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
 
         final_data.forEach(element => {
             let dept = element.department;
@@ -68,6 +82,7 @@ const AllJobs = () => {
     if (selectedDepartments.length === 0) {
       // If no departments are selected, show all job postings
       setJobPostings(jobPostings);
+      console.log(jobPostings)
     } else {
       // Filter job postings based on selected departments
       const filteredJobPostings = filteredJobPostings.filter(posting => selectedDepartments.includes(posting.department));

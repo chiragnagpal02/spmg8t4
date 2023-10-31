@@ -1,93 +1,65 @@
-import React from "react";
-import JobCard from "./JobCard";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "./StaffNavbar";
 import HomePageSearch from "./HomePageSearch";
-import { Multiselect } from 'multiselect-react-dropdown';
-import Select from 'react-select'
-
+import Select from "react-select";
+import JobCard from "./JobCard";
 
 const AllJobs = () => {
-
   const [jobPostings, setJobPostings] = useState([]);
-  const [depts, setdepts] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [depts, setDepts] = useState([]);
+  const [selectedDeptOptions, setSelectedDeptOptions] = useState([]);
+  const [selectedStatusOption, setSelectedStatusOption] = useState(null);
   const [filteredJobPostings, setFilteredJobPostings] = useState([]);
 
-  const handleChange = (selectedValues) => {
-    setSelectedOptions(selectedValues);
+  const statusOptions = [
+    { value: "active", label: "Open" },
+    { value: "inactive", label: "Closed" },
+  ];
+
+  const handleChangeDept = (selectedValues) => {
+    setSelectedDeptOptions(selectedValues);
+  };
+
+  const handleChangeStatus = (selectedValue) => {
+    setSelectedStatusOption(selectedValue);
   };
 
   useEffect(() => {
-    // Make the Axios GET request to http://127.0.0.1:5000/listingdetailsall
     axios
       .get("http://127.0.0.1:5000/listingdetailsall")
       .then((response) => {
-        const unique_depts = [];
-        const unique_depts_obj = [];
-        const final_data = response.data.data.final_list;
-        setJobPostings(final_data);
-        setFilteredJobPostings(final_data);
-
-        console.log(filteredJobPostings);
-
-        final_data.forEach(element => {
-            let dept = element.department;
-            if (!unique_depts.includes(dept)){
-                unique_depts.push(dept);
-            }
-        });
-
-        unique_depts.forEach(element => {
-            let obj = {
-                value: element,
-                label: element
-            }
-            unique_depts_obj.push(obj);
-        });
-        
-        setdepts(unique_depts_obj);
-
+        const uniqueDepts = [...new Set(response.data.data.final_list.map((job) => job.department))];
+        setJobPostings(response.data.data.final_list);
+        setFilteredJobPostings(response.data.data.final_list);
+        setDepts(uniqueDepts.map((dept) => ({ value: dept, label: dept })));
       })
       .catch((error) => {
-        // Handle any errors here
         console.error("Error:", error);
       });
-  }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+  }, []);
 
-  const deptFilter = () => {
-    console.log(selectedOptions);
+  const resetFilters = () => {
+    setSelectedDeptOptions([]);
+    setSelectedStatusOption(null);
+    setFilteredJobPostings(jobPostings);
+  };
 
-    // clone the job postings array
-    const filteredJobPostings = [...jobPostings];
+  const applyFilters = () => {
+    let filteredList = jobPostings;
 
-    // Get the selected departments
-    const selectedDepartments = selectedOptions.map(option => option.value);
-
-    if (selectedDepartments.length === 0) {
-      // If no departments are selected, show all job postings
-      setJobPostings(jobPostings);
-    } else {
-      // Filter job postings based on selected departments
-      const filteredJobPostings = filteredJobPostings.filter(posting => selectedDepartments.includes(posting.department));
-      setJobPostings(filteredJobPostings);
+    if (selectedDeptOptions.length > 0) {
+      const selectedDepartments = selectedDeptOptions.map((option) => option.value);
+      filteredList = filteredList.filter((job) => selectedDepartments.includes(job.department));
     }
+
+    if (selectedStatusOption) {
+      filteredList = filteredList.filter((job) => job.status === selectedStatusOption.value);
+    }
+
+    setFilteredJobPostings(filteredList);
   };
 
-  
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: 400, // Set your desired width
-    }),
-    menu: (provided) => ({
-      ...provided,
-      maxHeight: 200, // Set your desired height
-      overflowY: 'auto', // Enable vertical scrolling when content overflows
-    }),
-  };
-  
   return (
     <>
       <Navbar />
@@ -99,41 +71,72 @@ const AllJobs = () => {
         </span>
 
         <div className="">
-          <div className="flex justify-between">
-            <div>
-              <span>Filters</span>
-            </div>
-            <Select
+          <div>
+            <span>Filters</span>
+          </div>
+          <div className="grid grid-cols-2 mt-2">
+            <div className="grid grid-cols-2">
+              <Select
                 placeholder="Select Department"
                 options={depts}
                 isMulti={true}
-                styles={customStyles}
-                onChange={handleChange}
-                value={selectedOptions}
-            />
-            <button onClick={deptFilter}>
-                <span>Apply</span>
+                onChange={handleChangeDept}
+                value={selectedDeptOptions}
+              />
+    
+            </div>
+          </div>
+          <div className="grid grid-cols-2 mt-2">
+            <div className="grid grid-cols-2 mt-2">
+              <Select
+                placeholder="Select Status"
+                options={statusOptions}
+                onChange={handleChangeStatus}
+                value={selectedStatusOption}
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              onClick={resetFilters}
+              className="border-2 rounded-md bg-black text-white p-2 mt-2 hover:bg-white hover:text-black hover:shadow-lg"
+            >
+              <span>Reset Filters</span>
             </button>
-          
-
+            <button
+                onClick={applyFilters}
+                className="border-2 rounded-md bg-black text-white p-2 mt-2 hover:bg-white hover:text-black hover:shadow-lg"
+              >
+                <span>Apply Filters</span>
+              </button>
+          </div>
         </div>
 
-          <p className="text-sm text-gray-400 mt-4">
-            Showing {jobPostings.length} Jobs
-          </p>
-          {jobPostings.map((jobPostings) => (
-            <JobCard
-              name={jobPostings.name}
-              dpt={jobPostings.department}
-              location={jobPostings.location}
-              close_date={jobPostings.close_date}
-              listing_id={jobPostings.listing_id}
-            />
-          ))}
-        </div>
+        <p className="text-sm text-gray-400 mt-4">
+          Showing {filteredJobPostings.length} Jobs
+        </p>
+        {filteredJobPostings.map((job) => (
+          <JobCard
+            name={job.name}
+            dpt={job.department}
+            location={job.location}
+            close_date={job.close_date}
+            listing_id={job.listing_id}
+            status={job.status}
+          />
+        ))}
+
+        {
+          filteredJobPostings.length === 0 && (
+            <div className="flex flex-col items-center justify-center mt-10">
+              <span className="text-2xl font-bold">No Jobs Found</span>
+              <span className="text-gray-400">
+                Try changing the filters or searching for a different job.
+              </span>
+            </div>
+          )
+        }
       </div>
-
-      
     </>
   );
 };
