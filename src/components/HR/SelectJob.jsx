@@ -3,9 +3,16 @@ import JobCard from "./CreateJobCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Select from 'react-select'
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 
 const AllJobs = () => {
+  if(sessionStorage.getItem('role')!='hr'){
+    console.log('not hr!')
+    const navigate=useNavigate();
+    navigate('/login')
+    alert('You are not authorized to view this page! You have been redirected to login')
+  }
 
   const [jobPostings, setJobPostings] = useState([]);
   const [depts, setdepts] = useState([]);

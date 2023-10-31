@@ -7,7 +7,12 @@ import threedot from '../../assets/threedot.png'
 import axios from 'axios';
 
 const ViewMatch = () => {
-    
+  if(sessionStorage.getItem('role')!='hr'){
+    console.log('not hr!')
+    const navigate=useNavigate();
+    navigate('/login')
+    alert('You are not authorized to view this page! You have been redirected to login')
+  }
 
     const[roleApplicants, setRoleApplicants] = useState([]);
     const[role, setRole] = useState([]);
