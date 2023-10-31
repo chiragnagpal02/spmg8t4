@@ -11,7 +11,7 @@ import Home from './components/Home';
 import AllJobs from './components/Staff/AllJobs';
 import ApplyJobPage from './components/Staff/ApplyJobPage';
 import HRmatch from './components/HR/Viewmatch';
-import Login from './components/Staff/Login';
+import Login from './components/Staff/login';
 
 import SkillsProfile from './components/Staff/SkillsProfile';
 
