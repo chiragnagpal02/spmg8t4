@@ -17,8 +17,6 @@ app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
 
-# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root@localhost:3306/SBRP_G8T4"
-
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
@@ -901,53 +899,11 @@ def get_required_skills(role_id):
 @app.route("/get_staff_skills/<int:staff_id>", methods=["GET"])
 def get_staff_skills(staff_id):
     try:
-    #     # Query the database to retrieve skills for the given staff_id. also extract the ss_status from the StaffSkills table
 
-    #     skills = (
-    #         db.session.query(SkillDetails.skill_name, StaffSkills.ss_status)
-    #         .join(StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id)
-    #         .filter(StaffSkills.staff_id == staff_id)
-    #         .all()
-    #     )
-    #     print(skills)
-
-    #     if skills:
-    #         skill_names = [
-    #             skill[0] for skill in skills
-    #         ]
-    #         skill_status = [
-    #             skill[1] for skill in skills
-    #         ]
-    #         return jsonify(
-    #             {
-    #                 "code": 200,
-    #                 "data": {
-    #                     "staff_id": staff_id,
-    #                     "skills": skill_names,
-    #                     "skill_status": skill_status,
-    #                 },
-    #             }
-    #         )
-    #     else:
-    #         return (
-    #             jsonify(
-    #                 {"code": 404, "message": "Staff member not found or has no skills"}
-    #             ),
-    #             404,
-    #         )
-        
-    # except Exception as e:
-    #     return (
-    #         jsonify(
-    #             {
-    #                 "code": 500,
-    #                 "message": "An error occurred while retrieving staff skills",
-    #                 "error": str(e),
-    #             }
-    #         ),
-    #         500,
-    #     )
-
+        # Query the database to retrieve skills for the given staff_id
+        #skills = db.session.query(SkillDetails.skill_name).join(
+            #StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id
+        #).filter(StaffSkills.staff_id == staff_id, SkillDetails.skill_status == 'active', StaffSkills.ss_status == 'active').all() # Filter out inactive skills from staff skills and skill details
 
         skills = (
             db.session.query(SkillDetails.skill_name)
