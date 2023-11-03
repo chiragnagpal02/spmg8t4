@@ -6,8 +6,15 @@ import penlogo from "../../assets/edit.png";
 import binlogo from "../../assets/delete.png";
 import eyelogo from "./hrasset/eye.png";
 import axios from "axios";
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 const ViewJob = () => {
+  // if(sessionStorage.getItem('role')!='hr'){
+  //   console.log('not hr!')
+  //   const navigate=useNavigate();
+  //   navigate('/login')
+  //   alert('You are not authorized to view this page! You have been redirected to login')
+  // }
   
     const [jobPostings, setJobPostings] = useState([]);
     useEffect(() => {
@@ -39,7 +46,7 @@ const ViewJob = () => {
         var cell4 = row.insertCell();
         cell4.innerHTML=listing[i].role_listing_close
         var cell5 = row.insertCell();
-        cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+        cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
       }
       document.getElementById('Dept').addEventListener("change", changed); 
       document.getElementById('Status').addEventListener("change", changed); 
@@ -60,7 +67,7 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
           }
 
         }
@@ -77,7 +84,7 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
           }
         }
       }
@@ -111,7 +118,7 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
           }
         }
         }  

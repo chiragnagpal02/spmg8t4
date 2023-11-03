@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {Routes, Route, useNavigate} from 'react-router-dom';
+
 export default function Login() {
   const navigate=useNavigate();
   const containerStyle = {
@@ -71,7 +73,10 @@ export default function Login() {
                 .then((response) => {
                     setJobPostings(response.data) // You can process the response data as needed
                     var role = response.data.data.sys_role;
-                    sessionStorage.setItem("role", role)
+                    var id = response.data.data.staff_id;
+                    localStorage.setItem("role", role)
+                    localStorage.setItem("id", id)
+                    console.log(id)
                     navigate(`/${role}`)
                 })
                 .catch((error) => {
@@ -118,3 +123,5 @@ export default function Login() {
     </div>
   );
 }
+
+

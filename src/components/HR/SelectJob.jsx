@@ -2,10 +2,15 @@ import React from "react";
 import JobCard from "./CreateJobCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Select from 'react-select'
-
+import Select from "react-select";
 
 const AllJobs = () => {
+  // if(sessionStorage.getItem('role')!='hr'){
+  //   console.log('not hr!')
+  //   const navigate = useNavigate();
+  //   navigate('/login')
+  //   alert('You are not authorized to view this page! You have been redirected to login')
+  // }
 
   const [jobPostings, setJobPostings] = useState([]);
   const [depts, setdepts] = useState([]);
@@ -29,33 +34,31 @@ const AllJobs = () => {
         axios
           .get("http://127.0.0.1:5000/listingdetailsall")
           .then((response) => {
-
-            console.log(response)
+            console.log(response);
 
             const listing_final_data = response.data.data.final_list;
-            console.log(listing_final_data)
+            console.log(listing_final_data);
           })
           .catch((error) => {
             console.error("Error:", error);
           });
 
-        final_data.forEach(element => {
-            let dept = element.department;
-            if (!unique_depts.includes(dept)){
-                unique_depts.push(dept);
-            }
+        final_data.forEach((element) => {
+          let dept = element.department;
+          if (!unique_depts.includes(dept)) {
+            unique_depts.push(dept);
+          }
         });
 
-        unique_depts.forEach(element => {
-            let obj = {
-                value: element,
-                label: element
-            }
-            unique_depts_obj.push(obj);
+        unique_depts.forEach((element) => {
+          let obj = {
+            value: element,
+            label: element,
+          };
+          unique_depts_obj.push(obj);
         });
-        
+
         setdepts(unique_depts_obj);
-
       })
       .catch((error) => {
         // Handle any errors here
@@ -70,19 +73,20 @@ const AllJobs = () => {
     const filteredJobPostings = [...jobPostings];
 
     // Get the selected departments
-    const selectedDepartments = selectedOptions.map(option => option.value);
+    const selectedDepartments = selectedOptions.map((option) => option.value);
 
     if (selectedDepartments.length === 0) {
       // If no departments are selected, show all job postings
       setJobPostings(jobPostings);
-      console.log(jobPostings)
+      console.log(jobPostings);
     } else {
       // Filter job postings based on selected departments
-      const filteredJobPostings = filteredJobPostings.filter(posting => selectedDepartments.includes(posting.department));
+      const filteredJobPostings = filteredJobPostings.filter((posting) =>
+        selectedDepartments.includes(posting.department)
+      );
       setJobPostings(filteredJobPostings);
     }
   };
-
 
   const customStyles = {
     control: (provided) => ({
@@ -92,10 +96,10 @@ const AllJobs = () => {
     menu: (provided) => ({
       ...provided,
       maxHeight: 200, // Set your desired height
-      overflowY: 'auto', // Enable vertical scrolling when content overflows
+      overflowY: "auto", // Enable vertical scrolling when content overflows
     }),
   };
-  
+
   return (
     <>
       {/* <Navbar />
@@ -103,7 +107,7 @@ const AllJobs = () => {
 
       <div className="m-0 bg-gray-100 p-[3em] font-montserrat">
         <span className="flex flex-col items-center font-bold text-2xl mb-6">
-          All Jobs
+          Managers' Listings
         </span>
 
         <div className="">
@@ -112,19 +116,17 @@ const AllJobs = () => {
               <span>Filters</span>
             </div>
             <Select
-                placeholder="Select Department"
-                options={depts}
-                isMulti={true}
-                styles={customStyles}
-                onChange={handleChange}
-                value={selectedOptions}
+              placeholder="Select Department"
+              options={depts}
+              isMulti={true}
+              styles={customStyles}
+              onChange={handleChange}
+              value={selectedOptions}
             />
             <button onClick={deptFilter}>
-                <span>Apply</span>
+              <span>Apply</span>
             </button>
-          
-
-        </div>
+          </div>
 
           <p className="text-sm text-gray-400 mt-4">
             Showing {jobPostings.length} Jobs
@@ -139,8 +141,6 @@ const AllJobs = () => {
           ))}
         </div>
       </div>
-
-      
     </>
   );
 };

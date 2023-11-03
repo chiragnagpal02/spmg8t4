@@ -11,10 +11,15 @@ import Home from './components/Home';
 import AllJobs from './components/Staff/AllJobs';
 import ApplyJobPage from './components/Staff/ApplyJobPage';
 import HRmatch from './components/HR/Viewmatch';
-import HRupdate from './components/HR/UpdateJob';
 import Login from './components/Staff/Login';
+import StaffSkills from './components/Staff/StaffSkills';
+import HRupdate from './components/HR/UpdateJob';
 import SkillsProfile from './components/Staff/SkillsProfile';
 import CreateJob from './components/HR/CreateJob';
+
+import JobApplications from './components/Staff/JobApplications';
+
+
 
 class App extends React.Component {
   
@@ -32,7 +37,8 @@ class App extends React.Component {
         <Routes>
           {/* Other Routes */}
           <Route path="/staff/viewalljobs" element={<AllJobs />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/staff/myapps" element={<JobApplications />} />
+          <Route path="/" element={<Login />} />
           <Route path="/staff" element={<StaffPage />} />
           <Route path="/staff/apply/:listing_id" element={<ApplyJobPage />} />
           <Route path="/hr" element={<HRPage />} />
@@ -44,6 +50,9 @@ class App extends React.Component {
           <Route path="/login" element={<Login />} />
           {/* Route for User Profile */}
           <Route path="/profile" element={<SkillsProfile user={this.state.user} />} />
+
+          <Route path="/staffskills/:staff_id" element={<StaffSkills />} />
+          
         </Routes>
       </Router>
     );
