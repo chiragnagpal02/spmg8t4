@@ -907,7 +907,7 @@ def get_staff_skills(staff_id):
         # Query the database to retrieve skills for the given staff_id
         #skills = db.session.query(SkillDetails.skill_name).join(
             #StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id
-        #).filter(StaffSkills.staff_id == staff_id, SkillDetails.skill_status == 'active', StaffSkills.ss_status == 'active').all() # Filter out inactive skills from staff skills and skill details
+        #).filter(StaffSkills.staff_id == staff_id, StaffSkills.ss_status == 'active').all() # Filter out inactive skills from staff skills NOT skill details
 
         skills = (
             db.session.query(SkillDetails.skill_name)
