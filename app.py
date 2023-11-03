@@ -768,9 +768,12 @@ def apply_for_role():
     data = request.get_json()
 
     # Extract role_listing_id and staff_id from the request data
-    role_listing_id = data.get("role_listing_id")
+    role_listing_id = data.get("listing_id")
     staff_id = data.get("staff_id")
+    role_app_status = "applied"
+    role_app_ts_create = datetime.datetime.now()
 
+    final_data = [role_listing_id, staff_id, role_app_status, role_app_ts_create]
     # Check if staff already applied for the role. If they already applied, prevent them from applying again
     existing_application = RoleApplications.query.filter_by(
         role_listing_id=role_listing_id, staff_id=staff_id
@@ -788,7 +791,7 @@ def apply_for_role():
         )
 
     # Create a new role application
-    role_application = RoleApplications(**data)
+    role_application = RoleApplications(final_data[0], final_data[1], final_data[2], final_data[3])
 
     try:
         db.session.add(role_application)
@@ -988,5 +991,108 @@ def view_role_skill_match(staff_id, role_listing_id):
         }
     ), 200
 """
+@app.route("/get_application_status/<int:staff_id>/<int:role_listing_id>", methods=["GET"])
+def get_application_status(staff_id, role_listing_id):
+    try:
+        # Query the database to retrieve the application status for the given staff_id and role_listing_id
+        application_status = (
+            db.session.query(RoleApplications.role_app_status)
+            .filter(
+                RoleApplications.staff_id == staff_id,
+                RoleApplications.role_listing_id == role_listing_id,
+            )
+            .first()
+        )
+        print(application_status)
+
+        if application_status:
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": {
+                        "staff_id": staff_id,
+                        "role_listing_id": role_listing_id,
+                        "application_status": application_status[0],
+                    },
+                }
+            ), 200
+        else:
+            return (
+                jsonify(
+                    {
+                        "code": 404,
+                        "message": "Staff or role listing not found or no application found.",
+                    }
+                ),
+                
+            ), 400
+
+    except Exception as e:
+        return (
+            jsonify(
+                {
+                    "code": 500,
+                    "message": "An error occurred while retrieving application status",
+                    "error": str(e),
+                }
+            ),
+            500,
+        )
+
+
+# Get applied applications for a staff id 
+@app.route("/get_applied_applications/<int:staff_id>", methods=["GET"])
+def get_applied_applications(staff_id):
+    try:
+        # Query the database to retrieve the application status for the given staff_id and role_listing_id
+        applied_applications = (
+            db.session.query(RoleApplications.role_listing_id)
+            .filter(
+                RoleApplications.staff_id == staff_id,
+                RoleApplications.role_app_status == "applied",
+            )
+            .all()
+        )
+        print(applied_applications)
+
+        if applied_applications:
+            applied_applications_list = [
+                application[0] for application in applied_applications
+            ]
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": {
+                        "staff_id": staff_id,
+                        "applied_applications": applied_applications_list,
+                    },
+                }
+            ), 200
+        else:
+            return (
+                jsonify(
+                    {
+                        "code": 404,
+                        "message": "Staff or role listing not found or no application found.",
+                    }
+                ),
+                404,
+            )
+
+    except Exception as e:
+        return (
+            jsonify(
+                {
+                    "code": 500,
+                    "message": "An error occurred while retrieving application status",
+                    "error": str(e),
+                }
+            ),
+            500,
+        )
+ 
+
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
