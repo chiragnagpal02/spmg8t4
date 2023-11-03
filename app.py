@@ -12,8 +12,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-#app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
-app.config["SQLALCHEMY_DATABASE_URI"]="mysql+mysqlconnector://spm@localhost:8889/SBRP_G8T4"
+app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
 
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -800,7 +799,7 @@ def get_staff_skills(staff_id):
         # Query the database to retrieve skills for the given staff_id
         skills = db.session.query(SkillDetails.skill_name).join(
             StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id
-        ).filter(StaffSkills.staff_id == staff_id).all()
+        ).filter(StaffSkills.staff_id == staff_id, SkillDetails.skill_status == 'active', StaffSkills.ss_status == 'active').all() # Filter out inactive skills from staff skills and skill details
 
         if skills:
             skill_names = [skill[0] for skill in skills]  # Extract skill names from the result

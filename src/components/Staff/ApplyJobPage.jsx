@@ -124,7 +124,7 @@ const ApplyJobPage = () => {
           responsive:true},
         datasets: [
           {
-            label: 'Job Skills Match',
+            label: ' No. of Skills',
             data: [matchedSkillsNum, mismatchedSkillsNum],
             backgroundColor: [backgroundColor,missingColor],
             borderColor: [backgroundColor,missingColor]
