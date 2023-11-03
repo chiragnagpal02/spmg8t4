@@ -559,7 +559,7 @@ def create_role_listing(role_id, staff_id):
     role_listing_location = request.json.get("location")
 
     today = datetime.datetime.now()
-    if appStartDate < today:
+    if appStartDate.date() < today.date():
         return (
             jsonify(
                 {"code": 400, "data": {"message": "DateTime cannot be in the past"}}
