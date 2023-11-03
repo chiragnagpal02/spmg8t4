@@ -46,7 +46,10 @@ const CreateJob = () => {
         event.preventDefault();
         console.log(inputs)
 
-        axios.post(`http://127.0.0.1:5000/create_role_listing/${role_id}/7`, inputs).then(function(response){
+        const staff_id = localStorage.getItem('id')
+        console.log(staff_id)
+
+        axios.post(`http://127.0.0.1:5000/create_role_listing/${role_id}/${staff_id}`, inputs).then(function(response){
             console.log(response.data);
         });
     }
@@ -183,6 +186,13 @@ const CreateJob = () => {
                                 Location
                             </label>
                             <input onChange={handleChange} name="location" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Job Location..." />
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mt-2" for="location">
+                                Source Manager
+                            </label>
+                            <input onChange={handleChange} name="manager_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="position" type="text" placeholder="Manager Id..." />
                         </div>
 
                         <div>
