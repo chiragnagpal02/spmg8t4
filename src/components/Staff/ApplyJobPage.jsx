@@ -9,29 +9,69 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import SkillMatch from "./SkillMatch";
 
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const applyJob = (listingid) => {
+  const arr = {
+    "staff_id": localStorage.getItem('id'),
+    "listing_id": listingid
+  };
+
+  axios.post(`http://127.0.0.1:5000/apply_for_role`, arr)
+  .then((response) => {
+    console.log(response.data);
+    // redirect to all jobs page
+    window.location.href = "/staff/viewalljobs";
+  }
+  )
+  .catch((error) => {
+    console.error(error);
+  });
+};
 
 const ApplyJobPage = () => {
   const [posting, setPosting] = useState({});
+
   const [requiredSkills, setRequiredSkills] = useState([]);
+
   const [staffSkills, setStaffSkills] = useState([]);
+
   const [skills, setSkills] = useState([]);
+
   const [chartData, setChartData] = useState(null);
+
   const [message, setMessage] = useState(null);
+  
   const [matchPercentage, setMatchPercentage] = useState(0);
+
+  const [applicationStatus, setApplicationStatus] = useState(null);
+
   const listing_id = useParams().listing_id;
+  const staff_id = localStorage.getItem('id');
+
 
   useEffect(() => {
+
+    axios.get(`http://127.0.0.1:5000/get_application_status/${staff_id}/${listing_id}`)
+    .then((response) => {
+      // console.log(response.data.code)
+      setApplicationStatus(response.data.code);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+      
+
     // Make the Axios GET request to http://127.0.0.1:5000/listing/{listing_id}
     axios
       .get(`http://127.0.0.1:5000/listing/${listing_id}`)
       .then((response) => {
         const roleId = response.data.data.id;
-        console.log('id:', roleId);
+        // console.log('id:', roleId);
 
         setPosting(response.data.data);
-        console.log('Posting data:', response.data);
+        // console.log('Posting data:', response.data);
 
         axios
           .get(`http://127.0.0.1:5000/get_required_skills/${roleId}`)
@@ -49,13 +89,13 @@ const ApplyJobPage = () => {
       });
   }, [listing_id]);
 
-  useEffect(() => {
-    console.log("requiredSkills", requiredSkills);
-  }, [requiredSkills]);
+  // useEffect(() => {
+  //   // console.log("requiredSkills", requiredSkills);
+  // }, [requiredSkills]);
 
   useEffect(() => {
     // Get Staff Skills from Staff ID
-    const staffId = 123456789; // Replace with the actual staff ID
+    const staffId = staff_id; // Replace with the actual staff ID
 
     axios
       .get(`http://127.0.0.1:5000/get_staff_skills/${staffId}`)
@@ -140,7 +180,7 @@ const ApplyJobPage = () => {
     else {
       const message = "No Required Skills"
       setMessage(message)
-      console.log('hellooooo')
+      // console.log('hellooooo')
       //NoRequiredSkillsAlert();
     }
 }, [requiredSkills, staffSkills]);
@@ -151,12 +191,7 @@ const ApplyJobPage = () => {
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   
-  
-  const getRandomColorClass = () => {
-    const colors = ["red", "blue", "green", "yellow", "purple"];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    return `bg-${randomColor}-300`;
-  };
+
 
   const AlertSweet = () => {
     Swal.fire({
@@ -169,12 +204,14 @@ const ApplyJobPage = () => {
       confirmButtonText: "Yes, apply for this job!",
     }).then((result) => {
       if (result.isConfirmed) {
+        applyJob(listing_id);
         Swal.fire({
           title: "Applied!",
           text: "You have successfully applied for this job!",
           icon: "success",
           confirmButtonColor: "#000000",
         });
+        
       }
     });
   };
@@ -187,13 +224,6 @@ const ApplyJobPage = () => {
     });
   };
 
-  // const NoRequiredSkillsAlert = () => {
-  //   Swal.fire({
-  //     title: "No Required Skills!",
-  //     icon: "info",
-  //     confirmButtonColor: "#000000"
-  //   });
-  // };
 
   
   const FullSkillsMatchAlert = () => {
@@ -214,16 +244,35 @@ const ApplyJobPage = () => {
       </div>
 
       <div className="mt-4 flex flexbox justify-center">
-        <Button
+      {
+        applicationStatus === 200 ? (
+          <Button
+          onClick={AlertSweet}
+          style={{
+            backgroundColor: "#ffffff",
+            border: "1px solid #000000",
+          }}
+          variant="contained"
+          color="success"
+          disabled
+        >
+          Already Applied!
+        </Button>
+        ) : (
+          <Button
           onClick={AlertSweet}
           style={{
             backgroundColor: "#000000",
           }}
           variant="contained"
           color="success"
-        >
-          Apply for this job
+           > 
+          APPLY FOR JOB
         </Button>
+        )
+      }
+      
+        
       </div>
       <div className="MainDiv p-4 mt-5">
         <div className="descriptionDiv md:grid grid-cols-2">

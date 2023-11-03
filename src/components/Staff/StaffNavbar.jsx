@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import { styles } from "../styles";
-// import { navLinks } from "../constants";
+
 import Logo from "../../assets/images/rocket.svg";
 import User from "../../assets/images/user.svg";
 import { Dropdown, Navbar, Avatar } from "flowbite-react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
 export default function NavbarWithDropdown() {
-  if (sessionStorage.getItem("role") != "staff") {
-    console.log("not staff!");
-    const navigate = useNavigate();
-    navigate("/login");
-    alert(
-      "You are not authorized to view this page! You have been redirected to login"
-    );
-  }
+  // if (sessionStorage.getItem("role") != "staff") {
+  //   console.log("not staff!");
+  //   const navigate = useNavigate();
+  //   navigate("/login");
+  //   alert(
+  //     "You are not authorized to view this page! You have been redirected to login"
+  //   );
+  // }
   return (
     <Navbar fluid rounded>
       <Navbar.Brand href="/staff">
@@ -45,11 +44,13 @@ export default function NavbarWithDropdown() {
               name@flowbite.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Applications</Dropdown.Item>
+          <Link to={"/staff/myapps"}>
+            <Dropdown.Item>My Applications</Dropdown.Item>
+          </Link>
+
           <Dropdown.Divider />
           <Link to={"/login"}>
             <Dropdown.Item>Sign out</Dropdown.Item>
-            {sessionStorage.clear()}
           </Link>
         </Dropdown>
         <Navbar.Toggle />

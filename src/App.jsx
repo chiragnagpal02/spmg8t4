@@ -17,6 +17,8 @@ import HRupdate from './components/HR/UpdateJob';
 import SkillsProfile from './components/Staff/SkillsProfile';
 import CreateJob from './components/HR/CreateJob';
 
+import JobApplications from './components/Staff/JobApplications';
+
 
 
 class App extends React.Component {
@@ -35,6 +37,7 @@ class App extends React.Component {
         <Routes>
           {/* Other Routes */}
           <Route path="/staff/viewalljobs" element={<AllJobs />} />
+          <Route path="/staff/myapps" element={<JobApplications />} />
           <Route path="/" element={<Login />} />
           <Route path="/staff" element={<StaffPage />} />
           <Route path="/staff/apply/:listing_id" element={<ApplyJobPage />} />
