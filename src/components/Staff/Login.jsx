@@ -88,6 +88,7 @@ export default function Login() {
           // Handle any errors here
           console.error('Error:', error);
           setErrorMessage('Invalid username or password');
+          
         });
     });
   }, []);
