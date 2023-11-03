@@ -98,7 +98,7 @@ const ApplyJobPage = () => {
     const staffId = staff_id; // Replace with the actual staff ID
 
     axios
-      .get(`http://127.0.0.1:5000/get_staff_skills/${staffId}`)
+      .get(`http://127.0.0.1:5000/get_staff_skills/${staff_id}`)
       .then((response) => {
         const allSkills = response.data.data.skills;
 
@@ -458,10 +458,10 @@ const ApplyJobPage = () => {
               <div className="bg-gray-50 rounded p-3 mt-5">
                 <div className="grid grid-cols-3 gap-5 margin-top-10">
                   {skills.map((skill) => {
-                    console.log(getRandomColorClass());
                     return (
                       <div key={skill}>
-                        <h2 className={`${getRandomColorClass()}`}>{skill}</h2>
+                        {skill}
+                       
                       </div>
                     );
                   })}
