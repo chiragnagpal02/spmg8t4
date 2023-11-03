@@ -64,11 +64,8 @@ const ApplyJobPage = () => {
 
         console.log('Staff all skills data:', allSkills);
 
-        const activeSkills = allSkills.filter(skill => skill.ss_status === "active");
-
-        setStaffSkills(activeSkills);
-
         console.log('Staff active skills:', allSkills);
+        setStaffSkills(allSkills);
 
       })
       .catch((error) => {
@@ -87,6 +84,10 @@ const ApplyJobPage = () => {
         const matchPercentage = requiredSkills.skills.length > 0
       ? Math.round((matchedSkillsNum / requiredSkills.skills.length) * 100)
       : 0; // Set to 0 if there are no required skills
+
+      // if (requiredSkills.skills.length === 0) {
+      //   NoRequiredSkillsAlert();
+      // }
 
       if (matchPercentage === 0) {
         NoSkillsMatchAlert();
@@ -139,6 +140,8 @@ const ApplyJobPage = () => {
     else {
       const message = "No Required Skills"
       setMessage(message)
+      console.log('hellooooo')
+      //NoRequiredSkillsAlert();
     }
 }, [requiredSkills, staffSkills]);
 
@@ -183,6 +186,14 @@ const ApplyJobPage = () => {
       confirmButtonColor: "#000000"
     });
   };
+
+  // const NoRequiredSkillsAlert = () => {
+  //   Swal.fire({
+  //     title: "No Required Skills!",
+  //     icon: "info",
+  //     confirmButtonColor: "#000000"
+  //   });
+  // };
 
   
   const FullSkillsMatchAlert = () => {
@@ -373,8 +384,9 @@ const ApplyJobPage = () => {
                 <h2 className="mt-2">{posting.location}</h2>
               </div>
             </div>
-            <div className="border rounded p-3 mt-5">
-              <h2 className="mb-5 font-bold">Skills Match</h2>
+            {requiredSkills.skills && requiredSkills.skills.length > 0 ? (
+        <div className="border rounded p-3 mt-5">
+          <h2 className="mb-5 font-bold">Skills Match</h2>
 
               <div className="flex items-center">
                 <div style={{ width: "50%", height: "50%" }}>
@@ -386,18 +398,10 @@ const ApplyJobPage = () => {
                 </div>
 
                 <div className="ml-5 text-center">
-                  <p>
-                    {requiredSkills.skills &&
-                    requiredSkills.skills.length > 0 ? (
-                      <>
-                        Match Percentage:{" "}
-                        <strong className="text">{matchPercentage}%</strong>
-                      </>
-                    ) : (
-                      <strong className="text" style={{ color: 'green' }}>No Required Skills</strong>
-                    )}
-                  </p>
-                </div>
+              <p>
+                Match Percentage: <strong className="text">{matchPercentage}%</strong>
+              </p>
+            </div>
               </div>
 
               <strong className="text">Required Skills</strong>
@@ -415,6 +419,11 @@ const ApplyJobPage = () => {
                 </div>
               </div>
             </div>
+            ) : (
+              <p className="text" style={{ color: "green", fontSize: "22px", textAlign: "center", fontWeight: "bold", padding: "10px" }}>
+                No Skills Required!
+              </p>
+            )}
           </div>
         </div>
       </div>
