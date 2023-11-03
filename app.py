@@ -557,6 +557,7 @@ def create_role_listing(role_id, staff_id):
     role_listing_salary = request.json.get("salary")
     role_listing_salary = int(role_listing_salary)
     role_listing_location = request.json.get("location")
+    role_listing_source_manager = request.json.get("manager_id")
 
     today = datetime.datetime.now()
     if appStartDate.date() < today.date():
@@ -568,7 +569,7 @@ def create_role_listing(role_id, staff_id):
         )
 
 
-    if appEndDate < appStartDate:
+    if appEndDate.date() < appStartDate.date():
         return (
             jsonify(
                 {
@@ -585,7 +586,7 @@ def create_role_listing(role_id, staff_id):
         role_listing_id = new_role_listing_id, 
         role_id = role_id,
         role_listing_desc = listing_desc,
-        role_listing_source = staff_id,
+        role_listing_source = role_listing_source_manager,
         role_listing_open = appStartDate,
         role_listing_close = appEndDate,
         role_listing_creator = staff_id,
