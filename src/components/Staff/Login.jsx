@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from "react";
-import axios from "axios";
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
 export default function Login() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -58,35 +59,40 @@ export default function Login() {
   };
 
   const [jobPostings, setJobPostings] = useState([]);
-    useEffect(() => {
-      
-        // Make the Axios GET request to http://127.0.0.1:5000/roledetails
-        document.getElementById("sub_btn").addEventListener("click", function(event){
-            event.preventDefault()
-            var username = document.getElementById("uname").value;
-            var password = document.getElementById("password").value;
-            console.log(username);
-            console.log(password);
-            axios.get(`http://127.0.0.1:5000/login/${username}/${password}`)
-                .then((response) => {
-                    setJobPostings(response.data) // You can process the response data as needed
-                    var role = response.data.data.sys_role;
-                    var id = response.data.data.staff_id;
-                    sessionStorage.setItem("role", role)
-                    sessionStorage.setItem("id", id)
-                    console.log(id)
-                    navigate(`/${role}`)
-                })
-                .catch((error) => {
-                    // Handle any errors here
-                    console.error('Error:', error);
-                    alert("Invalid username or password")
-                });
+  const [errorMessage, setErrorMessage] = useState(''); // New state for error message
+
+  useEffect(() => {
+    // Make the Axios GET request to http://127.0.0.1:5000/roledetails
+    document.getElementById('sub_btn').addEventListener('click', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('uname').value;
+      const password = document.getElementById('password').value;
+
+      if (!username) {
+        setErrorMessage('Username field cannot be left empty');
+        return;
+      }
+
+      axios
+        .get(`http://127.0.0.1:5000/login/${username}/${password}`)
+        .then((response) => {
+          setJobPostings(response.data); // You can process the response data as needed
+          const role = response.data.data.sys_role;
+          const id = response.data.data.staff_id;
+          sessionStorage.setItem('role', role);
+          sessionStorage.setItem('id', id);
+          console.log(id);
+          navigate(`/${role}`);
+        })
+        .catch((error) => {
+          // Handle any errors here
+          console.error('Error:', error);
+          setErrorMessage('Invalid username or password');
         });
-        
-      }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
-    
-    const listing=(jobPostings.rolelistings);
+    });
+  }, []);
+
+  const listing = jobPostings.rolelistings;
 
   return (
     <div style={containerStyle}>
@@ -101,13 +107,22 @@ export default function Login() {
         </p>
         <p>
           <h2 style={textStyle}>Password:</h2>
-          <input id="password" type="password" style={inputStyle} placeholder="Enter password" name="password" required className="form-control" />
+          <input
+            id="password"
+            type="password"
+            style={inputStyle}
+            placeholder="Enter password"
+            name="password"
+            required
+            className="form-control"
+          />
         </p>
         <p>
           <button id="sub_btn" type="submit" style={buttonStyle}>
             Login
           </button>
         </p>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>} {/* Display error message */}
       </form>
       <footer>
         <p>
