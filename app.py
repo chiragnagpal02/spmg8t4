@@ -791,6 +791,15 @@ def get_role_details(role_listing_id):
     if not role_details:
         return jsonify({"code": 404, "message": "Role not found."}), 404
 
+    role_skills = (
+    db.session.query(SkillDetails.skill_name)
+    .join(RoleSkills, RoleSkills.skill_id == SkillDetails.skill_id)
+    .filter(RoleSkills.role_id == role_details.RoleListings.role_id)
+    .all()
+    )
+
+    skills_list = [skill[0] for skill in role_skills]
+    
     role_details_data = {
         "role_listing_desc": role_details.role_listing_desc,
         "role_listing_open": role_details.role_listing_open,
@@ -803,7 +812,8 @@ def get_role_details(role_listing_id):
         "role_description": role_details.role_description,
         "role_status": role_details.role_status,
         "name": role_details.fname + " " + role_details.lname,
-        "role_listing_source": role_details.role_listing_source
+        "role_listing_source": role_details.role_listing_source,
+        "skills": skills_list
     }
 
     return jsonify({"code": 200, "data": role_details_data}), 200
