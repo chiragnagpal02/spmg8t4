@@ -4,6 +4,7 @@ import Modal from './Modal';
 import axios from "axios";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
+import HRNavbar from './HRNavbar';
 
 const UpdateJob = () => {
     const [inputs, setInputs] = useState([]);
@@ -28,7 +29,7 @@ const UpdateJob = () => {
         setInputs(values => ({...values, [name]: value}))
     }
 
-    const staff_id = localStorage.getItem('id')
+    const staff_id = parseInt(localStorage.getItem('id'))
 
     useEffect(() => {
         // Make the Axios GET request to http://127.0.0.1:5000/get_role_details/<role_listing_id>
@@ -104,7 +105,7 @@ const UpdateJob = () => {
     return (
         <>
 
-  
+        <HRNavbar />
    
       <div className="bg-[#338573] h-[40px] flex justify-center items-center">
         <span className="text-white text-1xl ">Update Job Posting</span>
