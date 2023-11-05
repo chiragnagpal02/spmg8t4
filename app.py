@@ -517,8 +517,12 @@ def get_all_open():
 
 def generate_random_role_listing_id():
     while True:
-        # Generate a random ID, for example, a 10-character string
-        random_id = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        # Generate a random ID, for example, a 10-character integer 
+
+        random_id = random.randint(1, 100000)
+        
+        # random_id = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        
 
         # Check if the generated ID already exists in the database
         if not RoleListings.query.filter_by(role_listing_id=random_id).first():

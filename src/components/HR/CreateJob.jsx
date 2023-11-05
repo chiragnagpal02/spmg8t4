@@ -5,6 +5,7 @@ import Modal from './Modal';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
+import HRNavbar from './HRNavbar';
 
 
 const CreateJob = () => {
@@ -105,6 +106,7 @@ const CreateJob = () => {
     return (
         <>
 
+        <HRNavbar />
   
    
       <div className="bg-[#338573] h-[40px] flex justify-center items-center">

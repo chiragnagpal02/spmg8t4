@@ -5,6 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const SkillMatch = ({ chartData, matchPercentage }) => {
+    // const staffId = localStorage.getItem("id");
     return (
         <div className="border rounded p-3 mt-5">
         <h2 className="mb-5 font-bold">Skills Required</h2>
