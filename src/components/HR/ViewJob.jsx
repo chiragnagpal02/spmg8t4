@@ -46,7 +46,7 @@ const ViewJob = () => {
         var cell4 = row.insertCell();
         cell4.innerHTML=listing[i].role_listing_close
         var cell5 = row.insertCell();
-        cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+        cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
       }
       document.getElementById('Dept').addEventListener("change", changed); 
       document.getElementById('Status').addEventListener("change", changed); 
@@ -67,7 +67,7 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
           }
 
         }
@@ -84,7 +84,7 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
           }
         }
       }
@@ -101,7 +101,7 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
           }
         }
         }
@@ -118,7 +118,7 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
           }
         }
         }  

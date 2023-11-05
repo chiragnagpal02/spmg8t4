@@ -15,8 +15,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 
-#app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://spm@localhost:8889/SBRP_G8T4"
+app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
 
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -636,12 +635,36 @@ def update_role_listing(role_listing_id):
 
     data = request.get_json()
     print(data)
+    today = datetime.datetime.now()
     if data["role_listing_desc"]:
         rolelisting.role_listing_desc = data["role_listing_desc"]
     if data["role_listing_open"]:
-        rolelisting.role_listing_open = data["role_listing_open"]
+        rolelistingopen = datetime.datetime.strptime(data["role_listing_open"], "%Y-%m-%d")
+        if rolelistingopen.date() < today.date():
+            return (
+                jsonify(
+                    {"code": 400, "data": {"message": "DateTime cannot be in the past"}}
+                ),
+                400,
+            )
+        else:
+            rolelisting.role_listing_open = rolelistingopen
     if data["role_listing_close"]:
-        rolelisting.role_listing_close = data["role_listing_close"]
+        rolelistingclose = datetime.datetime.strptime(data["role_listing_close"], "%Y-%m-%d")
+        if rolelistingclose.date() < rolelistingopen.date():
+            return (
+                jsonify(
+                    {
+                        "code": 400,
+                        "data": {
+                            "message": "Application end date cannot be before start date"
+                        },
+                    }
+                ),
+                400,
+            )
+        else:
+            rolelisting.role_listing_close = rolelistingclose
     if data["role_listing_updater"]:
         rolelisting.role_listing_updater = data["role_listing_updater"]
     rolelisting.role_listing_ts_update = datetime.datetime.now()
@@ -649,6 +672,8 @@ def update_role_listing(role_listing_id):
         rolelisting.role_listing_type = data["role_listing_type"]
     if data["role_listing_department"]:
         rolelisting.role_listing_department = data["role_listing_department"]
+    if data["role_listing_source"]:
+        rolelisting.role_listing_source = data["role_listing_source"]
     if data["role_listing_salary"]:
         rolelisting.role_listing_salary = data["role_listing_salary"]
     if data["role_listing_location"]:
@@ -670,6 +695,14 @@ def update_role_listing(role_listing_id):
             500,
         )
 
+@app.route("/get_all_managers")
+def get_all_managers():
+    managers = StaffDetails.query.filter_by(sys_role="manager").all()
+    if not managers:
+        return jsonify({"code": 404, "message": "There are no managers."}), 404
+    
+    managers_list = [{"staff_id": manager.staff_id, "fname": manager.fname, "lname": manager.lname} for manager in managers]
+    return jsonify(managers_list)
 
 @app.route(
     "/get_role_applicant_skills/<int:role_listing_id>"
@@ -731,6 +764,7 @@ def get_role_details(role_listing_id):
         db.session.query(
             RoleListings,
             RoleListings.role_listing_desc,
+            RoleListings.role_listing_source,
             RoleListings.role_listing_open,
             RoleListings.role_listing_close,
             RoleListings.role_listing_type,
@@ -740,8 +774,12 @@ def get_role_details(role_listing_id):
             RoleDetails.role_name,
             RoleDetails.role_description,
             RoleDetails.role_status,
+            StaffDetails.fname,
+            StaffDetails.lname,
+            RoleListings.role_listing_source
         )
         .join(RoleDetails, RoleDetails.role_id == RoleListings.role_id)
+        .join(StaffDetails, StaffDetails.staff_id == RoleListings.role_listing_source)
         .filter(RoleListings.role_listing_id == role_listing_id)
         .first()
     )
@@ -760,6 +798,8 @@ def get_role_details(role_listing_id):
         "role_name": role_details.role_name,
         "role_description": role_details.role_description,
         "role_status": role_details.role_status,
+        "name": role_details.fname + " " + role_details.lname,
+        "role_listing_source": role_details.role_listing_source
     }
 
     return jsonify({"code": 200, "data": role_details_data}), 200
