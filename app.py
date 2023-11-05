@@ -450,6 +450,26 @@ def get_listing_details(role_listing_id):
     for listing in all_listings["data"]["final_list"]:
         if listing["listing_id"] == role_listing_id:
             return jsonify({"code": 200, "data": listing})
+        
+@app.route("/get_role_listing/<int:role_listing_id>")
+def get_role_listing(role_listing_id):
+    # I want to call an endpoint that returns the role listing details - /listingdetailsall - and then return the details of the role listing with the role_listing_id
+
+    # Get all the role listing details
+    all_listings = requests.get(
+        "http://127.0.0.1:5000/rolelistings"
+    ).json()  # This is a list of dictionaries
+
+    # Get the role listing details with the role_listing_id
+    if not all_listings:    
+       return jsonify({"code": 404, "message": "Role listing not found."}), 40
+    else:
+        for listing in all_listings["data"]['rolelistings']:
+            print("Listing: ", listing)
+            print(role_listing_id)
+            if listing["role_id"] == role_listing_id:
+                return jsonify({"code": 200, "data": listing})
+    
 
 
 @app.route("/details/<int:role_id>")
@@ -561,7 +581,7 @@ def create_role_listing(role_id, staff_id):
     role_listing_salary = request.json.get("salary")
     role_listing_salary = int(role_listing_salary)
     role_listing_location = request.json.get("location")
-    role_listing_source_manager = request.json.get("manager_id")
+    role_listing_source_manager = request.json.get("role_listing_source")
 
     today = datetime.datetime.now()
     if appStartDate.date() < today.date():
