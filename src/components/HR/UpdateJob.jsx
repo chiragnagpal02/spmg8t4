@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Modal from './Modal';
 import axios from "axios";
-
+import Swal from "sweetalert2";
+import Button from "@mui/material/Button";
 
 const UpdateJob = () => {
     const [inputs, setInputs] = useState([]);
@@ -11,6 +12,7 @@ const UpdateJob = () => {
     const currentURL = window.location.href;
     const parts = currentURL.split('/');
     const role_listing_id = parts[parts.length - 1];
+    const [managerData, setManagerData] = useState([]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -26,6 +28,8 @@ const UpdateJob = () => {
         setInputs(values => ({...values, [name]: value}))
     }
 
+    const staff_id = localStorage.getItem('id')
+
     useEffect(() => {
         // Make the Axios GET request to http://127.0.0.1:5000/get_role_details/<role_listing_id>
         axios
@@ -36,7 +40,7 @@ const UpdateJob = () => {
                 ...data,
                 role_listing_open: new Date(data.role_listing_open).toISOString().split('T')[0],
                 role_listing_close: new Date(data.role_listing_close).toISOString().split('T')[0],
-                role_listing_updater: 123456788 //To be updated once login is implemented
+                role_listing_updater: staff_id
             };
             setRole(roleWithFormattedDates);
             setInputs(roleWithFormattedDates);
@@ -47,6 +51,19 @@ const UpdateJob = () => {
           });
       }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
 
+      useEffect(() => {
+        axios
+          .get(`http://127.0.0.1:5000/get_all_managers`)
+          .then((response) => {
+            const managerData = response.data;
+            setManagerData(managerData);
+          })
+          .catch((error) => {
+            // Handle any errors here
+            console.error("Error:", error);
+          });
+      }, []); // The empty dependencies array ensures it runs only once on component mount
+      
       const updatePosting = (event) => {
         event.preventDefault();
     
@@ -56,13 +73,34 @@ const UpdateJob = () => {
             ...inputs,
         }));
     
-        axios.put(`http://127.0.0.1:5000/update_role_listing/${role_listing_id}`, inputs).then(function(response){
-            console.log(response.data);
-        });
     };
 
-    console.log(role.role_listing_department)
+    const AlertSweet = () => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You will not be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "green",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios.put(`http://127.0.0.1:5000/update_role_listing/${role_listing_id}`, inputs).then(function(response){
+                console.log(response.data);
+            });
+            Swal.fire({
+              title: "Created!",
+              text: "You have successfully updated this job!",
+              icon: "success",
+              confirmButtonColor: "#000000",
+            });
+          }
+        });
+      };
 
+    console.log(role.role_listing_department)
+    console.log(staff_id)
     return (
         <>
 
@@ -99,6 +137,19 @@ const UpdateJob = () => {
                                 <option value="Marketing">Marketing</option>
                                 <option value="Finance">Finance</option>
                                 <option value="Accountancy">Accountancy</option> 
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="role_listing_source" className="block text-gray-700 text-sm font-bold mb-2">
+                                Source Manager
+                            </label>
+                            <select onChange={handleChange} name="role_listing_source" id="role_listing_department" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={inputs.role_listing_source}>
+                                {managerData.map(manager => (
+                                <option key={manager.staff_id} value={manager.staff_id}>
+                                    {manager.fname} {manager.lname}
+                                </option>
+                                ))}
                             </select>
                         </div>
 
@@ -157,14 +208,18 @@ const UpdateJob = () => {
                             </select>
                         </div>
 
-                        <div className='col-span-2' >
-                            <button type="submit" className='bg-[#338573] hover:bg-[#338573] text-white font-bold py-2 px-4 rounded'
-                            onClick={() => showModal()}>
-                                Add New Posting
-                            </button>
-
-                            <Modal show={isModalVisible} onClose={hideModal} />
-                       
+                        <div className="mt-4 flex flexbox justify-center">
+                            <Button
+                                type="submit"
+                                onClick={AlertSweet}
+                                style={{
+                                    backgroundColor: "#000000",
+                                }}
+                                variant="contained"
+                                color="success"
+                            >
+                            Update posting
+                            </Button>
                         </div>
                     </div>
                 </form>

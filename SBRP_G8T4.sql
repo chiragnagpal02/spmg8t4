@@ -120,7 +120,8 @@ insert into STAFF_DETAILS values (123456789, 'AH GAO', 'TAN', 'FINANCE', 'tan_ah
 ('123456123', 'FAUD', 'NIZAM', 'SALES', 'faud_nizam@all-in-one.com.sg', '60-03-21345678', 'Unit 3A-07, Tower A, The Vertical Business Suite, 8, Jalan Kerinchi, Bangsar South, 59200 Kuala Lumpur, Malaysia', 'manager'),
 ('1', 'JOHN', 'DOE', 'IT', 'John_doe@ all-in-one.com.sg', '65-5824-7888', '1 Scotts Rd, #24-10 Shaw Centre, Singapore 228208', 'inactive'),
 (123456785, 'JACK', 'SMITH', 'IT', 'jack_smith@all-in-one.com.sg', '65-1234-5677', '60 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409051', 'manager'),
-(123456784, 'DAVID', 'JOHNSON', 'FINANCE', 'tan_ah_gao@all-in-one.com.sg', '60-03-21345677', 'Unit 3A-07, Tower A, The Vertical Business Suite, 8, Jalan Kerinchi, Bangsar South, 59200 Kuala Lumpur, Malaysia', 'staff');
+(123456784, 'DAVID', 'JOHNSON', 'FINANCE', 'david_johnson@all-in-one.com.sg', '60-03-21345677', 'Unit 3A-07, Tower A, The Vertical Business Suite, 8, Jalan Kerinchi, Bangsar South, 59200 Kuala Lumpur, Malaysia', 'staff');
+
 
 insert into STAFF_REPORTING_OFFICER values (123456789, 123456785), (123456784, 123456123);
 
