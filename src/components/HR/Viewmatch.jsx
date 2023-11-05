@@ -28,6 +28,7 @@ const ViewMatch = () => {
         .get(`http://127.0.0.1:5000/get_role_details/${role_listing_id}`)
         .then((response) => {
           const data = response.data.data;
+          console.log(data)
           setRole(data);
         })
         .catch((error) => {
@@ -35,6 +36,7 @@ const ViewMatch = () => {
           console.error("Error:", error);
         });
     }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+
     
     // Make the Axios GET request to http://127.0.0.1:5000/get_role_applicant_skills/<role_listing_id>
     useEffect(() => {
@@ -42,6 +44,8 @@ const ViewMatch = () => {
         .get(`http://127.0.0.1:5000/get_role_applicant_skills/${role_listing_id}`)
         .then((response) => {
           const data = response.data.data;
+          const role_applicant_skills = data[0].skills
+          console.log(data[0].skills)
           setRoleApplicants(data);
         })
         .catch((error) => {
@@ -49,6 +53,18 @@ const ViewMatch = () => {
           console.error("Error:", error);
         });
     }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+
+    // useEffect(() => {
+    //   if ((Array.isArray(requiredSkills.skills) ) {
+    //     // if no required skills, then it will display no required skills
+    //     // Calculate chart data
+    //     const matchedSkills = staffSkills.filter(skill => requiredSkills.skills.includes(skill));
+    //       const matchedSkillsNum = matchedSkills.length;
+    //       console.log(matchedSkillsNum);
+  
+    //       const matchPercentage = requiredSkills.skills.length > 0
+    //     ? Math.round((matchedSkillsNum / requiredSkills.skills.length) * 100)
+    //     : 0;
     
     return (
         <>
@@ -87,7 +103,7 @@ const ViewMatch = () => {
           <p>{applicant.email}</p>
         </td>
         <td>{applicant.role_app_ts_create}</td>
-        <td>?</td>
+        <td>%</td>
         <td>{applicant.skills.join(', ')}</td>
         <td>
           <button>
