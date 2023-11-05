@@ -122,6 +122,7 @@ insert into STAFF_DETAILS values (123456789, 'AH GAO', 'TAN', 'FINANCE', 'tan_ah
 (123456785, 'JACK', 'SMITH', 'IT', 'jack_smith@all-in-one.com.sg', '65-1234-5677', '60 Paya Lebar Rd, #06-33 Paya Lebar Square, Singapore 409051', 'manager'),
 (123456784, 'DAVID', 'JOHNSON', 'FINANCE', 'david_johnson@all-in-one.com.sg', '60-03-21345677', 'Unit 3A-07, Tower A, The Vertical Business Suite, 8, Jalan Kerinchi, Bangsar South, 59200 Kuala Lumpur, Malaysia', 'staff');
 
+
 insert into STAFF_REPORTING_OFFICER values (123456789, 123456785), (123456784, 123456123);
 
 insert into ROLE_DETAILS values (234567891, 'Head, Talent Attraction', 'The Head, Talent Attraction is responsible for strategic workforce planning to support the organisation''s growth strategies through establishing talent sourcing strategies, determining the philosophy for the selection and securing of candidates and overseeing the onboarding and integration of new hires into the organisation. He/She develops various approaches to meet workforce requirements and designs employer branding strategies. He oversees the selection processes and collaborates with business stakeholders for the hiring of key leadership roles. As a department head, he is responsible for setting the direction and articulating goals and objectives for the team, and driving the integration of Skills Frameworks across the organisation''s talent attraction plans.
