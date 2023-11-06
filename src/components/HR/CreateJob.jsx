@@ -232,10 +232,10 @@ const CreateJob = () => {
 
                                 <option selected>Choose a Department</option>
                                 <option value="IT">IT</option>
-                                <option value="marketing">Marketing</option>
-                                <option value="finance">Finance</option>
-                                <option value="accnt">HR</option>
-                                <option value="accnt">Operations</option>  
+                                <option value="Marketing">Marketing</option>
+                                <option value="Finance">Finance</option>
+                                <option value="HR">HR</option>
+                                <option value="Operations">Operations</option>  
                             </select>
                         </div>
 
