@@ -47,10 +47,29 @@ const JobCard = ({ name, location, dpt, close_date, listing_id, status }) => {
 
       <div className="viewdetailsbutton flex justify-center p-10">
         <Link to={`/staff/apply/${listing_id}`}>
-          <button class="group relative lg:h-12 lg:w-52 md:h-16 overflow-hidden rounded-lg bg-white text-lg shadow p-2">
-            <div class="absolute inset-0 w-3 bg-black transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-            <span class="relative text-black group-hover:text-white">
-              View Details
+          <button
+            className={`group relative lg:h-12 lg:w-52 md:h-16 overflow-hidden rounded-lg text-lg p-2 ${
+              status === "inactive"
+                ? "bg-gray-300 text-gray-500 shadow-none"
+                : "bg-white text-black shadow"
+            }`}
+            disabled={status === "inactive"}
+          >
+            <div
+              className={`absolute inset-0 w-3 bg-black ${
+                status === "inactive"
+                  ? ""
+                  : "transition-all duration-[250ms] ease-out group-hover:w-full"
+              }`}
+            ></div>
+            <span
+              className={`relative text-black ${
+                status === "inactive"
+                  ? "text-gray-500"
+                  : "group-hover:text-white"
+              }`}
+            >
+              Apply Job
             </span>
           </button>
         </Link>

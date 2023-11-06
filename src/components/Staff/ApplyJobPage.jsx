@@ -286,6 +286,8 @@ const ApplyJobPage = () => {
             <h2 className="px-3 mt-6 underline font-bold">Job Description </h2>
             <br />
             <h2 className="px-3 mb-4">{posting.description}</h2>
+
+            
           </div>
           <div className="details">
             <div className="border rounded grid grid-cols-2 p-3">
