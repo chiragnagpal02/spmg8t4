@@ -671,20 +671,12 @@ def update_role_listing(role_listing_id):
 
     data = request.get_json()
     print(data)
-    today = datetime.datetime.now()
+
     if data["role_listing_desc"]:
         rolelisting.role_listing_desc = data["role_listing_desc"]
     if data["role_listing_open"]:
         rolelistingopen = datetime.datetime.strptime(data["role_listing_open"], "%Y-%m-%d")
-        if rolelistingopen.date() < today.date():
-            return (
-                jsonify(
-                    {"code": 400, "data": {"message": "DateTime cannot be in the past"}}
-                ),
-                400,
-            )
-        else:
-            rolelisting.role_listing_open = rolelistingopen
+        rolelisting.role_listing_open = rolelistingopen
     if data["role_listing_close"]:
         rolelistingclose = datetime.datetime.strptime(data["role_listing_close"], "%Y-%m-%d")
         if rolelistingclose.date() < rolelistingopen.date():

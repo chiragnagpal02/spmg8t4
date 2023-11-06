@@ -169,7 +169,7 @@ const UpdateJob = () => {
                             <label className="block text-gray-700 text-sm font-bold mb-2" for="role_listing_open">
                                 Application Start Date
                             </label>
-                            <input onChange={handleChange} name="role_listing_open" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="role_listing_open" type="date" placeholder="dd/mm/yyyy" value={inputs.role_listing_open} />
+                            <input readonly onChange={handleChange} name="role_listing_open" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline" id="role_listing_open" type="date" placeholder="dd/mm/yyyy" value={inputs.role_listing_open} />
                         </div>
 
                         <div>
