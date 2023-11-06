@@ -362,6 +362,17 @@ def get_all():
         )
     return jsonify({"code": 404, "message": "There are no role listings."}), 404
 
+@app.route("/staffdetails")
+def get_all_staff():
+    staffs = StaffDetails.query.all()
+    if len(staffs):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {"staff": [staff.json() for staff in staffs]},
+            }
+        )
+    return jsonify({"code": 404, "message": "There are no staff."}), 404
 
 @app.route("/roledetails")
 def get_all_roles():

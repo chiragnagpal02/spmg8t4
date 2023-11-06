@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Modal from "./Modal";
 import "./App.css";
 import penlogo from "../../assets/edit.png";
-import binlogo from "../../assets/delete.png";
 import eyelogo from "./hrasset/eye.png";
 import axios from "axios";
 import {Routes, Route, useNavigate} from 'react-router-dom';
@@ -15,7 +14,6 @@ const ViewJob = () => {
   //   navigate('/login')
   //   alert('You are not authorized to view this page! You have been redirected to login')
   // }
-  
     const [jobPostings, setJobPostings] = useState([]);
     useEffect(() => {
         // Make the Axios GET request to http://127.0.0.1:5000/roledetails
@@ -29,16 +27,60 @@ const ViewJob = () => {
             console.error('Error:', error);
           });
       }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+
+        const listing=(jobPostings.rolelistings);
+        console.log(listing)
+
     
-    const listing=(jobPostings.rolelistings);
-    
+
+    const [jobid, setJobId] = useState([]);
     useEffect(() => {
+        // Make the Axios GET request to http://127.0.0.1:5000/roledetails
+        axios.get('http://127.0.0.1:5000/roledetailsall')
+          .then((response) => {
+            setJobId(response.data.data) // You can process the response data as needed
+            console.log(response.data.data)
+
+          })
+          .catch((error) => {
+            // Handle any errors here
+            console.error('Error:', error);
+          });
+      }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+    
+      const idlisting=(jobid.final_list);
+      console.log(idlisting)
+
+    const [staffname, setstaffname] = useState([]);
+    useEffect(() => {
+      
+        // Make the Axios GET request to http://127.0.0.1:5000/roledetails
+        axios.get('http://127.0.0.1:5000/staffdetails')
+          .then((response) => {
+            setstaffname(response.data.data) // You can process the response data as needed
+            console.log(response.data)
+
+          })
+          .catch((error) => {
+            // Handle any errors here
+            console.error('Error:', error);
+          });
+      }, []); // The empty array [] ensures that this effect runs once when the component is mounted.
+
+    
+
+    useEffect(() => {
+      var staffnames = staffname.staff
+      var staffdict = {}
+        for(var i in staffnames){
+          staffdict[staffnames[i].staff_id]=staffnames[i].lname + ' ' + staffnames[i].fname
+        }
     var table = document.getElementById("Table");
     table.getElementsByTagName("tbody")[0].innerHTML ='<tr></tr>'
       for(var i in listing){
         var row = table.insertRow();
         var cell1 = row.insertCell();
-        cell1.innerHTML=listing[i].role_listing_desc
+        cell1.innerHTML=idlisting[i].name
         var cell2 = row.insertCell();
         cell2.innerHTML=listing[i].role_listing_department
         var cell3 = row.insertCell();
@@ -46,7 +88,11 @@ const ViewJob = () => {
         var cell4 = row.insertCell();
         cell4.innerHTML=listing[i].role_listing_close
         var cell5 = row.insertCell();
-        cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+        cell5.innerHTML=staffdict[listing[i].role_listing_creator]
+        var cell7 = row.insertCell();
+        cell7.innerHTML=staffdict[listing[i].role_listing_updater]
+        var cell6 = row.insertCell();
+        cell6.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button>`
       }
       document.getElementById('Dept').addEventListener("change", changed); 
       document.getElementById('Status').addEventListener("change", changed); 
@@ -59,7 +105,7 @@ const ViewJob = () => {
           for(var i in listing){
             var row = table.insertRow();
             var cell1 = row.insertCell();
-            cell1.innerHTML=listing[i].role_listing_desc
+            cell1.innerHTML=idlisting[i].name
             var cell2 = row.insertCell();
             cell2.innerHTML=listing[i].role_listing_department
             var cell3 = row.insertCell();
@@ -67,135 +113,78 @@ const ViewJob = () => {
             var cell4 = row.insertCell();
             cell4.innerHTML=listing[i].role_listing_close
             var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+            cell5.innerHTML=staffdict[listing[i].role_listing_creator]
+            var cell7 = row.insertCell();
+            cell7.innerHTML=staffdict[listing[i].role_listing_updater]
+            var cell6 = row.insertCell();
+            cell6.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button>`
           }
 
         }
         else if(filter == 'All'){
           for(var i in listing){
             if(listing[i].role_listing_type==status){
-            var row = table.insertRow();
-            var cell1 = row.insertCell();
-            cell1.innerHTML=listing[i].role_listing_desc
-            var cell2 = row.insertCell();
-            cell2.innerHTML=listing[i].role_listing_department
-            var cell3 = row.insertCell();
-            cell3.innerHTML=listing[i].role_listing_type
-            var cell4 = row.insertCell();
-            cell4.innerHTML=listing[i].role_listing_close
-            var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+              var row = table.insertRow();
+              var cell1 = row.insertCell();
+              cell1.innerHTML=idlisting[i].name
+              var cell2 = row.insertCell();
+              cell2.innerHTML=listing[i].role_listing_department
+              var cell3 = row.insertCell();
+              cell3.innerHTML=listing[i].role_listing_type
+              var cell4 = row.insertCell();
+              cell4.innerHTML=listing[i].role_listing_close
+              var cell5 = row.insertCell();
+              cell5.innerHTML=staffdict[listing[i].role_listing_creator]
+              var cell7 = row.insertCell();
+              cell7.innerHTML=staffdict[listing[i].role_listing_updater]
+              var cell6 = row.insertCell();
+              cell6.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button>`
           }
         }
       }
         else if(status == 'All'){
           for(var i in listing){
             if(listing[i].role_listing_department==filter){
-            var row = table.insertRow();
-            var cell1 = row.insertCell();
-            cell1.innerHTML=listing[i].role_listing_desc
-            var cell2 = row.insertCell();
-            cell2.innerHTML=listing[i].role_listing_department
-            var cell3 = row.insertCell();
-            cell3.innerHTML=listing[i].role_listing_type
-            var cell4 = row.insertCell();
-            cell4.innerHTML=listing[i].role_listing_close
-            var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+              var row = table.insertRow();
+              var cell1 = row.insertCell();
+              cell1.innerHTML=idlisting[i].name
+              var cell2 = row.insertCell();
+              cell2.innerHTML=listing[i].role_listing_department
+              var cell3 = row.insertCell();
+              cell3.innerHTML=listing[i].role_listing_type
+              var cell4 = row.insertCell();
+              cell4.innerHTML=listing[i].role_listing_close
+              var cell5 = row.insertCell();
+              cell5.innerHTML=staffdict[listing[i].role_listing_creator]
+              var cell7 = row.insertCell();
+              cell7.innerHTML=staffdict[listing[i].role_listing_updater]
+              var cell6 = row.insertCell();
+              cell6.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button>`
           }
         }
         }
         else{
           for(var i in listing){
             if(listing[i].role_listing_type==status && listing[i].role_listing_department==filter){
-            var row = table.insertRow();
-            var cell1 = row.insertCell();
-            cell1.innerHTML=listing[i].role_listing_desc
-            var cell2 = row.insertCell();
-            cell2.innerHTML=listing[i].role_listing_department
-            var cell3 = row.insertCell();
-            cell3.innerHTML=listing[i].role_listing_type
-            var cell4 = row.insertCell();
-            cell4.innerHTML=listing[i].role_listing_close
-            var cell5 = row.insertCell();
-            cell5.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
+              var row = table.insertRow();
+              var cell1 = row.insertCell();
+              cell1.innerHTML=idlisting[i].name
+              var cell2 = row.insertCell();
+              cell2.innerHTML=listing[i].role_listing_department
+              var cell3 = row.insertCell();
+              cell3.innerHTML=listing[i].role_listing_type
+              var cell4 = row.insertCell();
+              cell4.innerHTML=listing[i].role_listing_close
+              var cell5 = row.insertCell();
+              cell5.innerHTML=staffdict[listing[i].role_listing_creator]
+              var cell7 = row.insertCell();
+              cell7.innerHTML=staffdict[listing[i].role_listing_updater]
+              var cell6 = row.insertCell();
+              cell6.innerHTML = `<button><a href='/hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a href='/hrupdate/${listing[i].role_listing_id}'><img className='mx-2' width='15px' src=${penlogo} /></a></button>`
           }
         }
         }  
-}})
-// useEffect(() => {
-//   addEventListener("change", changed());
-// function changed(){
-//   filter=document.getElementById("Dept").value
-//   status=document.getElementById("Status").value
-//   var table = document.getElementById("Table");
-//   table.getElementsByTagName("tbody")[0].innerHTML ='<tr></tr>'
-//   var filter = document.getElementById("Dept").value
-//   var status = document.getElementById("Status").value
-//   if(filter=='All' && status=='All'){
-//     for(var i in listing){
-//       var row = table.insertRow();
-//       var cell1 = row.insertCell();
-//       cell1.innerHTML=listing[i].role_listing_desc
-//       var cell2 = row.insertCell();
-//       cell2.innerHTML=listing[i].role_listing_department
-//       var cell3 = row.insertCell();
-//       cell3.innerHTML=listing[i].role_listing_type
-//       var cell4 = row.insertCell();
-//       cell4.innerHTML=listing[i].role_listing_close
-//       var cell5 = row.insertCell();
-//       cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
-//     }
-//   }
-
-//   else {
-//     for(var i in listing){
-//       if((listing[i].role_listing_department==filter|| listing[i].role_listing_department=='All') && (listing[i].role_listing_type==status|| listing[i].role_listing_type=='All')){
-//       var row = table.insertRow();
-//       var cell1 = row.insertCell();
-//       cell1.innerHTML=listing[i].role_listing_desc
-//       var cell2 = row.insertCell();
-//       cell2.innerHTML=listing[i].role_listing_department
-//       var cell3 = row.insertCell();
-//       cell3.innerHTML=listing[i].role_listing_type
-//       var cell4 = row.insertCell();
-//       cell4.innerHTML=listing[i].role_listing_close
-//       var cell5 = row.insertCell();
-//       cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
-//   }
-
-//   }
-//   }
-// }
-// addEventListener("change", changes());
-// function changes(){
-//   status=document.getElementById("Status").value
-//   filter=document.getElementById("Dept").value
-//   var table = document.getElementById("Table");
-//   table.getElementsByTagName("tbody")[0].innerHTML ='<tr></tr>'
-//   var filter = document.getElementById("Dept").value
-//   var status = document.getElementById("Status").value
-  
-
-
-//     for(var i in listing){
-//       if((listing[i].role_listing_department==filter|| listing[i].role_listing_department=="All") && (listing[i].role_listing_type==status|| listing[i].role_listing_type=='All')){
-//       var row = table.insertRow();
-//       var cell1 = row.insertCell();
-//       cell1.innerHTML=listing[i].role_listing_desc
-//       var cell2 = row.insertCell();
-//       cell2.innerHTML=listing[i].role_listing_department
-//       var cell3 = row.insertCell();
-//       cell3.innerHTML=listing[i].role_listing_type
-//       var cell4 = row.insertCell();
-//       cell4.innerHTML=listing[i].role_listing_close
-//       var cell5 = row.insertCell();
-//       cell5.innerHTML = `<button><a href='./hrmatch/${listing[i].role_listing_id}'><img width='15px' src=${eyelogo} /></a></button><button><a><img className='mx-2' width='15px' src=${penlogo} /></a></button><button><a><img width='15px' src=${binlogo} /></a></button>`
-//   }
-
-//   }
-// }
-// })
+}}, [idlisting]);
 ;
 
   return (
@@ -210,8 +199,9 @@ const ViewJob = () => {
                 <option value="All">All</option> 
                 <option value="IT">IT</option> 
                 <option value="Marketing">Marketing</option> 
-                <option value="Management">Management</option> 
+                <option value="Management">Finance</option> 
                 <option value="HR">HR</option> 
+                <option value="HR">Operations</option>
             </select>
             <label class='text-gray-700 text-sm font-bold mb-2 m-10' for="Status">Status</label>
             <select class="border rounded" name="Status" id="Status" defaultValue="All" >
@@ -233,6 +223,8 @@ const ViewJob = () => {
                         <th>Department</th>
                         <th>Status</th>
                         <th>Application Deadline</th>
+                        <th>Creator</th>
+                        <th>Last Updated By</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
