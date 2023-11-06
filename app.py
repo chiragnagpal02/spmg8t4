@@ -342,7 +342,7 @@ def login(username, password):
         username=username, password=password
     ).first()
     if login_details:
-        return jsonify({"code": 200, "data": login_details.json()})
+        return jsonify({"code": 200, "data": login_details.json()}), 200
     return jsonify({"code": 404, "message": "Invalid username or password"}), 404
 
 
@@ -462,7 +462,7 @@ def get_role_listing(role_listing_id):
 
     # Get the role listing details with the role_listing_id
     if not all_listings:    
-       return jsonify({"code": 404, "message": "Role listing not found."}), 40
+       return jsonify({"code": 404, "message": "Role listing not found."}), 404
     else:
         for listing in all_listings["data"]['rolelistings']:
             print("Listing: ", listing)
@@ -523,7 +523,7 @@ def get_openings_by_dept():
 
 @app.route("/rolelistings_open")  # This is for staff, to see all open role listings
 def get_all_open():
-    rolelistings = RoleListings.query.filter_by(role_listing_open=True).all()
+    rolelistings = RoleListings.query.filter_by(role_listing_type="open").all()
     if len(rolelistings):
         return jsonify(
             {
@@ -721,11 +721,17 @@ def update_role_listing(role_listing_id):
 
 @app.route("/get_all_managers")
 def get_all_managers():
-    managers = StaffDetails.query.filter_by(sys_role="manager").all()
+    """
+    Returns a JSON object containing details of all the managers in the database.
+    If there are no managers, returns a JSON object with a 404 status code and a message.
+    """
+    managers = StaffDetails.query.filter_by(sys_role="manager")
     if not managers:
         return jsonify({"code": 404, "message": "There are no managers."}), 404
     
-    managers_list = [{"staff_id": manager.staff_id, "fname": manager.fname, "lname": manager.lname} for manager in managers]
+    # simplify the above logic and return all
+    managers_list = [manager.json() for manager in managers]
+    
     return jsonify(managers_list)
 
 @app.route(
