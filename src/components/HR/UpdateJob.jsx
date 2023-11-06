@@ -87,18 +87,29 @@ const UpdateJob = () => {
           confirmButtonText: "Yes",
         }).then((result) => {
           if (result.isConfirmed) {
-            axios.put(`http://127.0.0.1:5000/update_role_listing/${role_listing_id}`, inputs).then(function(response){
+            axios
+              .put(`http://127.0.0.1:5000/update_role_listing/${role_listing_id}`, inputs)
+              .then(function (response) {
                 console.log(response.data);
-            });
-            Swal.fire({
-              title: "Created!",
-              text: "You have successfully updated this job!",
-              icon: "success",
-              confirmButtonColor: "#000000",
-            });
+                Swal.fire({
+                  title: "Created!",
+                  text: "You have successfully updated this job!",
+                  icon: "success",
+                  confirmButtonColor: "#000000",
+                });
+              })
+              .catch(function (error) {
+                console.error("Error:", error);
+                Swal.fire({
+                  title: "Error",
+                  text: "An error occurred while updating the job.",
+                  icon: "error",
+                  confirmButtonColor: "#FF0000",
+                });
+              });
           }
         });
-      };
+      };      
 
     console.log(role.role_listing_department)
     console.log(staff_id)
