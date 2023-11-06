@@ -60,8 +60,9 @@ const ViewMatch = () => {
       if (role && roleApplicants && role.skills) {
         // if no required skills, then it will display no required skills
         // Calculate chart data
-        const requiredSkills = role.skills;
-        const applicantSkills = roleApplicants[0].skills;
+        
+        const requiredSkills = role.skills || [];
+        const applicantSkills = roleApplicants[0]?.skills || [];
 
         console.log("Required Skills:", requiredSkills);
         console.log("Applicant Skills:", applicantSkills);
@@ -75,65 +76,77 @@ const ViewMatch = () => {
 
         const matchPercentage = role.skills.length > 0
         ? Math.round((matchedSkillsNum / role.skills.length) * 100)
-        : 0;
+        : "No Required Skills";
         console.log("Match Percentage:", matchPercentage);
-        
+
       setMatchPercentage(matchPercentage);
 
     }
     }, [role, roleApplicants]);
     
     return (
-        <>
+      <>
         <HRNavbar />
 
-        <div className='bg-[#D3D3D3] h-[60px] font-bold text-lg flex justify-center items-center mb-[50px]'>
-
-            <span className='text-dark'>
-                {role.role_name}
-            </span>
-
+        <div className="bg-[#D3D3D3] h-[60px] font-bold text-lg flex justify-center items-center mb-[50px]">
+          <span className="text-dark">{role.role_name}</span>
         </div>
 
         <div>
-        <table width="90%%" className="styled-table">
-    <thead>
-        <tr>
-            <th width="5%">Name</th>
-            <th width='20%'></th>
-            <th width='20%'>Application Date</th>
-            <th width='10%'>Skill Match</th>
-            <th width='40%'>Skill Sets</th>
-            <th width='5%'></th>
-        </tr>
-    </thead>
-    <tbody>
-    {roleApplicants.map((applicant, index) => (
-      <tr key={index}>
-        <td>
-          <button>
-            <img className="mx-3" width="30px" src={userlogo} alt="" />
-          </button>
-        </td>
-        <td>
-          <p>{applicant.fname} {applicant.lname}</p>
-          <p>{applicant.email}</p>
-        </td>
-        <td>{applicant.role_app_ts_create}</td>
-        <td>{matchPercentage} %</td>
-        <td>{applicant.skills.join(', ')}</td>
-        <td>
-          <button>
-            <img width="30px" className="dots" src={threedot} alt="" />
-          </button>
-        </td>
-      </tr>
-    ))}
-    </tbody>
-</table>
+          <table width="90%%" className="styled-table">
+            <thead>
+              <tr>
+                <th width="5%">Name</th>
+                <th width="20%"></th>
+                <th width="20%">Application Date</th>
+                <th width="10%">Skill Match</th>
+                <th width="40%">Skill Sets</th>
+                <th width="5%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {roleApplicants.map((applicant, index) => (
+                <tr key={index}>
+                  <td>
+                    <button>
+                      <img
+                        className="mx-3"
+                        width="30px"
+                        src={userlogo}
+                        alt=""
+                      />
+                    </button>
+                  </td>
+                  <td>
+                    <p>
+                      {applicant.fname} {applicant.lname}
+                    </p>
+                    <p>{applicant.email}</p>
+                  </td>
+                  <td>{applicant.role_app_ts_create}</td>
+                  <td>
+                    {matchPercentage === "No Required Skills"
+                      ? matchPercentage
+                      : `${matchPercentage} %`}
+                  </td>
+                  <td>{applicant.skills.join(", ")}</td>
+                  <td>
+                    <button>
+                      <img
+                        width="30px"
+                        className="dots"
+                        src={threedot}
+                        alt=""
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    </>   
-  )
+      </>
+    );
 }
 
 export default ViewMatch
