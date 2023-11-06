@@ -420,6 +420,7 @@ def get_all_listing_details():
                 role_list["updater_id"] = role_dict_2["role_listing_updater"]
                 role_list["location"] = role_dict_2["role_listing_location"]
                 role_list["salary"] = role_dict_2["role_listing_salary"]
+                role_list["type"] = role_dict_2["role_listing_type"]
 
                 final_list.append(role_list)
 
