@@ -12,6 +12,7 @@ import Location from "../../assets/images/location.svg";
 import { Link } from "react-router-dom";
 
 const JobCard = ({ name, location, dpt, close_date, listing_id, status }) => {
+  console.log(status);
   return (
     <div className="font-montserrat grid grid-cols-5 border-2 shadow-md hover:bg-gray-100 hover:shadow-2xl rounded-md mt-5">
       <div className="flex justify-center mt-5">
@@ -36,7 +37,7 @@ const JobCard = ({ name, location, dpt, close_date, listing_id, status }) => {
             <h1 className="text-gray-400 text-sm">{location}</h1>
           </div>
           <div>
-            {status === "inactive" ? (
+            {status === "closed" ? (
               <img src={Close} alt="dpt" />
             ) : (
               <img src={Open} alt="dpt" />
@@ -47,10 +48,29 @@ const JobCard = ({ name, location, dpt, close_date, listing_id, status }) => {
 
       <div className="viewdetailsbutton flex justify-center p-10">
         <Link to={`/staff/apply/${listing_id}`}>
-          <button class="group relative lg:h-12 lg:w-52 md:h-16 overflow-hidden rounded-lg bg-white text-lg shadow p-2">
-            <div class="absolute inset-0 w-3 bg-black transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-            <span class="relative text-black group-hover:text-white">
-              View Details
+          <button
+            className={`group relative lg:h-12 lg:w-52 md:h-16 overflow-hidden rounded-lg text-lg p-2 ${
+              status === "closed"
+                ? "bg-gray-300 text-gray-500 shadow-none"
+                : "bg-white text-black shadow"
+            }`}
+            disabled={status === "closed" ? true : false}
+          >
+            <div
+              className={`absolute inset-0 w-3 bg-black ${
+                status === "open"
+                  ? ""
+                  : "transition-all duration-[250ms] ease-out group-hover:w-full"
+              }`}
+            ></div>
+            <span
+              className={`relative text-black ${
+                status === "open"
+                  ? "text-gray-500"
+                  : "group-hover:text-white"
+              }`}
+            >
+              Apply Job
             </span>
           </button>
         </Link>

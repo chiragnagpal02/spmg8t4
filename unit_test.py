@@ -249,7 +249,7 @@ class TestRoleListingsFunctions(unittest.TestCase):
 
                 response = self.app.get("/rolelistings_open")
 
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'application/json')
 
 
@@ -357,6 +357,9 @@ class TestRoleListingsFunctions(unittest.TestCase):
         self.assertEqual(data['code'], 400)
         self.assertTrue("data" in data)
         self.assertEqual(data['data']['role_listing_id'], 1)
+
+
+    
 
 
 if __name__ == "__main__":

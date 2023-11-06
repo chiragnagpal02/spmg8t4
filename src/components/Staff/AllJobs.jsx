@@ -13,8 +13,8 @@ const AllJobs = () => {
   const [filteredJobPostings, setFilteredJobPostings] = useState([]);
 
   const statusOptions = [
-    { value: "active", label: "Open" },
-    { value: "inactive", label: "Closed" },
+    { value: "open", label: "Open" },
+    { value: "closed", label: "Closed" },
   ];
 
   const handleChangeDept = (selectedValues) => {
@@ -54,7 +54,7 @@ const AllJobs = () => {
     }
 
     if (selectedStatusOption) {
-      filteredList = filteredList.filter((job) => job.status === selectedStatusOption.value);
+      filteredList = filteredList.filter((job) => job.type === selectedStatusOption.value);
     }
 
     setFilteredJobPostings(filteredList);
@@ -122,7 +122,7 @@ const AllJobs = () => {
             location={job.location}
             close_date={job.close_date}
             listing_id={job.listing_id}
-            status={job.status}
+            status={job.type}
           />
         ))}
 
