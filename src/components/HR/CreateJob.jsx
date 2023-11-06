@@ -234,7 +234,8 @@ const CreateJob = () => {
                                 <option value="IT">IT</option>
                                 <option value="marketing">Marketing</option>
                                 <option value="finance">Finance</option>
-                                <option value="accnt">Accountancy</option> 
+                                <option value="accnt">HR</option>
+                                <option value="accnt">Operations</option>  
                             </select>
                         </div>
 
