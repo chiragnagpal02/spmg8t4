@@ -134,7 +134,7 @@ const UpdateJob = () => {
                             <label className="block text-gray-700 text-sm font-bold mb-2" for="role_description">
                                 Position
                             </label>
-                            <input readOnly onChange={handleChange} name="role_description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="role_description" type="text" defaultValue={role.role_name} />
+                            <input readOnly onChange={handleChange} name="role_description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline" id="role_description" type="text" defaultValue={role.role_name} />
                         </div>
 
 
