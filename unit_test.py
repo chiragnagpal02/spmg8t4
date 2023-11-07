@@ -1,11 +1,8 @@
 from datetime import datetime
 import unittest
-from app import app, db ,StaffDetails, RoleApplications, RoleDetails, StaffSkills, SkillDetails, StaffRoles, StaffReportingOfficer, LoginDetails, RoleListings
+from app import app, StaffDetails, RoleApplications, RoleDetails, StaffSkills, SkillDetails, StaffRoles, StaffReportingOfficer, LoginDetails, RoleListings
 from unittest.mock import MagicMock, patch
 import json
-from os import environ
-
-app.config["SQLALCHEMY_DATABASE_URI"] = environ.get('dbURL')
 
 class TestManagerFunctions(unittest.TestCase):
 
