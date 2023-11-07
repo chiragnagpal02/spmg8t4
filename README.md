@@ -53,11 +53,16 @@ Can give any name instead of my_env. Make sure to remember it.
 ```bash
 >> py -m venv env
 >> .\env\Scripts\activate
+```
 
 And tell pip to install all of the packages in this file
+
+```bash
 1. For **Mac** -
 >> python3 -m pip install -r requirements.txt
+```
 
+```bash
 2. For **Windows**
 >> py -m pip install -r requirements.txt
 ```
