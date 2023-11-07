@@ -1,6 +1,6 @@
 from datetime import datetime
 import unittest
-from app import app, StaffDetails, RoleApplications, RoleDetails, StaffSkills, SkillDetails, StaffRoles, StaffReportingOfficer, LoginDetails, RoleListings
+from app import app, StaffDetails, LoginDetails, RoleListings
 from unittest.mock import MagicMock, patch
 import json
 
