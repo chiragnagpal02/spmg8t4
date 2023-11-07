@@ -161,7 +161,7 @@ class StaffSkills(db.Model):
     skill_id = db.Column(
         db.Integer, db.ForeignKey("SKILL_DETAILS.skill_id"), primary_key=True
     )
-    ss_status = db.Column(db.Enum("active", "inactive"), nullable=False)
+    ss_status = db.Column(db.Enum("active", "unverified", "in-progress"), nullable=False)
 
     def __init__(self, staff_id, skill_id, ss_status):
         self.staff_id = staff_id
@@ -987,26 +987,20 @@ def get_required_skills(role_id):
 @app.route("/get_staff_skills/<int:staff_id>", methods=["GET"])
 def get_staff_skills(staff_id):
     try:
-
-        # Query the database to retrieve skills for the given staff_id
-        #skills = db.session.query(SkillDetails.skill_name).join(
-            #StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id
-        #).filter(StaffSkills.staff_id == staff_id, StaffSkills.ss_status == 'active').all() # Filter out inactive skills from staff skills NOT skill details
-
+        # Query the database to retrieve skills and their statuses for the given staff_id
         skills = (
-            db.session.query(SkillDetails.skill_name)
+            db.session.query(SkillDetails.skill_name, StaffSkills.ss_status)
             .join(StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id)
             .filter(StaffSkills.staff_id == staff_id)
             .all()
         )
-        print(skills)
 
         if skills:
-            skill_names = [
-                skill[0] for skill in skills
-            ]  # Extract skill names from the result
+            skill_data = [
+                {"skill_name": skill[0], "ss_status": skill[1]} for skill in skills
+            ]
             return jsonify(
-                {"code": 200, "data": {"staff_id": staff_id, "skills": skill_names}}
+                {"code": 200, "data": {"staff_id": staff_id, "skills": skill_data}}
             )
         else:
             return (
