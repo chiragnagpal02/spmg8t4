@@ -114,7 +114,7 @@ const UpdateJob = () => {
     console.log(role.role_listing_department)
     console.log(staff_id)
     return (
-        <>
+        <div className='font-montserrat'>
 
         <HRNavbar />
    
@@ -237,8 +237,8 @@ const UpdateJob = () => {
                 </form>
                 
             </div>
+            </div>
 
-    </>
   );
 };
 

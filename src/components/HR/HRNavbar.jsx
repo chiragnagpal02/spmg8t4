@@ -14,8 +14,8 @@ export default function HRNavbar() {
   //   );
   // }
   return (
-    <Navbar fluid rounded>
-      <Navbar.Brand href="/staff">
+    <Navbar fluid rounded className="font-montserrat">
+      <Navbar.Brand href="/hr">
         <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           JobsCompany

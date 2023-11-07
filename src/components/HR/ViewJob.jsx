@@ -188,7 +188,7 @@ const ViewJob = () => {
 ;
 
   return (
-    <>
+    <div className="font-montserrat">
       <div class="bg-[#D3D3D3] h-[60px] font-bold text-lg flex justify-center items-center mb-[50px]">
         <span class="text-dark">Current Job Postings</span>
       </div>
@@ -234,7 +234,8 @@ const ViewJob = () => {
                 </tbody>
             </table>
         </div>
-    </>
+    <div/>
+  </div>
     
   )
 }
