@@ -236,7 +236,7 @@ const ApplyJobPage = () => {
 
   
   return (
-    <div>
+    <div className="font-montserrat">
       <Navbar />
 
       <div className="bg-blue-500 h-[80px] flex justify-center items-center">
