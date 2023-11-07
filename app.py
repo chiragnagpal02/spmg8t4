@@ -419,6 +419,7 @@ def get_all_listing_details():
                 role_list["location"] = role_dict_2["role_listing_location"]
                 role_list["salary"] = role_dict_2["role_listing_salary"]
                 role_list["type"] = role_dict_2["role_listing_type"]
+                role_list["listing_desc"] = role_dict_2["role_listing_desc"]
 
                 final_list.append(role_list)
 
@@ -727,14 +728,14 @@ def get_all_managers():
     Returns a JSON object containing details of all the managers in the database.
     If there are no managers, returns a JSON object with a 404 status code and a message.
     """
-    managers = StaffDetails.query.filter_by(sys_role="manager")
+    managers = StaffDetails.query.filter_by(sys_role="manager").all()
     if not managers:
         return jsonify({"code": 404, "message": "There are no managers."}), 404
     
     # simplify the above logic and return all
     managers_list = [manager.json() for manager in managers]
     
-    return jsonify(managers_list)
+    return jsonify(managers_list), 200
 
 @app.route(
     "/get_role_applicant_skills/<int:role_listing_id>"
@@ -1028,53 +1029,7 @@ def get_staff_skills(staff_id):
         )
 
 
-"""
-@app.route("/view_role_skill_match/<int:staff_id>/<int:role_listing_id>") #This is for staff to view the skills they lack for a role
-def view_role_skill_match(staff_id, role_listing_id):
-    # Check if the staff and role listing exist
-    staff_id = StaffDetails.query.get(staff_id)
-    role_listing_id = RoleListings.query.get(role_listing_id)
-    
-    if not staff_id or not role_listing_id:
-        return jsonify(
-            {
-                "code": 404,
-                "message": "Staff or role listing not found."
-            }
-        ), 404
-    
-    # Query to retrieve the skills needed for the role listing
-    role_skills = db.session.query(SkillDetails.skill_name) \
-    .join(RoleSkills, RoleSkills.skill_id == SkillDetails.skill_id) \
-    .join(RoleDetails, RoleDetails.role_id == RoleSkills.role_id) \
-    .join(RoleListings, RoleListings.role_id == RoleDetails.role_id) \
-    .all()
-    
-    # Query to retrieve the staff's skills
-    staff_skills = db.session.query(SkillDetails.skill_name) \
-    .join(StaffSkills, StaffSkills.skill_id == SkillDetails.skill_id) \
-    .join(StaffDetails, StaffDetails.staff_id == StaffSkills.staff_id) \
-    .all()
 
-    role_skill_names = [skill[0] for skill in role_skills]
-    staff_skill_names = [skill[0] for skill in staff_skills]
-
-     # Identify skills lacking in the staff's skill set
-    lacking_skills = list(set(role_skill_names) - set(staff_skill_names))
-
-    return jsonify(
-        {
-            "code": 200,
-            "data": {
-                "staff_id": staff_id,
-                "role_listing_id": role_listing_id,
-                "role_skills": role_skill_names,
-                "staff_skills": staff_skill_names,
-                "lacking_skills": lacking_skills
-            }
-        }
-    ), 200
-"""
 @app.route("/get_application_status/<int:staff_id>/<int:role_listing_id>", methods=["GET"])
 def get_application_status(staff_id, role_listing_id):
     try:

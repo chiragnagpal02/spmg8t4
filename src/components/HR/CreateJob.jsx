@@ -172,7 +172,6 @@ const CreateJob = () => {
 
     return (
         <div className='font-montserrat'>
-
             <HRNavbar />
 
 
@@ -357,9 +356,7 @@ const CreateJob = () => {
                     </div>
                 </form>
 
-            </div>
-
-            <div />
+            </div> 
         </div>
     );
 };
