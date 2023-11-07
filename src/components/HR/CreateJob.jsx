@@ -57,16 +57,21 @@ const CreateJob = () => {
     }
 
     const validateFields = () => {
+        const appStartDate = new Date(inputs.appStartDate);
+        const today = new Date();
         // Check each non-read-only input field
         if (inputs.listing_type === '' || inputs.department === '' || inputs.salary === '' || inputs.location === '' || inputs.role_listing_source === ''
         || inputs.appStartDate === '' || inputs.appEndDate === '' || inputs.listing_desc === ''
         ) {
+
           // Return false if any of the fields are empty
           return false;
         }
         // You can add additional validation logic here if needed
         // e.g., checking if salary is a valid number, dates are valid, etc.
-    
+        else if (appStartDate < today){
+            return false
+        }
         return true; // All fields are valid
       };
 
@@ -76,7 +81,7 @@ const CreateJob = () => {
         if (!isValid) {
             Swal.fire({
                 title: 'Validation Error',
-                text: 'Please fill in all required fields.',
+                text: 'Please ensure all required fields are completed, and the application start date must be today or later.',
                 icon: 'error',
                 confirmButtonColor: '#000000',
               });
