@@ -57,13 +57,13 @@ Can give any name instead of my_env. Make sure to remember it.
 
 And tell pip to install all of the packages in this file
 
-```bash
 1. For **Mac** -
+```bash
 >> python3 -m pip install -r requirements.txt
 ```
 
-```bash
 2. For **Windows**
+```bash
 >> py -m pip install -r requirements.txt
 ```
 **Step 5**: Install the following libraries (if not already installed) - 
