@@ -61,6 +61,10 @@ const CreateJob = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         appStartDate.setHours(0, 0, 0, 0);
+<<<<<<< HEAD
+=======
+        console.log(appStartDate, today)
+>>>>>>> b54ec372fbce857a74bb4b1c7f9c567c4c0ac37b
         // Check each non-read-only input field
         if (inputs.listing_type === '' || inputs.department === '' || inputs.salary === '' || inputs.location === '' || inputs.role_listing_source === ''
             || inputs.appStartDate === '' || inputs.appEndDate === '' || inputs.listing_desc === ''

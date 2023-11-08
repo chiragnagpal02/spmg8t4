@@ -78,9 +78,13 @@ const ViewJob = () => {
     var table = document.getElementById("Table");
     table.getElementsByTagName("tbody")[0].innerHTML ='<tr></tr>'
       for(var i in listing){
+        console.log(listing[i])
         var row = table.insertRow();
         var cell1 = row.insertCell();
-        cell1.innerHTML=idlisting[i].name
+        console.log(i)
+        console.log(listing[i].role_id)
+        console.log(idlisting[(listing[i].role_id-1)])
+        cell1.innerHTML=idlisting[(listing[i].role_id-1)].name
         var cell2 = row.insertCell();
         cell2.innerHTML=listing[i].role_listing_department
         var cell3 = row.insertCell();
@@ -105,7 +109,7 @@ const ViewJob = () => {
           for(var i in listing){
             var row = table.insertRow();
             var cell1 = row.insertCell();
-            cell1.innerHTML=idlisting[i].name
+            cell1.innerHTML=idlisting[(listing[i].role_id-1)].name
             var cell2 = row.insertCell();
             cell2.innerHTML=listing[i].role_listing_department
             var cell3 = row.insertCell();
@@ -126,7 +130,7 @@ const ViewJob = () => {
             if(listing[i].role_listing_type==status){
               var row = table.insertRow();
               var cell1 = row.insertCell();
-              cell1.innerHTML=idlisting[i].name
+              cell1.innerHTML=idlisting[(listing[i].role_id-1)].name
               var cell2 = row.insertCell();
               cell2.innerHTML=listing[i].role_listing_department
               var cell3 = row.insertCell();
@@ -147,7 +151,7 @@ const ViewJob = () => {
             if(listing[i].role_listing_department==filter){
               var row = table.insertRow();
               var cell1 = row.insertCell();
-              cell1.innerHTML=idlisting[i].name
+              cell1.innerHTML=idlisting[(listing[i].role_id-1)].name
               var cell2 = row.insertCell();
               cell2.innerHTML=listing[i].role_listing_department
               var cell3 = row.insertCell();
@@ -168,7 +172,7 @@ const ViewJob = () => {
             if(listing[i].role_listing_type==status && listing[i].role_listing_department==filter){
               var row = table.insertRow();
               var cell1 = row.insertCell();
-              cell1.innerHTML=idlisting[i].name
+              cell1.innerHTML=idlisting[(listing[i].role_id-1)].name
               var cell2 = row.insertCell();
               cell2.innerHTML=listing[i].role_listing_department
               var cell3 = row.insertCell();
