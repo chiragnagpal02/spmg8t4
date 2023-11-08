@@ -466,23 +466,18 @@ def get_listing_details(role_listing_id):
         
 @app.route("/get_role_listing/<int:role_listing_id>")
 def get_role_listing(role_listing_id):
-    # I want to call an endpoint that returns the role listing details - /listingdetailsall - and then return the details of the role listing with the role_listing_id
-
     # Get all the role listing details
-    all_listings = requests.get(
-        "http://127.0.0.1:5000/rolelistings"
-    ).json()  # This is a list of dictionaries
+    all_listings = requests.get("http://127.0.0.1:5000/rolelistings").json()
 
-    # Get the role listing details with the role_listing_id
-    if not all_listings:    
-       return jsonify({"code": 404, "message": "Role listing not found."}), 404
+    # Filter the role listing details with the role_listing_id
+    matching_listing = next((listing for listing in all_listings.get("data", {}).get("rolelistings", []) if listing["role_id"] == role_listing_id), None)
+
+    if matching_listing:
+        return jsonify({"code": 200, "data": matching_listing})
     else:
-        for listing in all_listings["data"]['rolelistings']:
-            print("Listing: ", listing)
-            print(role_listing_id)
-            if listing["role_id"] == role_listing_id:
-                return jsonify({"code": 200, "data": listing})
-    
+        response = jsonify({"code": 404, "message": "Role listing not found."})
+        response.status_code = 404  # Set the response status code
+        return response
 
 
 @app.route("/details/<int:role_id>")
@@ -1094,27 +1089,18 @@ def get_application_status(staff_id, role_listing_id):
                 }
             ), 200
         else:
-            return (
-                jsonify(
-                    {
-                        "code": 404,
-                        "message": "Staff or role listing not found or no application found.",
-                    }
-                ),
-                
-            ), 400
+            return jsonify({
+                "code": 404,
+                "message": "Staff or role listing not found or no application found."
+            }), 404
 
     except Exception as e:
-        return (
-            jsonify(
-                {
-                    "code": 500,
-                    "message": "An error occurred while retrieving application status",
-                    "error": str(e),
-                }
-            ),
-            500,
-        )
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred while retrieving application status",
+            "error": str(e),
+        }), 500
+
 
 
 # Get applied applications for a staff id 
