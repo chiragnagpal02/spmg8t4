@@ -115,12 +115,12 @@ And tell pip to install all of the packages in this file
 ## Temporary Login Details for SBRP
 
 Staff Login -
-- Username: 
-- Password:
+- Username: johndoestaff
+- Password: pass
 
 HR Login
-- Username: 
-- Password:
+- Username: alicehr
+- Password: pass
 
 
 ## Running Tests
