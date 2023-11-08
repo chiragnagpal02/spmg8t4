@@ -14,7 +14,7 @@ Welcome to the All-In-One Internal Skill-based Role Portal! Our current release 
 
 Currently, the system is accessible on the web, and it's designed to meet the specific requirements of Release 1. We are committed to providing a user-friendly, secure, and scalable solution to facilitate talent management and internal job applications within All-In-One. Stay tuned for future updates and enhancements as we continue to support the organization's evolving needs. Thank you for choosing the All-In-One Internal Skill-based Role Portal to streamline your internal hiring process.
 
-Link to Gihub - https://github.com/chiragnagpal02/spmg8t4.git
+Link to Github - https://github.com/chiragnagpal02/spmg8t4.git
 
 # React + Vite
 
