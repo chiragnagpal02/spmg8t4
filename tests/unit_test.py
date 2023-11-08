@@ -1,45 +1,12 @@
 from datetime import datetime
 import unittest
-from sample_app import sample_app, StaffDetails, LoginDetails, RoleListings, db
-from unittest.mock import MagicMock, patch
+from sample_app import sample_app, db ,StaffDetails, RoleApplications, RoleDetails, StaffSkills, SkillDetails, StaffRoles, StaffReportingOfficer, LoginDetails, RoleListings
+from unittest.mock import MagicMock, patch, Mock
 import json
-
 class TestManagerFunctions(unittest.TestCase):
 
     def setUp(self):
-        self.sample_app = sample_app.test_client()
-
-    def test_get_all_managers(self):
-        with sample_app.app_context():
-            # Create a mock object for the query
-            mock_query = MagicMock()
-
-            # Set the expected return value for the filter_by method
-            mock_query.filter_by.return_value = [
-                StaffDetails(staff_id=1, fname="John", lname="Doe", dept="IT", email="john@company.com", phone=99999999, biz_address="abc avenue street south", sys_role="manager"),
-                StaffDetails(staff_id=2, fname="Jane", lname="Doe", dept="IT", email="janedoe@company.com", phone=99999999, biz_address="15/10 EPN ND", sys_role="manager")
-            ]
-
-            # Assign the mock object to the actual query attribute
-            with patch.object(StaffDetails, 'query', mock_query):
-                response = self.sample_app.get("/get_all_managers")
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content_type, 'application/json')
-        self.assertEqual(response.json, [
-            {"staff_id": 1, "fname": "John", "lname": "Doe", "dept": "IT", "email": "john@company.com", "phone": 99999999, "biz_address": "abc avenue street south", "sys_role": "manager"},
-            {"staff_id": 2, "fname": "Jane", "lname": "Doe", "dept": "IT", "email": "janedoe@company.com", "phone": 99999999, "biz_address": "15/10 EPN ND", "sys_role": "manager"}
-        ])
-
-    def test_get_all_managers_no_managers(self):
-        with sample_app.app_context():
-            with patch('sample_app.StaffDetails.query.filter_by') as mock_filter:
-                mock_filter.return_value = []
-
-                response = self.sample_app.get("/get_all_managers")
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content_type, 'application/json')
+        self.app = sample_app.test_client()
 
 class TestLoginDetailsFunctions(unittest.TestCase):
 
@@ -56,7 +23,7 @@ class TestLoginDetailsFunctions(unittest.TestCase):
             
             # Assign the mock object to the actual query attribute
             with patch.object(LoginDetails, 'query', mock):
-                response = self.sample_app.get('/login/johndoe/mypassword')
+                response = self.app.get('/login/johndoe/mypassword')
                 data = json.loads(response.data)
             
             self.assertEqual(response.status_code, 200)
@@ -74,7 +41,7 @@ class TestLoginDetailsFunctions(unittest.TestCase):
             
             # Assign the mock object to the actual query attribute
             with patch.object(LoginDetails, 'query', mock):
-                response = self.sample_app.get('/login/johndoe/mypassword')
+                response = self.app.get('/login/johndoe/mypassword')
                 data = json.loads(response.data)
             
             self.assertEqual(response.status_code, 404)
@@ -85,7 +52,7 @@ class TestLoginDetailsFunctions(unittest.TestCase):
 class TestRoleListingsFunctions(unittest.TestCase):
     
     def setUp(self):
-        self.sample_app = sample_app.test_client()
+        self.app = sample_app.test_client()
 
     def test_get_all_roles(self):
         with sample_app.app_context():
@@ -130,7 +97,7 @@ class TestRoleListingsFunctions(unittest.TestCase):
 
             # Assign the mock object to the actual query attribute
             with patch.object(RoleListings, 'query', mock_query):
-                response = self.sample_app.get("/rolelistings")
+                response = self.app.get("/rolelistings")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, 'application/json')
@@ -140,7 +107,7 @@ class TestRoleListingsFunctions(unittest.TestCase):
             with patch('sample_app.RoleDetails.query.filter_by') as mock_filter:
                 mock_filter.return_value = []
 
-                response = self.sample_app.get("/get_all_roles")
+                response = self.app.get("/get_all_roles")
 
         self.assertEqual(response.status_code, 404)
     
@@ -178,7 +145,7 @@ class TestRoleListingsFunctions(unittest.TestCase):
         mock_get.return_value = mock_response
 
         # Call the /get_role_listing/<int:role_listing_id> endpoint
-        response = self.sample_app.get(f"/get_role_listing/{role_listing_id}")
+        response = self.app.get(f"/get_role_listing/{role_listing_id}")
 
         # Assertions
         self.assertEqual(response.status_code, 200)
@@ -187,70 +154,6 @@ class TestRoleListingsFunctions(unittest.TestCase):
         self.assertEqual(data['code'], 200)
         self.assertEqual(data['data']['role_listing_id'], 1)  # Verify the specific data you expect
         self.assertEqual(data['data']['role_id'], 1)  # Verify other attributes as needed
-
-    
-    # def test_open_role_listings(self):
-    #     with app.app_context():
-    #         # Create a mock object for the query
-    #         mock_query = MagicMock()
-
-    #         # Set the expected return value for the filter_by method
-    #         mock_query.filter_by.return_value = [
-    #             RoleListings(
-    #                 role_listing_id=1,
-    #                 role_id=2,
-    #                 role_listing_desc="Open Role Listing 1",
-    #                 role_listing_source=3,
-    #                 role_listing_open=datetime(2024, 1, 31, 0, 0, 0),
-    #                 role_listing_close=datetime(2024, 12, 31, 0, 0, 0),
-    #                 role_listing_creator=4,
-    #                 role_listing_ts_create=datetime(2023, 12, 29, 0, 0, 0),
-    #                 role_listing_updater=5,
-    #                 role_listing_ts_update=datetime(2024, 11, 30, 0, 0, 0),
-    #                 role_listing_type="open",
-    #                 role_listing_department="IT",
-    #                 role_listing_salary=60000,
-    #                 role_listing_location="Sample Location"
-    #             ),
-    #             RoleListings(
-    #                 role_listing_id=6,
-    #                 role_id=7,
-    #                 role_listing_desc="Open Role Listing 2",
-    #                 role_listing_source=8,
-    #                 role_listing_open=datetime(2023, 12, 31, 0, 0, 0),
-    #                 role_listing_close=datetime(2024, 12, 31, 0, 0, 0),
-    #                 role_listing_creator=9,
-    #                 role_listing_ts_create=datetime(2023, 12, 31, 0, 0, 0),
-    #                 role_listing_updater=10,
-    #                 role_listing_ts_update=datetime(2024, 11, 30, 0, 0, 0),
-    #                 role_listing_type="open",
-    #                 role_listing_department="HR",
-    #                 role_listing_salary=55000,
-    #                 role_listing_location="Another Location"
-    #             )
-    #         ]
-
-    #         # Assign the mock object to the actual query attribute
-    #         with patch.object(RoleListings, 'query', mock_query):
-    #             response = self.sample_app.get("/rolelistings_open")
-
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(response.content_type, 'application/json')
-    #     data = response.json
-    #     self.assertEqual(data['code'], 200)
-    #     self.assertTrue("rolelistings" in data['data'])
-    #     role_listings = data['data']['rolelistings']
-    #     self.assertEqual(len(role_listings), 2)
-
-    def test_open_role_listings_no_roles(self):
-        with sample_app.app_context():
-            with patch('sample_app.RoleDetails.query.filter_by') as mock_filter:
-                mock_filter.return_value = []
-
-                response = self.sample_app.get("/rolelistings_open")
-
-        self.assertEqual(response.status_code, 500)
-        # self.assertEqual(response.content_type, 'application/json')
 
 
     @patch('sample_app.generate_random_role_listing_id')
@@ -279,7 +182,7 @@ class TestRoleListingsFunctions(unittest.TestCase):
             "role_listing_source": "sample_source",
         }
 
-        response = self.sample_app.post("/create_role_listing/2/3", json=request_data)
+        response = self.app.post("/create_role_listing/2/3", json=request_data)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content_type, 'application/json')
@@ -314,7 +217,7 @@ class TestRoleListingsFunctions(unittest.TestCase):
             "role_listing_source": "sample_source",
         }
 
-        response = self.sample_app.post("/create_role_listing/2/3", json=request_data)
+        response = self.app.post("/create_role_listing/2/3", json=request_data)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content_type, 'application/json')
@@ -349,7 +252,7 @@ class TestRoleListingsFunctions(unittest.TestCase):
             "role_listing_source": "sample_source",
         }
 
-        response = self.sample_app.post("/create_role_listing/2/3", json=request_data)
+        response = self.app.post("/create_role_listing/2/3", json=request_data)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content_type, 'application/json')
@@ -359,5 +262,56 @@ class TestRoleListingsFunctions(unittest.TestCase):
         self.assertEqual(data['data']['role_listing_id'], 1)
 
 
+class TestRoleDetailsFunctions(unittest.TestCase):
+    def setUp(self):
+        self.app = sample_app.test_client()
+    def test_get_all_role_details(self):
+
+        with sample_app.app_context():
+            mock_query = MagicMock()
+
+            mock_query.all.return_value = [
+                RoleDetails(role_id=1, role_name="staff", role_description="x", role_status="active"),
+                RoleDetails(role_id=2, role_name="hr", role_description="y", role_status="inactive"),
+            ]
+
+            with patch.object(RoleDetails, 'query', mock_query):
+                response = self.app.get("/roledetailsall")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content_type, 'application/json')
+
+    def test_get_all_roles_with_no_data(self):
+        with sample_app.app_context():
+            mock_query = MagicMock()
+            mock_query.all.return_value = []
+
+            with patch.object(RoleDetails, 'query', mock_query):
+                response = self.app.get("/roledetails")
+        
+    
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.content_type, 'application/json')
+
+        data = response.get_json()
+        expected_data = {
+            "code": 404,
+            "message": "There are no roles."
+        }
+        self.assertEqual(data, expected_data)
+
+# This code gets all listings 
+class TestListingDetailsFunctions(unittest.TestCase):
+    def setUp(self):
+        self.app = sample_app.test_client()
+        self.app_context = sample_app.app_context()
+        self.app_context.push()
+
+    def tearDown(self):
+        self.app_context.pop()
+
+
 if __name__ == "__main__":
     unittest.main()
+

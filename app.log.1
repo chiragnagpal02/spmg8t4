@@ -1,23 +1,10 @@
-Exception on /rolelistings_open [GET]
-Traceback (most recent call last):
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 639, in cmd_query
-    self._cmysql.query(
-_mysql_connector.MySQLInterfaceError: Table 'sbrp_g8t4.role_listings' doesn't exist
-
-The above exception was the direct cause of the following exception:
-
+Exception on /get_all_managers [GET]
 Traceback (most recent call last):
   File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
     self.dialect.do_execute(
   File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
     cursor.execute(statement, parameters)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/cursor_cext.py", line 330, in execute
-    result = self._cnx.cmd_query(
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 77, in wrapper
-    return method(cnx, *args, **kwargs)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 647, in cmd_query
-    raise get_mysql_exception(
-mysql.connector.errors.ProgrammingError: 1146 (42S02): Table 'sbrp_g8t4.role_listings' doesn't exist
+sqlite3.OperationalError: no such table: STAFF_DETAILS
 
 The above exception was the direct cause of the following exception:
 
@@ -32,8 +19,8 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 852, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/app.py", line 536, in get_all_open
-    rolelistings = RoleListings.query.filter_by(role_listing_type="open").all()
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/tests/sample_app.py", line 764, in get_all_managers
+    managers = StaffDetails.query.filter_by(sys_role="manager").all()
   File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2693, in all
     return self._iter().all()  # type: ignore
   File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2847, in _iter
@@ -60,15 +47,39 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
     cursor.execute(statement, parameters)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/cursor_cext.py", line 330, in execute
-    result = self._cnx.cmd_query(
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 77, in wrapper
-    return method(cnx, *args, **kwargs)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 647, in cmd_query
-    raise get_mysql_exception(
-sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1146 (42S02): Table 'sbrp_g8t4.role_listings' doesn't exist
-[SQL: SELECT `ROLE_LISTINGS`.role_listing_id AS `ROLE_LISTINGS_role_listing_id`, `ROLE_LISTINGS`.role_id AS `ROLE_LISTINGS_role_id`, `ROLE_LISTINGS`.role_listing_desc AS `ROLE_LISTINGS_role_listing_desc`, `ROLE_LISTINGS`.role_listing_source AS `ROLE_LISTINGS_role_listing_source`, `ROLE_LISTINGS`.role_listing_open AS `ROLE_LISTINGS_role_listing_open`, `ROLE_LISTINGS`.role_listing_close AS `ROLE_LISTINGS_role_listing_close`, `ROLE_LISTINGS`.role_listing_creator AS `ROLE_LISTINGS_role_listing_creator`, `ROLE_LISTINGS`.role_listing_ts_create AS `ROLE_LISTINGS_role_listing_ts_create`, `ROLE_LISTINGS`.role_listing_updater AS `ROLE_LISTINGS_role_listing_updater`, `ROLE_LISTINGS`.role_listing_ts_update AS `ROLE_LISTINGS_role_listing_ts_update`, `ROLE_LISTINGS`.role_listing_type AS `ROLE_LISTINGS_role_listing_type`, `ROLE_LISTINGS`.role_listing_department AS `ROLE_LISTINGS_role_listing_department`, `ROLE_LISTINGS`.role_listing_salary AS `ROLE_LISTINGS_role_listing_salary`, `ROLE_LISTINGS`.role_listing_location AS `ROLE_LISTINGS_role_listing_location` 
-FROM `ROLE_LISTINGS` 
-WHERE `ROLE_LISTINGS`.role_listing_type = %(role_listing_type_1)s]
-[parameters: {'role_listing_type_1': 'open'}]
-(Background on this error at: https://sqlalche.me/e/20/f405)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: STAFF_DETAILS
+[SQL: SELECT "STAFF_DETAILS".staff_id AS "STAFF_DETAILS_staff_id", "STAFF_DETAILS".fname AS "STAFF_DETAILS_fname", "STAFF_DETAILS".lname AS "STAFF_DETAILS_lname", "STAFF_DETAILS".dept AS "STAFF_DETAILS_dept", "STAFF_DETAILS".email AS "STAFF_DETAILS_email", "STAFF_DETAILS".phone AS "STAFF_DETAILS_phone", "STAFF_DETAILS".biz_address AS "STAFF_DETAILS_biz_address", "STAFF_DETAILS".sys_role AS "STAFF_DETAILS_sys_role" 
+FROM "STAFF_DETAILS" 
+WHERE "STAFF_DETAILS".sys_role = ?]
+[parameters: ('manager',)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Exception on /get_all_managers [GET]
+Traceback (most recent call last):
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/tests/sample_app.py", line 764, in get_all_managers
+    managers = StaffDetails.query.filter_by(sys_role="manager").all()
+AttributeError: 'list' object has no attribute 'all'
+Exception on /get_all_managers [GET]
+Traceback (most recent call last):
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/tests/sample_app.py", line 764, in get_all_managers
+    managers = StaffDetails.query.filter_by(sys_role="manager").all()
+AttributeError: 'list' object has no attribute 'all'
