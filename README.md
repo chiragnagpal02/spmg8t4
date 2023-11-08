@@ -36,46 +36,46 @@ Use the package manager [npm](https://nodejs.org/en/download) to install SBRP.
 
 **Step 2**: Install the project
 ```bash
->> npm install
+npm install
 ```
 **Step 3**: Install the virtualenv python library for creating your VE (if not installed already)
 ```bash
->> pip install virtualenv
+pip install virtualenv
 ```
 
 **Step 4**: Set up your virtual environment 
 1. For **Mac** - 
 ```bash
->> python3 -m venv my_env 
+python3 -m venv my_env 
 >> source my_env/bin/activate
 ```
 Can give any name instead of my_env. Make sure to remember it. 
 
 2. For **Windows**
 ```bash
->> py -m venv env
->> .\env\Scripts\activate
+py -m venv env
+.\env\Scripts\activate
 ```
 
 And tell pip to install all of the packages in this file
 
 1. For **Mac** -
 ```bash
->> python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 2. For **Windows**
 ```bash
->> py -m pip install -r requirements.txt
+py -m pip install -r requirements.txt
 ```
 **Step 5**: Install the following libraries (if not already installed) - 
 ```bash
->> python -m pip install flask
->> python -m pip install flask_cors
->> python -m pip install Flask-SQLAlchemy
->> python -m pip install mysql-connector-python	  
->> python -m pip install flask_testing
->> python -m pip install requests
+python -m pip install flask
+python -m pip install flask_cors
+python -m pip install Flask-SQLAlchemy
+python -m pip install mysql-connector-python	  
+python -m pip install flask_testing
+python -m pip install requests
 ```
 
 **Step 6**: Set up and run a WAMP or MAMP server
@@ -86,7 +86,7 @@ And tell pip to install all of the packages in this file
 **Step 8**: Set/Export dbURL variable in terminal (root directory)
 1. For **Mac**
 ```bash
->> export dbURL=mysql+mysqlconnector://root:root@localhost:8889/SBRP_G8T4
+export dbURL=mysql+mysqlconnector://root:root@localhost:8889/SBRP_G8T4
 ```
 - Check for the port number: 8889 vs 3306 based on your phpmyadmin SQL setup. 
 
@@ -94,13 +94,13 @@ And tell pip to install all of the packages in this file
 
 1. For **Windows**
 ```bash
->> set dbURL=mysql+mysqlconnector://root@localhost:3306/SBRP_G8T4
+set dbURL=mysql+mysqlconnector://root@localhost:3306/SBRP_G8T4
 ```
 - Check for the port number: 8889 vs 3306 based on your phpmyadmin SQL setup. 
 
 **Step 9**: In the 'root' directory, run "python app.py" in a terminal.
 ```bash
->> python app.py
+python app.py
 ```
 - If it fails to run, open app.py in an editor and check that
 		the DB connection string is correct (e.g. port 3306 vs. 8889)
@@ -108,13 +108,13 @@ And tell pip to install all of the packages in this file
 **Step 10**: In another terminal, run "npm run dev"
 
 ```bash
->> npm run dev
+npm run dev
 ```
 
 **Step 11**: You should be able to access the SBRP at : [http://localhost:5173/](http://localhost:5173/)
 
 
-## Temporary Login Details for SBRP
+## Temporary Login Details for SBRP after SQL run
 
 Staff Login -
 - Username: johndoestaff
@@ -130,8 +130,8 @@ HR Login
 To run unit and integration tests, go into the 'root' folder on your
 command line and do:
 ```console
->> python unit_test.py
->> python integration_test.py
+python tests/unit_test.py
+python tests/integration_test.py
 
 ```
  
