@@ -988,6 +988,48 @@ def get_required_skills(role_id):
 # Get skills for staff based on staff_id
 @app.route("/get_staff_skills/<int:staff_id>", methods=["GET"])
 def get_staff_skills(staff_id):
+   try:
+
+       skills = (
+           db.session.query(SkillDetails.skill_name)
+           .join(StaffSkills, SkillDetails.skill_id == StaffSkills.skill_id)
+           .filter(StaffSkills.staff_id == staff_id)
+           .all()
+       )
+       print(skills)
+
+
+       if skills:
+           skill_names = [
+               skill[0] for skill in skills
+           ]  # Extract skill names from the result
+           return jsonify(
+               {"code": 200, "data": {"staff_id": staff_id, "skills": skill_names}}
+           )
+       else:
+           return (
+               jsonify(
+                   {"code": 404, "message": "Staff member not found or has no skills"}
+               ),
+               404,
+           )
+
+
+   except Exception as e:
+       return (
+           jsonify(
+               {
+                   "code": 500,
+                   "message": "An error occurred while retrieving staff skills",
+                   "error": str(e),
+               }
+           ),
+           500,
+       )
+
+    
+@app.route("/display_staff_skills/<int:staff_id>", methods=["GET"])
+def display_staff_skills(staff_id):
     try:
         # Query the database to retrieve skills and their statuses for the given staff_id
         skills = (
@@ -1023,7 +1065,7 @@ def get_staff_skills(staff_id):
             ),
             500,
         )
-
+    
 
 
 @app.route("/get_application_status/<int:staff_id>/<int:role_listing_id>", methods=["GET"])

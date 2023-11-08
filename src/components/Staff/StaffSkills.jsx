@@ -14,7 +14,7 @@ const StaffSkills = () => {
   useEffect(() => {
     // Make the Axios GET request to http://127.0.0.1:5000/get_staff_skills/<staff_id>
     axios
-      .get(`http://127.0.0.1:5000/get_staff_skills/${staff_id}`)
+      .get(`http://127.0.0.1:5000/display_staff_skills/${staff_id}`)
       .then((response) => {
         const data = response.data.data.skills;
 

@@ -9,25 +9,24 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import SkillMatch from "./SkillMatch";
 
-
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const applyJob = (listingid) => {
   const arr = {
-    "staff_id": localStorage.getItem('id'),
-    "listing_id": listingid
+    staff_id: localStorage.getItem("id"),
+    listing_id: listingid,
   };
 
-  axios.post(`http://127.0.0.1:5000/apply_for_role`, arr)
-  .then((response) => {
-    console.log(response.data);
-    // redirect to all jobs page
-    window.location.href = "/staff/viewalljobs";
-  }
-  )
-  .catch((error) => {
-    console.error(error);
-  });
+  axios
+    .post(`http://127.0.0.1:5000/apply_for_role`, arr)
+    .then((response) => {
+      console.log(response.data);
+      // redirect to all jobs page
+      window.location.href = "/staff/viewalljobs";
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 const ApplyJobPage = () => {
@@ -42,26 +41,25 @@ const ApplyJobPage = () => {
   const [chartData, setChartData] = useState(null);
 
   const [message, setMessage] = useState(null);
-  
   const [matchPercentage, setMatchPercentage] = useState(0);
 
   const [applicationStatus, setApplicationStatus] = useState(null);
 
   const listing_id = useParams().listing_id;
-  const staff_id = localStorage.getItem('id');
-
+  const staff_id = localStorage.getItem("id");
 
   useEffect(() => {
-
-    axios.get(`http://127.0.0.1:5000/get_application_status/${staff_id}/${listing_id}`)
-    .then((response) => {
-      // console.log(response.data.code)
-      setApplicationStatus(response.data.code);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-      
+    axios
+      .get(
+        `http://127.0.0.1:5000/get_application_status/${staff_id}/${listing_id}`
+      )
+      .then((response) => {
+        // console.log(response.data.code)
+        setApplicationStatus(response.data.code);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
     // Make the Axios GET request to http://127.0.0.1:5000/listing/{listing_id}
     axios
@@ -77,15 +75,15 @@ const ApplyJobPage = () => {
           .get(`http://127.0.0.1:5000/get_required_skills/${roleId}`)
           .then((response) => {
             setRequiredSkills(response.data.data);
-            console.log('Required skills data:', response.data.data);
+            console.log("Required skills data:", response.data.data);
             setSkills(response.data.data.skills);
           })
           .catch((error) => {
-            console.error('Error getting required skills:', error);
+            console.error("Error getting required skills:", error);
           });
       })
       .catch((error) => {
-        console.error('Error getting posting data:', error);
+        console.error("Error getting posting data:", error);
       });
   }, [listing_id]);
 
@@ -102,28 +100,33 @@ const ApplyJobPage = () => {
       .then((response) => {
         const allSkills = response.data.data.skills;
 
-        console.log('Staff all skills data:', allSkills);
+        console.log("Staff all skills data:", allSkills);
 
-        console.log('Staff active skills:', allSkills);
+        console.log("Staff active skills:", allSkills);
         setStaffSkills(allSkills);
-
       })
       .catch((error) => {
-        console.error('Error getting staff skills:', error);
+        console.error("Error getting staff skills:", error);
       });
   }, []);
 
   useEffect(() => {
-    if ((Array.isArray(requiredSkills.skills)) && requiredSkills.skills.length > 0 ) {
+    if (
+      Array.isArray(requiredSkills.skills) &&
+      requiredSkills.skills.length > 0
+    ) {
       // if no required skills, then it will display no required skills
       // Calculate chart data
-      const matchedSkills = staffSkills.filter(skill => requiredSkills.skills.includes(skill));
-        const matchedSkillsNum = matchedSkills.length;
-        console.log(matchedSkillsNum);
+      const matchedSkills = staffSkills.filter((skill) =>
+        requiredSkills.skills.includes(skill)
+      );
+      const matchedSkillsNum = matchedSkills.length;
+      console.log(matchedSkillsNum);
 
-        const matchPercentage = requiredSkills.skills.length > 0
-      ? Math.round((matchedSkillsNum / requiredSkills.skills.length) * 100)
-      : 0; // Set to 0 if there are no required skills
+      const matchPercentage =
+        requiredSkills.skills.length > 0
+          ? Math.round((matchedSkillsNum / requiredSkills.skills.length) * 100)
+          : 0; // Set to 0 if there are no required skills
 
       // if (requiredSkills.skills.length === 0) {
       //   NoRequiredSkillsAlert();
@@ -136,38 +139,40 @@ const ApplyJobPage = () => {
         FullSkillsMatchAlert();
       }
 
-        console.log(matchPercentage , " %");
-        // const matchPercentage = Math.round((matchedSkillsNum / requiredSkills.length) * 100);
-        const mismatchedSkillsNum = requiredSkills.skills.length - matchedSkillsNum;
-        
-        console.log("mismatch",mismatchedSkillsNum)
+      console.log(matchPercentage, " %");
+      // const matchPercentage = Math.round((matchedSkillsNum / requiredSkills.length) * 100);
+      const mismatchedSkillsNum =
+        requiredSkills.skills.length - matchedSkillsNum;
 
-      console.log('Updated reqskills:', requiredSkills);
-      console.log('Updated staffskills:', staffSkills);
+      console.log("mismatch", mismatchedSkillsNum);
 
-      const missingColor = 'lightgrey';
+      console.log("Updated reqskills:", requiredSkills);
+      console.log("Updated staffskills:", staffSkills);
+
+      const missingColor = "lightgrey";
 
       let backgroundColor;
       if (matchPercentage > 70) {
-        backgroundColor = 'green'; // Green color
+        backgroundColor = "green"; // Green color
       } else if (matchPercentage > 40) {
-        backgroundColor = 'orange'; // Orange color
+        backgroundColor = "orange"; // Orange color
       } else {
-        backgroundColor = 'red'; // Red color
+        backgroundColor = "red"; // Red color
       }
 
-      console.log(backgroundColor)
+      console.log(backgroundColor);
 
       const chartData = {
-        labels: ['Matched', 'Missing'],
+        labels: ["Matched", "Missing"],
         options: {
-          responsive:true},
+          responsive: true,
+        },
         datasets: [
           {
-            label: ' No. of Skills',
+            label: " No. of Skills",
             data: [matchedSkillsNum, mismatchedSkillsNum],
-            backgroundColor: [backgroundColor,missingColor],
-            borderColor: [backgroundColor,missingColor]
+            backgroundColor: [backgroundColor, missingColor],
+            borderColor: [backgroundColor, missingColor],
           },
         ],
       };
@@ -175,23 +180,18 @@ const ApplyJobPage = () => {
 
       setChartData(chartData); // Update chart data state
       setMatchPercentage(matchPercentage);
-
-    }
-    else {
-      const message = "No Required Skills"
-      setMessage(message)
+    } else {
+      const message = "No Required Skills";
+      setMessage(message);
       // console.log('hellooooo')
       //NoRequiredSkillsAlert();
     }
-}, [requiredSkills, staffSkills]);
-
+  }, [requiredSkills, staffSkills]);
 
   const date1 = new Date(posting.open_date);
   const date2 = new Date(posting.close_date);
   const diffTime = Math.abs(date2 - date1);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
-
 
   const AlertSweet = () => {
     Swal.fire({
@@ -211,7 +211,6 @@ const ApplyJobPage = () => {
           icon: "success",
           confirmButtonColor: "#000000",
         });
-        
       }
     });
   };
@@ -220,23 +219,20 @@ const ApplyJobPage = () => {
     Swal.fire({
       title: "0% Skill Match!",
       icon: "warning",
-      confirmButtonColor: "#000000"
+      confirmButtonColor: "#000000",
     });
   };
 
-
-  
   const FullSkillsMatchAlert = () => {
     Swal.fire({
       title: "100% Skill Match!",
       icon: "success",
-      confirmButtonColor: "#000000"
+      confirmButtonColor: "#000000",
     });
   };
 
-  
   return (
-    <div className="font-montserrat">
+    <div>
       <Navbar />
 
       <div className="bg-blue-500 h-[80px] flex justify-center items-center">
@@ -244,35 +240,31 @@ const ApplyJobPage = () => {
       </div>
 
       <div className="mt-4 flex flexbox justify-center">
-      {
-        applicationStatus === 200 ? (
+        {applicationStatus === 200 ? (
           <Button
-          onClick={AlertSweet}
-          style={{
-            backgroundColor: "#ffffff",
-            border: "1px solid #000000",
-          }}
-          variant="contained"
-          color="success"
-          disabled
-        >
-          Already Applied!
-        </Button>
+            onClick={AlertSweet}
+            style={{
+              backgroundColor: "#ffffff",
+              border: "1px solid #000000",
+            }}
+            variant="contained"
+            color="success"
+            disabled
+          >
+            Already Applied!
+          </Button>
         ) : (
           <Button
-          onClick={AlertSweet}
-          style={{
-            backgroundColor: "#000000",
-          }}
-          variant="contained"
-          color="success"
-           > 
-          APPLY FOR JOB
-        </Button>
-        )
-      }
-      
-        
+            onClick={AlertSweet}
+            style={{
+              backgroundColor: "#000000",
+            }}
+            variant="contained"
+            color="success"
+          >
+            APPLY FOR JOB
+          </Button>
+        )}
       </div>
       <div className="MainDiv p-4 mt-5">
         <div className="descriptionDiv md:grid grid-cols-2">
@@ -286,12 +278,6 @@ const ApplyJobPage = () => {
             <h2 className="px-3 mt-6 underline font-bold">Job Description </h2>
             <br />
             <h2 className="px-3 mb-4">{posting.description}</h2>
-            <h2 className="px-3 mt-6 underline font-bold">Job Extra details </h2>
-            <br />
-            <h2 className="px-3 mb-4">{posting.listing_desc}</h2>
-
-
-            
           </div>
           <div className="details">
             <div className="border rounded grid grid-cols-2 p-3">
@@ -440,42 +426,47 @@ const ApplyJobPage = () => {
               </div>
             </div>
             {requiredSkills.skills && requiredSkills.skills.length > 0 ? (
-        <div className="border rounded p-3 mt-5">
-          <h2 className="mb-5 font-bold">Skills Match</h2>
+              <div className="border rounded p-3 mt-5">
+                <h2 className="mb-5 font-bold">Skills Match</h2>
 
-              <div className="flex items-center">
-                <div style={{ width: "50%", height: "50%" }}>
-                  {chartData && (
-                    <div>
-                      <Doughnut data={chartData}></Doughnut>
-                    </div>
-                  )}
-                </div>
-
-                <div className="ml-5 text-center">
-              <p>
-                Match Percentage: <strong className="text">{matchPercentage}%</strong>
-              </p>
-            </div>
-              </div>
-
-              <strong className="text">Required Skills</strong>
-
-              <div className="bg-gray-50 rounded p-3 mt-5">
-                <div className="grid grid-cols-3 gap-5 margin-top-10">
-                  {skills.map((skill) => {
-                    return (
-                      <div key={skill}>
-                        {skill}
-                       
+                <div className="flex items-center">
+                  <div style={{ width: "50%", height: "50%" }}>
+                    {chartData && (
+                      <div>
+                        <Doughnut data={chartData}></Doughnut>
                       </div>
-                    );
-                  })}
+                    )}
+                  </div>
+
+                  <div className="ml-5 text-center">
+                    <p>
+                      Match Percentage:{" "}
+                      <strong className="text">{matchPercentage}%</strong>
+                    </p>
+                  </div>
+                </div>
+
+                <strong className="text">Required Skills</strong>
+
+                <div className="bg-gray-50 rounded p-3 mt-5">
+                  <div className="grid grid-cols-3 gap-5 margin-top-10">
+                    {skills.map((skill) => {
+                      return <div key={skill}>{skill}</div>;
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
             ) : (
-              <p className="text" style={{ color: "green", fontSize: "22px", textAlign: "center", fontWeight: "bold", padding: "10px" }}>
+              <p
+                className="text"
+                style={{
+                  color: "green",
+                  fontSize: "22px",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  padding: "10px",
+                }}
+              >
                 No Skills Required!
               </p>
             )}
