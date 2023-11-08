@@ -59,6 +59,9 @@ const CreateJob = () => {
     const validateFields = () => {
         const appStartDate = new Date(inputs.appStartDate);
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        appStartDate.setHours(0, 0, 0, 0);
+        console.log(appStartDate, today)
         // Check each non-read-only input field
         if (inputs.listing_type === '' || inputs.department === '' || inputs.salary === '' || inputs.location === '' || inputs.role_listing_source === ''
             || inputs.appStartDate === '' || inputs.appEndDate === '' || inputs.listing_desc === ''
