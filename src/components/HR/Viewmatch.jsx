@@ -19,6 +19,7 @@ const ViewMatch = () => {
       .then((response) => {
         const data = response.data.data;
         setRole(data);
+        console.log(data)
       })
       .catch((error) => {
         // Handle any errors here
