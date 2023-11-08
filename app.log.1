@@ -1,127 +1,74 @@
-Exception on /get_all_managers [GET]
+Exception on /rolelistings_open [GET]
 Traceback (most recent call last):
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 302, in _open_connection
-    self._cmysql.connect(**cnx_kwargs)
-_mysql_connector.MySQLInterfaceError: Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 639, in cmd_query
+    self._cmysql.query(
+_mysql_connector.MySQLInterfaceError: Table 'sbrp_g8t4.role_listings' doesn't exist
 
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
-    self._dbapi_connection = engine.raw_connection()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 3288, in raw_connection
-    return self.pool.connect()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 452, in connect
-    return _ConnectionFairy._checkout(self)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 1267, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 716, in checkout
-    rec = pool._do_get()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/impl.py", line 169, in _do_get
-    with util.safe_reraise():
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/impl.py", line 167, in _do_get
-    return self._create_connection()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 393, in _create_connection
-    return _ConnectionRecord(self)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 678, in __init__
-    self.__connect()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 902, in __connect
-    with util.safe_reraise():
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 898, in __connect
-    self.dbapi_connection = connection = pool._invoke_creator(self)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/create.py", line 637, in connect
-    return dialect.connect(*cargs, **cparams)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 615, in connect
-    return self.loaded_dbapi.connect(*cargs, **cparams)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/pooling.py", line 293, in connect
-    return CMySQLConnection(*args, **kwargs)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 128, in __init__
-    self.connect(**kwargs)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/abstracts.py", line 1217, in connect
-    self._open_connection()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 307, in _open_connection
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/cursor_cext.py", line 330, in execute
+    result = self._cnx.cmd_query(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 77, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 647, in cmd_query
     raise get_mysql_exception(
-mysql.connector.errors.OperationalError: 2013 (HY000): Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+mysql.connector.errors.ProgrammingError: 1146 (42S02): Table 'sbrp_g8t4.role_listings' doesn't exist
 
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/flask/app.py", line 1455, in wsgi_app
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 1455, in wsgi_app
     response = self.full_dispatch_request()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/flask/app.py", line 869, in full_dispatch_request
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 869, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask_cors/extension.py", line 176, in wrapped_function
     return cors_after_request(app.make_response(f(*args, **kwargs)))
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/flask/app.py", line 867, in full_dispatch_request
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/flask/app.py", line 852, in dispatch_request
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/flask/app.py", line 852, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/app.py", line 744, in get_all_managers
-    managers_list = [manager.json() for manager in managers]
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/app.py", line 744, in <listcomp>
-    managers_list = [manager.json() for manager in managers]
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2828, in __iter__
-    result = self._iter()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2842, in _iter
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/app.py", line 536, in get_all_open
+    rolelistings = RoleListings.query.filter_by(role_listing_type="open").all()
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2693, in all
+    return self._iter().all()  # type: ignore
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2847, in _iter
     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2262, in execute
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2308, in execute
     return self._execute_internal(
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2134, in _execute_internal
-    conn = self._connection_for_bind(bind)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2001, in _connection_for_bind
-    return trans._connection_for_bind(engine, execution_options)
-  File "<string>", line 2, in _connection_for_bind
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/orm/state_changes.py", line 139, in _go
-    ret_value = fn(self, *arg, **kw)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1126, in _connection_for_bind
-    conn = bind.connect()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 3264, in connect
-    return self._connection_cls(self)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 147, in __init__
-    Connection._handle_dbapi_exception_noconnection(
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2426, in _handle_dbapi_exception_noconnection
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 2190, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/orm/context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2343, in _handle_dbapi_exception
     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 145, in __init__
-    self._dbapi_connection = engine.raw_connection()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 3288, in raw_connection
-    return self.pool.connect()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 452, in connect
-    return _ConnectionFairy._checkout(self)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 1267, in _checkout
-    fairy = _ConnectionRecord.checkout(pool)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 716, in checkout
-    rec = pool._do_get()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/impl.py", line 169, in _do_get
-    with util.safe_reraise():
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/impl.py", line 167, in _do_get
-    return self._create_connection()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 393, in _create_connection
-    return _ConnectionRecord(self)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 678, in __init__
-    self.__connect()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 902, in __connect
-    with util.safe_reraise():
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/util/langhelpers.py", line 146, in __exit__
-    raise exc_value.with_traceback(exc_tb)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/pool/base.py", line 898, in __connect
-    self.dbapi_connection = connection = pool._invoke_creator(self)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/create.py", line 637, in connect
-    return dialect.connect(*cargs, **cparams)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 615, in connect
-    return self.loaded_dbapi.connect(*cargs, **cparams)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/pooling.py", line 293, in connect
-    return CMySQLConnection(*args, **kwargs)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 128, in __init__
-    self.connect(**kwargs)
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/abstracts.py", line 1217, in connect
-    self._open_connection()
-  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/envMac/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 307, in _open_connection
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/cursor_cext.py", line 330, in execute
+    result = self._cnx.cmd_query(
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 77, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/chiragnagpal/Documents/SMU/Y3-S1/Software Project Management/Project/spmg8t4/myenvfinal/lib/python3.10/site-packages/mysql/connector/connection_cext.py", line 647, in cmd_query
     raise get_mysql_exception(
-sqlalchemy.exc.OperationalError: (mysql.connector.errors.OperationalError) 2013 (HY000): Lost connection to MySQL server at 'reading initial communication packet', system error: 0
-(Background on this error at: https://sqlalche.me/e/20/e3q8)
+sqlalchemy.exc.ProgrammingError: (mysql.connector.errors.ProgrammingError) 1146 (42S02): Table 'sbrp_g8t4.role_listings' doesn't exist
+[SQL: SELECT `ROLE_LISTINGS`.role_listing_id AS `ROLE_LISTINGS_role_listing_id`, `ROLE_LISTINGS`.role_id AS `ROLE_LISTINGS_role_id`, `ROLE_LISTINGS`.role_listing_desc AS `ROLE_LISTINGS_role_listing_desc`, `ROLE_LISTINGS`.role_listing_source AS `ROLE_LISTINGS_role_listing_source`, `ROLE_LISTINGS`.role_listing_open AS `ROLE_LISTINGS_role_listing_open`, `ROLE_LISTINGS`.role_listing_close AS `ROLE_LISTINGS_role_listing_close`, `ROLE_LISTINGS`.role_listing_creator AS `ROLE_LISTINGS_role_listing_creator`, `ROLE_LISTINGS`.role_listing_ts_create AS `ROLE_LISTINGS_role_listing_ts_create`, `ROLE_LISTINGS`.role_listing_updater AS `ROLE_LISTINGS_role_listing_updater`, `ROLE_LISTINGS`.role_listing_ts_update AS `ROLE_LISTINGS_role_listing_ts_update`, `ROLE_LISTINGS`.role_listing_type AS `ROLE_LISTINGS_role_listing_type`, `ROLE_LISTINGS`.role_listing_department AS `ROLE_LISTINGS_role_listing_department`, `ROLE_LISTINGS`.role_listing_salary AS `ROLE_LISTINGS_role_listing_salary`, `ROLE_LISTINGS`.role_listing_location AS `ROLE_LISTINGS_role_listing_location` 
+FROM `ROLE_LISTINGS` 
+WHERE `ROLE_LISTINGS`.role_listing_type = %(role_listing_type_1)s]
+[parameters: {'role_listing_type_1': 'open'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)

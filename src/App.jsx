@@ -50,8 +50,7 @@ class App extends React.Component {
           <Route path="/login" element={<Login />} />
           {/* Route for User Profile */}
           <Route path="/profile" element={<SkillsProfile user={this.state.user} />} />
-
-          <Route path="/staffskills/:staff_id" element={<StaffSkills />} />
+          <Route path="/staffskills" element={<StaffSkills />} />
           
         </Routes>
       </Router>
