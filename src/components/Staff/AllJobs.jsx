@@ -31,6 +31,7 @@ const AllJobs = () => {
       .then((response) => {
         const uniqueDepts = [...new Set(response.data.data.final_list.map((job) => job.department))];
         setJobPostings(response.data.data.final_list);
+        console.log(response.data.data.final_list);
         setFilteredJobPostings(response.data.data.final_list);
         setDepts(uniqueDepts.map((dept) => ({ value: dept, label: dept })));
       })

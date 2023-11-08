@@ -5,19 +5,24 @@ import datetime
 import requests
 import random
 import string
-
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+import os
 from os import environ
 from flask_cors import CORS
 
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS")
+# # app.config['SQLALCHEMY_ENGINE_OPTIONS'] = os.getenv("SQLALCHEMY_ENGINE_OPTIONS")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("dbURL")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("SQLALCHEMY_DATABASE_URI")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_recycle": 299}
 
 db = SQLAlchemy(app)
 
